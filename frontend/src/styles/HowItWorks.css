@@ -1,0 +1,42 @@
+.how-it-works__toggle {
+  display: flex;
+  background-color: var(--color-bg-hover);
+  border-radius: var(--radius-full);
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.how-it-works__toggle-btn {
+  flex: 1;
+  height: 38px;
+  border: none;
+  border-radius: var(--radius-full);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.how-it-works__toggle-btn--active {
+  background: var(--color-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.how-it-works__step {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.how-it-works__step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
