@@ -27,7 +27,7 @@ function Header() {
           </button>
 
           <Link to="/" className="navbar__logo">
-            Budget Tracker
+            OnShift
           </Link>
 
           {/* Desktop Menu */}
