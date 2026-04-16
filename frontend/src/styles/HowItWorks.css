@@ -25,6 +25,12 @@
   font-weight: 600;
 }
 
+.how-it-works__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
 .how-it-works__step {
   display: flex;
   gap: 0.8rem;
@@ -39,4 +45,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.how-it-works__step-description {
+  color: var(--color-text-muted);
 }

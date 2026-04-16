@@ -50,6 +50,7 @@ function HowItWorks() {
               </p>
             </div>
           </li>
+          
           <li className="how-it-works__step">
             <div className="how-it-works__step-icon">
               {" "}
