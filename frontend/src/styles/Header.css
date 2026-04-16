@@ -1,114 +1,16 @@
-.navbar__container {
+.header {
   padding: 1.2rem 1.2rem;
+  max-width: 1200px;
+}
+
+.header__nav {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  border-bottom: 2px solid #e9e9e9;
 }
 
-.navbar__menu {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-left: 0;
-  flex: 1;
-}
-
-.navbar__hamburger {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  color: var(--text-dark);
-}
-
-.navbar__mobile-menu {
-  transform: translateX(-100%);
-}
-
-.navbar__mobile-menu--open {
-  transform: translateX(0);
-}
-
-.navbar__menu-item:nth-child(3) {
-  margin-left: auto;
-}
-
-.navbar__link {
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-.navbar__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  color: var(--color-primary);
-}
-
-.navbar__button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.navbar__button--login {
-  background-color: transparent;
-}
-
-.navbar__button--signup,
-.navbar__button--mobile {
-  background-color: var(--color-primary);
-  color: #fff;
-}
-
-.navbar__hamburger,
-.navbar__mobile-menu,
-.navbar__button--mobile {
-  display: none;
-}
-
-@media (max-width: 1024px) {
-  .navbar__container {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .navbar__hamburger,
-  .navbar__mobile-menu,
-  .navbar__button--mobile {
-    display: block;
-  }
-
-  .navbar__mobile-menu {
-    position: fixed;
-    top: 76px;
-    left: 20px;
-    width: 35%;
-    border-radius: 8px;
-    background: #fff;
-    transform: translateX(-130%);
-    transition: transform 0.3s ease;
-    overflow-y: auto;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .navbar__mobile-menu--open {
-    transform: translateX(0);
-  }
-
-  .navbar__mobile-link {
-    display: block;
-    padding: 16px 24px;
-    font-size: 15px;
-    border-bottom: 1px solid #e8e8e8;
-  }
-
-  .navbar__mobile-item:last-child .navbar__mobile-link {
-    border-bottom: none;
-  }
-
-  .navbar__menu {
-    display: none;
-  }
+.header__logo {
+  font-size: 1.375rem;
+  margin-bottom: 0;
+  font-weight: 500;
 }
