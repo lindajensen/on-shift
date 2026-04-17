@@ -5,7 +5,7 @@ function Header() {
     <header className="header">
       <nav className="header__nav">
         <p className="header__logo">onShift</p>
-        <button className="header__login-btn btn--primary">Logga in</button>
+        <button className="header__login-btn btn btn--primary">Logga in</button>
       </nav>
     </header>
   );

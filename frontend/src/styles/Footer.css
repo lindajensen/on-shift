@@ -1,0 +1,44 @@
+.footer {
+  background: var(--color-primary);
+  width: 100%;
+  color: #fff;
+}
+
+.footer__inner {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.footer__brand {
+  margin-bottom: 0.8rem;
+}
+
+.footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer__nav-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
+}
+
+.footer__nav-list li {
+  margin-bottom: 0.5rem;
+}
+
+.footer__nav-list a {
+  font-size: 0.875rem;
+  color: #fff;
+}
+
+.footer__nav-list a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

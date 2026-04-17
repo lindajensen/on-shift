@@ -1,0 +1,24 @@
+.hero__heading {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.hero__heading--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero__heading--hidden {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.hero__heading-accent {
+  color: var(--color-accent);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 0.5rem;
+}

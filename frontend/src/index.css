@@ -1,5 +1,5 @@
 :root {
-  --font-headings: "Instrument Serif", serif;
+  /* --font-headings: "Instrument Serif", serif; */
   --font-body: "Public Sans", sans-serif;
 
   --color-primary: #1d2642;
@@ -40,6 +40,7 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-full: 99px;
 }
 
 #root {
@@ -77,27 +78,28 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-headings);
+  font-family: var(--font-body);
   font-weight: 700;
   line-height: 1.2;
-  margin-bottom: 0.5rem;
 }
 
 h1 {
   font-size: clamp(2.2rem, 3vw + 1rem, 3rem);
+  margin-bottom: 0.75rem;
 }
 
 h2 {
   font-size: clamp(1.6rem, 2vw + 0.8rem, 2.2rem);
+  margin-bottom: 0.3rem;
 }
 
 h3 {
   font-size: clamp(1.25rem, 1.2vw + 0.7rem, 1.6rem);
+  margin-bottom: 0.2rem;
 }
 
 p {
   font-size: clamp(0.9rem, 0.5vw + 0.7rem, 1rem);
-  margin-bottom: 1rem;
   line-height: 1.6;
 }
 
@@ -117,6 +119,11 @@ img {
   display: block;
 }
 
+section {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
 .layout {
   min-height: 100vh;
   display: flex;
@@ -125,10 +132,19 @@ img {
 
 .layout__content {
   flex: 1;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1.2rem;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0.8rem 0;
 }
 
 /* Buttons */
-button {
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +160,6 @@ button {
     transform 0.1s;
   cursor: pointer;
   border: none;
-  text-decoration: none;
 }
 
 .btn--primary {
@@ -155,6 +170,33 @@ button {
 .btn--primary:hover {
   background: var(--color-primary-hover);
 }
+
 .btn--primary:active {
   background: var(--color-primary-active);
+}
+
+.btn--outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn--outline:hover {
+  background: var(--color-primary-light);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-lg);
+  white-space: nowrap;
+}
+
+.badge--accent {
+  background: var(--color-accent);
+  color: #fff;
 }
