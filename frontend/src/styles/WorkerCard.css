@@ -1,0 +1,73 @@
+.worker-card {
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.worker-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.worker-card__avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.worker-card__info {
+  flex: 1;
+}
+
+.worker-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.worker-card__name {
+  font-weight: 600;
+}
+
+.worker-card__name-skeleton {
+  height: 1rem;
+  width: 9.5rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-hover);
+}
+
+.worker-card__rating {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.worker-card__rating svg {
+  fill: #f5a623;
+  color: #f5a623;
+}
+
+.worker-card__meta {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-muted);
+}
+
+.worker-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.worker-card__tags {
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 0.8rem;
+}
