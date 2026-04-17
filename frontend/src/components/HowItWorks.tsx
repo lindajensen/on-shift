@@ -15,7 +15,7 @@ function HowItWorks() {
   const [activeTab, setActiveTab] = useState<"worker" | "employer">("worker");
 
   return (
-    <section className="how-it-works">
+    <section className="how-it-works" id="how-it-works">
       <h2>Så fungerar det</h2>
 
       <div className="how-it-works__toggle">
@@ -50,7 +50,7 @@ function HowItWorks() {
               </p>
             </div>
           </li>
-          
+
           <li className="how-it-works__step">
             <div className="how-it-works__step-icon">
               {" "}
