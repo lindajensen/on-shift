@@ -163,6 +163,10 @@ section {
   border: none;
 }
 
+.btn--full {
+  width: 100%;
+}
+
 .btn--primary {
   background-color: var(--color-primary);
   color: #fff;
@@ -191,8 +195,8 @@ section {
   display: inline-flex;
   align-items: center;
   font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 10px;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
   border-radius: var(--radius-lg);
   white-space: nowrap;
 }
@@ -200,6 +204,11 @@ section {
 .badge--accent {
   background: var(--color-accent);
   color: #fff;
+}
+
+.badge--neutral {
+  background-color: #e5e5e5;
+  color: var(--color-text-muted);
 }
 
 /* Misc */
