@@ -18,6 +18,10 @@
   color: var(--color-accent);
 }
 
+.hero__subheading {
+  margin-bottom: 1rem;
+}
+
 .hero__actions {
   display: flex;
   gap: 0.5rem;

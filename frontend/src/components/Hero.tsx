@@ -16,7 +16,7 @@ function Hero() {
         setIndex((prev) => (prev + 1) % headlines.length);
         setVisible(true);
       }, 400);
-    }, 10000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, []);
