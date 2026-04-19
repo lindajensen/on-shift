@@ -6,6 +6,7 @@
   transition:
     opacity 0.4s ease,
     transform 0.4s ease;
+  margin-bottom: 0.75rem;
 }
 
 .hero__heading--visible {
