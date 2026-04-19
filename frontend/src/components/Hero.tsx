@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "../styles/Hero.css";
 
@@ -35,14 +35,14 @@ function Hero() {
           hyr professionell personal på bara några minuter.
         </p>
 
-        {/* <div className="hero__actions">
-        <Link className="btn btn--primary" to="/register/worker">
-          Jag söker jobb
-        </Link>
-        <Link className="btn btn--outline" to="/register/employer">
-          Jag söker personal
-        </Link>
-      </div> */}
+        <div className="hero__actions">
+          <Link className="btn btn--primary" to="/register/worker">
+            Jag söker jobb
+          </Link>
+          <Link className="btn btn--outline" to="/register/employer">
+            Jag söker personal
+          </Link>
+        </div>
       </div>
     </section>
   );
