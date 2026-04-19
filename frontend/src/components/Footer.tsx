@@ -9,9 +9,9 @@ function Footer() {
       <div className="footer__inner">
         <div className="footer__brand">
           <h2 className="footer__logo">onShift</h2>
+          <p className="footer__tagline">Bemanning för restaurangbranschen.</p>
           <p className="footer__tagline">
-            Bemanning för restaurangbranschen. Hitta pass eller personal på
-            minuter.
+            Hitta pass eller personal på minuter.
           </p>
         </div>
 
