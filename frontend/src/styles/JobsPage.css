@@ -54,6 +54,7 @@
   font-weight: 500;
   color: var(--color-text-muted);
   cursor: pointer;
+  white-space: nowrap;
   transition:
     background 0.15s,
     border-color 0.15s;

@@ -226,3 +226,34 @@ section {
   font-weight: 700;
   flex-shrink: 0;
 }
+
+/* Fallback */
+.jobs__empty {
+  display: flex;
+  gap: 0.8rem;
+  padding: 1rem;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.jobs__empty-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.jobs__empty-title {
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.jobs__empty-text {
+  color: var(--color-text-muted);
+}
