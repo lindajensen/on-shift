@@ -31,3 +31,24 @@
   display: flex;
   gap: 0.5rem;
 }
+
+.hero__actions .btn {
+  flex: 1;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__actions .btn {
+    flex: 0;
+    min-width: 180px;
+  }
+}
