@@ -16,7 +16,11 @@ function WorkerListings() {
           </p>
         </header>
 
-        <WorkerCard isAnonymous={true} />
+        <ul className="worker-list">
+          <li className="worker-list__item">
+            <WorkerCard isAnonymous={true} />
+          </li>
+        </ul>
       </div>
     </section>
   );
