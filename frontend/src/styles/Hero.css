@@ -1,3 +1,7 @@
+.hero {
+  border-bottom: 1px solid var(--color-border);
+}
+
 .hero__heading {
   transition:
     opacity 0.4s ease,
