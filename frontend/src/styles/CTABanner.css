@@ -1,0 +1,21 @@
+.cta-banner {
+  background-color: var(--color-primary);
+  color: #fff;
+  border-bottom: none;
+  width: 100%;
+  text-align: center;
+}
+
+.cta-banner__inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+.cta-banner__accent {
+  color: var(--color-accent);
+}
+
+.cta-banner__subtitle {
+  color: var(--color-text-light);
+}
