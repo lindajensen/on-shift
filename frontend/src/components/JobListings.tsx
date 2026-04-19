@@ -7,6 +7,7 @@ function JobListings() {
   return (
     //TODO: Fetch from database and only show the last 6 jobs
     //TODO: Publicerad xxx är fult
+    // TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
 
     <section className="job-listings">
       <div className="section__inner">
