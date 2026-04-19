@@ -1,0 +1,9 @@
+.login-nudge {
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  margin-block: 0.8rem;
+}

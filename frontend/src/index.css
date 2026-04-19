@@ -85,7 +85,6 @@ h3 {
 
 h1 {
   font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
-  margin-bottom: 0.75rem;
 }
 
 h2 {
@@ -122,11 +121,12 @@ img {
 
 section {
   padding: 1.5rem 0;
-  border-bottom: 1px solid var(--color-border);
+  /* border-bottom: 1px solid var(--color-border); */
 }
 
 .section__inner {
-  max-width: 640px;
+  /* max-width: 640px; */
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.2rem;
 }
@@ -199,7 +199,7 @@ section {
   align-items: center;
   font-size: 0.75rem;
   font-weight: 500;
-  padding: 0.25rem 0.625rem;
+  padding: 0.4rem 0.625rem;
   border-radius: var(--radius-lg);
   white-space: nowrap;
 }
@@ -225,4 +225,35 @@ section {
   font-size: 0.8rem;
   font-weight: 700;
   flex-shrink: 0;
+}
+
+/* Fallback */
+.jobs__empty {
+  display: flex;
+  gap: 0.8rem;
+  padding: 1rem;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.jobs__empty-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.jobs__empty-title {
+  font-size: 0.94rem;
+  font-weight: 600;
+}
+
+.jobs__empty-text {
+  color: var(--color-text-muted);
 }

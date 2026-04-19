@@ -1,3 +1,7 @@
+.how-it-works {
+  border-bottom: 1px solid var(--color-border);
+}
+
 .how-it-works__toggle {
   display: flex;
   background-color: var(--color-bg-hover);

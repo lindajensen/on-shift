@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
 import "../styles/Header.css";
 
 function Header() {
   return (
     <header className="header">
       <nav className="header__nav">
-        <p className="header__logo">onShift</p>
+        <Link to="/" className="header__logo">
+          onShift
+        </Link>
         <button className="header__login-btn btn btn--primary">Logga in</button>
       </nav>
     </header>

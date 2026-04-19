@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout";
 import LandingPage from "./pages/LandingPage";
 import RegisterWorkerPage from "./pages/RegisterWorkerPage";
 import RegisterEmployerPage from "./pages/RegisterEmployerPage";
+import JobsPage from "./pages/JobsPage";
 
 import "./App.css";
 
@@ -19,6 +20,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<LandingPage />} />
         <Route path="/register/worker" element={<RegisterWorkerPage />} />
         <Route path="/register/employer" element={<RegisterEmployerPage />} />
+        <Route path="/jobs" element={<JobsPage />} />
       </Route>
 
       {/* WorkerLayout */}
