@@ -17,6 +17,7 @@ export interface Job {
   compensation: number;
   isUrgent: boolean;
   requiresExperience: boolean;
+  shiftType: "dag" | "kväll" | "helg";
   description?: string;
   postedAt: string;
   tags: string[];
