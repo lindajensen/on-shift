@@ -18,9 +18,15 @@ const router = createBrowserRouter(
     <>
       <Route element={<MainLayout />}>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/register/worker" element={<RegisterWorkerPage />} />
-        <Route path="/register/employer" element={<RegisterEmployerPage />} />
-        <Route path="/jobs" element={<JobsPage />} />
+        <Route
+          path="/registrera/arbetstagare"
+          element={<RegisterWorkerPage />}
+        />
+        <Route
+          path="/registrera/arbetsgivare"
+          element={<RegisterEmployerPage />}
+        />
+        <Route path="/jobb" element={<JobsPage />} />
       </Route>
 
       {/* WorkerLayout */}
