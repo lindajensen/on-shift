@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import LoginNudge from "../components/LoginNudge";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingSpinner from "../components/LoadingSpinner";
+
 import { getAllJobs } from "../api/jobs";
 import { Job } from "../types";
+
 import { Search, MapPin, Clock } from "lucide-react";
 
 import "../styles/JobsPage.css";
@@ -64,11 +68,14 @@ function JobsPage() {
   useEffect(() => {
     async function fetchJobs() {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000000));
         const data = await getAllJobs();
         setJobs(data);
       } catch (error) {
         console.error("Failed to fetch jobs", error);
-        setError("Kunde inte hämta jobb");
+        setError(
+          "Vi kunde inte hämta passen just nu. Kontrollera din anslutning och försök igen.",
+        );
       } finally {
         setIsLoading(false);
       }
@@ -77,12 +84,15 @@ function JobsPage() {
   }, []);
 
   //! Do not show all job openings if not logged in
-  
-  //TODO: Create and implement loading and error component
+
   //TODO: Fix hardcoded subheading
   //TODO: Fetch from backend
   //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
   //TODO: Wrap /jobs in dynamic(?) layout based on if user is logged in or not
+
+  if (isLoading)
+    return <LoadingSpinner title="Laddar" subtitle="Hämtar lediga pass" />;
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <section className="jobs">
