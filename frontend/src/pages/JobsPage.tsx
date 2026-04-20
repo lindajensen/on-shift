@@ -68,7 +68,6 @@ function JobsPage() {
   useEffect(() => {
     async function fetchJobs() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000000));
         const data = await getAllJobs();
         setJobs(data);
       } catch (error) {
@@ -90,8 +89,7 @@ function JobsPage() {
   //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
   //TODO: Wrap /jobs in dynamic(?) layout based on if user is logged in or not
 
-  if (isLoading)
-    return <LoadingSpinner title="Laddar" subtitle="Hämtar lediga pass" />;
+  if (isLoading) return <LoadingSpinner subtitle="Hämtar lediga pass" />;
   if (error) return <ErrorMessage message={error} />;
 
   return (
@@ -182,7 +180,7 @@ function JobsPage() {
                   </div>
 
                   <footer className="job-card__actions">
-                    <Link className="btn btn--outline" to="/jobs/:id">
+                    <Link className="btn btn--outline" to={`/jobb/${job.id}`}>
                       Läs mer
                     </Link>
                     <Link className="btn btn--primary" to="/login">
