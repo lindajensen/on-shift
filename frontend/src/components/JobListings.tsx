@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Clock } from "lucide-react";
+import { MapPin, Clock, ChevronRight } from "lucide-react";
 
 import "../styles/JobListings.css";
 
@@ -12,10 +12,16 @@ function JobListings() {
     <section className="job-listings">
       <div className="section__inner">
         <header className="job-listings__header">
-          <h2 className="job-listings__title">Lediga pass just nu</h2>
-          <p className="job-listings__subtitle">
-            Säkra ett pass innan det försvinner
-          </p>
+          <div className="job-listings__header-right">
+            <h2 className="job-listings__title">Lediga pass just nu</h2>
+            <p className="job-listings__subtitle">
+              Säkra ett pass innan det försvinner
+            </p>
+          </div>
+          <Link className="job-listings__see-all" to="/jobb">
+            Se alla pass
+            <ChevronRight size={16} />
+          </Link>
         </header>
 
         <ul className="job-list">
