@@ -5,7 +5,10 @@ interface LoadingSpinnerProps {
   subtitle?: string;
 }
 
-function LoadingSpinner({ title, subtitle }: LoadingSpinnerProps) {
+function LoadingSpinner({
+  title = "Laddar...",
+  subtitle,
+}: LoadingSpinnerProps) {
   return (
     <section className="loading-spinner">
       <div className="section__inner">
