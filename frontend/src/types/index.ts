@@ -15,10 +15,20 @@ export interface Job {
   startTime: string;
   endTime: string;
   compensation: number;
+  availableSlots: number;
   isUrgent: boolean;
   requiresExperience: boolean;
+  requirements: string[];
   shiftType: "dag" | "kväll" | "helg";
   description?: string;
   postedAt: string;
   tags: string[];
+}
+
+export interface Restaurant {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  jobsPosted: number;
 }

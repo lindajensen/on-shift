@@ -3,7 +3,7 @@ import { CircleAlert } from "lucide-react";
 import "../styles/ErrorMessage.css";
 
 interface ErrorMessageProps {
-  message: string;
+  message: string | null;
 }
 
 function ErrorMessage({ message }: ErrorMessageProps) {
