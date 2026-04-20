@@ -1,0 +1,29 @@
+.error-message .section__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 60vh;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+}
+
+.error-message__icon-container {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.error-message__icon {
+  stroke: var(--color-accent);
+}
+
+.error-message__title {
+  margin-bottom: 0.5rem;
+}

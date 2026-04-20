@@ -6,7 +6,7 @@ function Header() {
     <header className="header">
       <nav className="header__nav">
         <Link to="/" className="header__logo">
-          onShift
+          <span className="header__logo-accent">on</span>Shift
         </Link>
         <button className="header__login-btn btn btn--primary">Logga in</button>
       </nav>

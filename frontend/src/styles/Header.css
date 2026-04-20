@@ -17,3 +17,7 @@
   margin-bottom: 0;
   font-weight: 500;
 }
+
+.header__logo-accent {
+  color: var(--color-accent);
+}
