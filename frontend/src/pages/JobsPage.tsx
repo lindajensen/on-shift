@@ -143,51 +143,53 @@ function JobsPage() {
           <ul className="job-list">
             {filteredJobs.map((job) => (
               <li key={job.id} className="job-list__item">
-                <article className="job-card">
-                  <div className="job-card__header">
-                    <h3 className="job-card__role">{job.role}</h3>
-                    <span className="job-card__pay">
-                      {job.compensation} kr/h
-                    </span>
-                  </div>
-                  <p className="job-card__restaurant">{job.restaurantName}</p>
-
-                  <div className="job-card__meta">
-                    <div className="job-card__meta-item">
-                      <Clock size={14} />
-                      <p className="job-card__meta-text">
-                        {job.date} kl. {job.startTime} - {job.endTime}
-                      </p>
+                <Link to={`/jobb/${job.id}`}>
+                  <article className="job-card">
+                    <div className="job-card__header">
+                      <h3 className="job-card__role">{job.role}</h3>
+                      <span className="job-card__pay">
+                        {job.compensation} kr/h
+                      </span>
                     </div>
-                    <div className="job-card__meta-item">
-                      <MapPin size={14} />
-                      <p className="job-card__meta-text">{job.location}</p>
+                    <p className="job-card__restaurant">{job.restaurantName}</p>
+
+                    <div className="job-card__meta">
+                      <div className="job-card__meta-item">
+                        <Clock size={14} />
+                        <p className="job-card__meta-text">
+                          {job.date} kl. {job.startTime} - {job.endTime}
+                        </p>
+                      </div>
+                      <div className="job-card__meta-item">
+                        <MapPin size={14} />
+                        <p className="job-card__meta-text">{job.location}</p>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="divider"></div>
+                    <div className="divider"></div>
 
-                  <div className="job-card__footer-meta">
-                    <ul className="job-card__tags">
-                      {job.tags.map((tag) => (
-                        <li key={tag} className="badge badge--accent">
-                          {tag}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="job-card__footer-meta">
+                      <ul className="job-card__tags">
+                        {job.tags.map((tag) => (
+                          <li key={tag} className="badge badge--accent">
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
 
-                    <p className="job-card__published">{job.postedAt}</p>
-                  </div>
+                      <p className="job-card__published">{job.postedAt}</p>
+                    </div>
 
-                  <footer className="job-card__actions">
-                    <Link className="btn btn--outline" to={`/jobb/${job.id}`}>
-                      Läs mer
-                    </Link>
-                    <Link className="btn btn--primary" to="/login">
-                      Ansök
-                    </Link>
-                  </footer>
-                </article>
+                    {/* <footer className="job-card__actions">
+                      <Link className="btn btn--outline" to={`/jobb/${job.id}`}>
+                        Läs mer
+                      </Link>
+                      <Link className="btn btn--primary" to="/login">
+                        Ansök
+                      </Link>
+                    </footer> */}
+                  </article>
+                </Link>
               </li>
             ))}
           </ul>

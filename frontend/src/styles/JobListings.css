@@ -28,6 +28,14 @@
   padding: 1rem;
 }
 
+.job-list__item a:hover .job-card {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+
 .job-card__header {
   display: flex;
   align-items: center;
