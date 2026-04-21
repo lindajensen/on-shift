@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerEmployer, registerWorker } from "../api/auth";
 import { validateEmail, validatePassword } from "../utils/validation";
 import { RegisterValidationErrors } from "../types";
 import { User2, Utensils } from "lucide-react";
@@ -19,8 +20,17 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [errors, setErrors] = useState<RegisterValidationErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [errors, setErrors] = useState<RegisterValidationErrors>({});
+  const [serverError, setServerError] = useState("");
+
+  const navigate = useNavigate();
+
+  /**
+   * Validates the worker registration form fields and sets error messages if validation fails.
+   * @returns True if the form is valid and false if there are validation errors.
+   */
   function validateWorker() {
     const newErrors: { [key: string]: string } = {};
 
@@ -54,6 +64,10 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
     return Object.keys(newErrors).length === 0;
   }
 
+  /**
+   * Validates the employer registration form fields and sets error messages if validation fails.
+   * @returns True if the form is valid and false if there are validation errors.
+   */
   function validateEmployer() {
     const newErrors: { [key: string]: string } = {};
 
@@ -83,14 +97,36 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleRegister(e: React.FormEvent<HTMLFormElement>) {
+  /**
+   * Handles the form submission for both worker and employer registration.
+   * @param e -The form submission event.
+   * @returns void
+   */
+  async function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const isValid = role === "worker" ? validateWorker() : validateEmployer();
 
     if (!isValid) return;
 
-    console.log(firstName, lastName);
+    setIsSubmitting(true);
+
+    try {
+      if (role === "worker") {
+        await registerWorker({ firstName, lastName, email, password });
+
+        navigate("/arbetstagare/dashboard");
+      } else {
+        await registerEmployer({ restaurantName, email, password });
+
+        navigate("/arbetsgivare/dashboard");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setServerError("Något gick fel. Försök igen senare.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -341,9 +377,18 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
             </>
           )}
 
-          <button type="submit" className="btn btn--primary">
-            Skapa konto
+          <button
+            type="submit"
+            className="btn btn--primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <span className="submitting-spinner"></span>
+            ) : (
+              "Skapa konto"
+            )}
           </button>
+          {serverError && <span className="form-error">{serverError}</span>}
         </form>
 
         <div className="register-form__footer">
