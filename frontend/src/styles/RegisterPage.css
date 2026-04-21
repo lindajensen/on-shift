@@ -5,12 +5,12 @@
     gap: 2rem;
   }
 
-  .register-form,
-  .register-form__panel {
+  .auth-form,
+  .auth-panel {
     flex: 1;
   }
 
-  .register-form__panel {
+  .auth-panel {
     display: flex;
     flex-direction: column;
   }
