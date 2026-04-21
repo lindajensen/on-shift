@@ -212,7 +212,7 @@ input {
   background-color: transparent;
   font-family: var(--font-body);
   color: var(--color-text);
-  margin-bottom: 0.5rem;
+  /* margin-bottom: 0.8rem; */
 }
 
 input:focus {
@@ -238,6 +238,14 @@ input:focus {
 .badge--neutral {
   background-color: #e5e5e5;
   color: var(--color-text-muted);
+}
+
+/* Errors */
+.form-error {
+  font-size: 0.8rem;
+  color: var(--color-error);
+  /* margin-top: -10px;
+  margin-bottom: 10px; */
 }
 
 /* Misc */
