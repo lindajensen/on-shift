@@ -1,0 +1,17 @@
+@media (min-width: 768px) {
+  .login-page__inner {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 2rem;
+  }
+
+  .auth-form,
+  .auth-panel {
+    flex: 1;
+  }
+
+  .auth-panel {
+    display: flex;
+    flex-direction: column;
+  }
+}
