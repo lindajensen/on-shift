@@ -1,0 +1,17 @@
+@media (min-width: 768px) {
+  .register-page__inner {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 2rem;
+  }
+
+  .register-form,
+  .register-form__panel {
+    flex: 1;
+  }
+
+  .register-form__panel {
+    display: flex;
+    flex-direction: column;
+  }
+}
