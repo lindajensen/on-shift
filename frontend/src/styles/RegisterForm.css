@@ -33,7 +33,6 @@
 .register-form__role-btn--active {
   border-color: var(--color-primary);
   background-color: var(--color-primary-light);
-  /* border-color: var(--color-accent); */
 }
 
 .register-form__role-btn-title {
@@ -89,4 +88,9 @@
 
 .register-form__login-link {
   color: var(--color-accent);
+}
+
+.register-form__login-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
