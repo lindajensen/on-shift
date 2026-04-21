@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { registerEmployer, registerWorker } from "../api/auth";
 import { validateEmail, validatePassword } from "../utils/validation";
 import { RegisterValidationErrors } from "../types";
-import { User2, Utensils } from "lucide-react";
+import { User2, Utensils, Asterisk } from "lucide-react";
 
 import "../styles/RegisterForm.css";
 
@@ -178,6 +178,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                     htmlFor="worker-firstName"
                   >
                     Förnamn
+                    <span>
+                      <Asterisk size={14} />
+                    </span>
                   </label>
                   <input
                     className="register-form__input"
@@ -201,6 +204,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                     htmlFor="worker-lastName"
                   >
                     Efternamn
+                    <span>
+                      <Asterisk size={14} />
+                    </span>
                   </label>
                   <input
                     className="register-form__input"
@@ -222,6 +228,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
               <div className="register-form__field">
                 <label className="register-form__label" htmlFor="worker-email">
                   E-post
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -245,6 +254,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   htmlFor="worker-password"
                 >
                   Lösenord
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -268,6 +280,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   htmlFor="confirm-worker-password"
                 >
                   Upprepa lösenord
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -290,6 +305,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
               <div className="register-form__field">
                 <label className="register-form__label" htmlFor="employer-name">
                   Restaurangens namn
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -312,6 +330,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   htmlFor="employer-email"
                 >
                   E-post
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -335,6 +356,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   htmlFor="employer-password"
                 >
                   Lösenord
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
@@ -358,6 +382,9 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   htmlFor="confirm-worker-password"
                 >
                   Upprepa lösenord
+                  <span>
+                    <Asterisk size={14} />
+                  </span>
                 </label>
                 <input
                   className="register-form__input"
