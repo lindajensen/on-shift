@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { validateEmail, validatePassword } from "../utils/validation";
+import { RegisterValidationErrors } from "../types";
 import { User2, Utensils } from "lucide-react";
 
 import "../styles/RegisterForm.css";
@@ -12,17 +14,82 @@ interface RegisterFormProps {
 function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [workerEmail, setWorkerEmail] = useState("");
-  const [workerPassword, setWorkerPassword] = useState("");
-  const [confirmWorkerPassword, setConfirmWorkerPassword] = useState("");
-
   const [restaurantName, setRestaurantName] = useState("");
-  const [employerEmail, setEmployerEmail] = useState("");
-  const [employerPassword, setEmployerPassword] = useState("");
-  const [confirmEmployerPassword, setConfirmEmployerPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [errors, setErrors] = useState<RegisterValidationErrors>({});
+
+  function validateWorker() {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!firstName.trim()) {
+      newErrors.firstName = "Ange ett förnamn";
+    }
+
+    if (!lastName.trim()) {
+      newErrors.lastName = "Ange ett efternamn";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Ange en e-postadress";
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Ange en giltig e-postadress";
+    }
+
+    const passwordError = validatePassword(password);
+
+    if (passwordError) {
+      newErrors.password = passwordError;
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Vänligen upprepa lösenordet";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Lösenorden matchar inte";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
+  function validateEmployer() {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!restaurantName.trim()) {
+      newErrors.restaurantName = "Ange restaurangnamnet";
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Ange en e-postadress";
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Ange en giltig e-postadress";
+    }
+
+    const passwordError = validatePassword(password);
+
+    if (passwordError) {
+      newErrors.password = passwordError;
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Vänligen upprepa lösenordet";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Lösenorden matchar inte";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   function handleRegister(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    const isValid = role === "worker" ? validateWorker() : validateEmployer();
+
+    if (!isValid) return;
+
     console.log(firstName, lastName);
   }
 
@@ -37,7 +104,10 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
         </header>
         <div className="register-form__actions">
           <button
-            onClick={() => onRoleChange("worker")}
+            onClick={() => {
+              onRoleChange("worker");
+              setErrors({});
+            }}
             className={`register-form__role-btn ${role === "worker" ? "register-form__role-btn--active" : ""}`}
           >
             <User2 size={24} />
@@ -48,7 +118,10 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
           </button>
 
           <button
-            onClick={() => onRoleChange("employer")}
+            onClick={() => {
+              onRoleChange("employer");
+              setErrors({});
+            }}
             className={`register-form__role-btn ${role === "employer" ? "register-form__role-btn--active" : ""}`}
           >
             <Utensils size={24} />
@@ -76,8 +149,14 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                     name="firstName"
                     type="text"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => {
+                      setFirstName(e.target.value);
+                      setErrors((prev) => ({ ...prev, firstName: "" }));
+                    }}
                   />
+                  {errors.firstName && (
+                    <span className="form-error">{errors.firstName}</span>
+                  )}
                 </div>
 
                 <div className="register-form__field">
@@ -93,8 +172,14 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                     name="lastName"
                     type="text"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => {
+                      setLastName(e.target.value);
+                      setErrors((prev) => ({ ...prev, lastName: "" }));
+                    }}
                   />
+                  {errors.lastName && (
+                    <span className="form-error">{errors.lastName}</span>
+                  )}
                 </div>
               </div>
 
@@ -107,9 +192,15 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="email"
                   name="email"
                   id="worker-email"
-                  value={workerEmail}
-                  onChange={(e) => setWorkerEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErrors((prev) => ({ ...prev, email: "" }));
+                  }}
                 />
+                {errors.email && (
+                  <span className="form-error">{errors.email}</span>
+                )}
               </div>
 
               <div className="register-form__field">
@@ -124,9 +215,15 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="password"
                   name="password"
                   id="worker-password"
-                  value={workerPassword}
-                  onChange={(e) => setWorkerPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, password: "" }));
+                  }}
                 />
+                {errors.password && (
+                  <span className="form-error">{errors.password}</span>
+                )}
               </div>
 
               <div className="register-form__field">
@@ -141,9 +238,15 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="password"
                   name="confirm-password"
                   id="confirm-worker-password"
-                  value={confirmWorkerPassword}
-                  onChange={(e) => setConfirmWorkerPassword(e.target.value)}
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+                  }}
                 />
+                {errors.confirmPassword && (
+                  <span className="form-error">{errors.confirmPassword}</span>
+                )}
               </div>
             </>
           ) : (
@@ -157,8 +260,14 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   id="employer-name"
                   type="text"
                   value={restaurantName}
-                  onChange={(e) => setRestaurantName(e.target.value)}
+                  onChange={(e) => {
+                    setRestaurantName(e.target.value);
+                    setErrors((prev) => ({ ...prev, restaurantName: "" }));
+                  }}
                 />
+                {errors.restaurantName && (
+                  <span className="form-error">{errors.restaurantName}</span>
+                )}
               </div>
 
               <div className="register-form__field">
@@ -173,9 +282,15 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="email"
                   name="email"
                   id="employer-email"
-                  value={employerEmail}
-                  onChange={(e) => setEmployerEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErrors((prev) => ({ ...prev, email: "" }));
+                  }}
                 />
+                {errors.email && (
+                  <span className="form-error">{errors.email}</span>
+                )}
               </div>
 
               <div className="register-form__field">
@@ -190,10 +305,17 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="password"
                   name="password"
                   id="employer-password"
-                  value={employerPassword}
-                  onChange={(e) => setEmployerPassword(e.target.value)}
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, password: "" }));
+                  }}
                 />
+                {errors.password && (
+                  <span className="form-error">{errors.password}</span>
+                )}
               </div>
+
               <div className="register-form__field">
                 <label
                   className="register-form__label"
@@ -206,9 +328,15 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   type="password"
                   name="confirm-password"
                   id="confirm-employer-password"
-                  value={confirmEmployerPassword}
-                  onChange={(e) => setConfirmEmployerPassword(e.target.value)}
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, confirmPassword: "" }));
+                  }}
                 />
+                {errors.confirmPassword && (
+                  <span className="form-error">{errors.confirmPassword}</span>
+                )}
               </div>
             </>
           )}
