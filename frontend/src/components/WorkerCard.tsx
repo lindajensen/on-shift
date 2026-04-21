@@ -55,7 +55,7 @@ function WorkerCard({ worker, isAnonymous = false }: WorkerCardProps) {
       </div>
 
       {isAnonymous ? (
-        <Link className="btn btn--primary btn--full" to="/login">
+        <Link className="btn btn--primary btn--full" to="/logga-in">
           Logga in för att kontakta
         </Link>
       ) : (

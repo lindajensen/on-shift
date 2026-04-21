@@ -6,7 +6,7 @@ function LoginNudge() {
   return (
     <div className="login-nudge">
       <p className="login-nudge__text">Logga in för att ansöka</p>
-      <Link className="btn btn--primary" to="/login">
+      <Link className="btn btn--primary" to="/logga-in">
         Logga in
       </Link>
     </div>
