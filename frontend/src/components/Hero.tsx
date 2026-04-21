@@ -36,10 +36,10 @@ function Hero() {
         </p>
 
         <div className="hero__actions">
-          <Link className="btn btn--primary" to="/register/worker">
+          <Link className="btn btn--primary" to="/registrera?roll=arbetstagare">
             Söker jobb
           </Link>
-          <Link className="btn btn--outline" to="/register/employer">
+          <Link className="btn btn--outline" to="/registrera?roll=arbetsgivare">
             Söker personal
           </Link>
         </div>
