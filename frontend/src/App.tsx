@@ -7,8 +7,7 @@ import {
 
 import MainLayout from "./layouts/MainLayout";
 import LandingPage from "./pages/LandingPage";
-import RegisterWorkerPage from "./pages/RegisterWorkerPage";
-import RegisterEmployerPage from "./pages/RegisterEmployerPage";
+import RegisterPage from "./pages/RegisterPage";
 import JobsPage from "./pages/JobsPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 
@@ -19,14 +18,7 @@ const router = createBrowserRouter(
     <>
       <Route element={<MainLayout />}>
         <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/registrera/arbetstagare"
-          element={<RegisterWorkerPage />}
-        />
-        <Route
-          path="/registrera/arbetsgivare"
-          element={<RegisterEmployerPage />}
-        />
+        <Route path="/registrera" element={<RegisterPage />} />
         <Route path="/jobb" element={<JobsPage />} />
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
       </Route>

@@ -1,0 +1,97 @@
+.register-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.register-form__subtitle {
+  color: var(--color-text-muted);
+}
+
+.register-form__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.register-form__role-btn {
+  height: 120px;
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  padding: 1rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.register-form__role-btn--active {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.register-form__role-btn-title {
+  margin-block: 0.3rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.register-form__role-btn-subtitle {
+  color: var(--color-text-muted);
+}
+
+.register-form__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+.register-form .btn--primary {
+  margin-block: 1rem;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.divider span {
+  padding: 0 12px;
+  background: var(--color-bg);
+}
+
+.register-form__login-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.register-form__login-link {
+  color: var(--color-accent);
+}
+
+.register-form__login-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

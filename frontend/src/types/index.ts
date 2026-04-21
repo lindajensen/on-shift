@@ -32,3 +32,12 @@ export interface Restaurant {
   rating: number;
   jobsPosted: number;
 }
+
+export interface RegisterValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  restaurantName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
