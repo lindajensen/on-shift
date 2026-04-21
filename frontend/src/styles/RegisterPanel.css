@@ -1,0 +1,43 @@
+.register-form__panel {
+  display: none;
+}
+
+.register-form__panel-title {
+  margin-bottom: 1rem;
+}
+
+.register-form__panel-title span {
+  display: block;
+  color: var(--color-accent);
+}
+
+.register-form__panel-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.register-form__panel-feature {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.register-form__panel-icon {
+  margin-top: 4px;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.register-form__panel-feature--title {
+  font-size: 1.2rem;
+}
+
+.register-form__panel-feature--description {
+  color: var(--color-text-muted);
+}
