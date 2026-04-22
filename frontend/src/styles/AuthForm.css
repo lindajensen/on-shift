@@ -5,6 +5,7 @@
 }
 
 .auth-form__subtitle {
+  margin-top: 0.2rem;
   color: var(--color-text-muted);
 }
 

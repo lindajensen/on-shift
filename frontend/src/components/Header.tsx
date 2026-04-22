@@ -1,16 +1,37 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Modal from "./modals/Modal";
+import LoginModal from "./modals/LoginModal";
+
 import "../styles/Header.css";
 
 function Header() {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
   return (
-    <header className="header">
-      <nav className="header__nav">
-        <Link to="/" className="header__logo">
-          <span className="header__logo-accent">on</span>Shift
-        </Link>
-        <button className="header__login-btn btn btn--primary">Logga in</button>
-      </nav>
-    </header>
+    <>
+      <header className="header">
+        <nav className="header__nav">
+          <Link to="/" className="header__logo">
+            <span className="header__logo-accent">on</span>Shift
+          </Link>
+          <button
+            className="header__login-btn btn btn--primary"
+            onClick={() => setIsLoginModalOpen(true)}
+          >
+            Logga in
+          </button>
+        </nav>
+      </header>
+
+      <Modal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        showCloseButton={true}
+      >
+        <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+      </Modal>
+    </>
   );
 }
 
