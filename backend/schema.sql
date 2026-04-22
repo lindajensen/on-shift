@@ -13,7 +13,7 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('worker', 'employer'))
+  role TEXT NOT NULL CHECK (role IN ('worker', 'employer')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE application (
 
   UNIQUE (job_id, worker_id),
 
-  FOREIGN KEY (job_id) REFERENCES job(id) ON DELETE CASCADE
+  FOREIGN KEY (job_id) REFERENCES job(id) ON DELETE CASCADE,
   FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
 );
 
