@@ -1,7 +1,5 @@
 import LoginForm from "../LoginForm";
 
-import "../../styles/modals/LoginModal.css";
-
 interface LoginModalProps {
   onClose?: () => void;
 }
