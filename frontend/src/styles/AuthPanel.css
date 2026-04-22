@@ -1,28 +1,28 @@
-.register-form__panel {
+.auth-panel {
   display: none;
 }
 
-.register-form__panel-title {
+.auth-panel-title {
   margin-bottom: 1rem;
 }
 
-.register-form__panel-title span {
+.auth-panel-title span {
   display: block;
   color: var(--color-accent);
 }
 
-.register-form__panel-features {
+.auth-panel-features {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
-.register-form__panel-feature {
+.auth-panel-feature {
   display: flex;
   gap: 0.8rem;
 }
 
-.register-form__panel-icon {
+.auth-panel-icon {
   margin-top: 4px;
   width: 2.5rem;
   height: 2.5rem;
@@ -34,10 +34,10 @@
   flex-shrink: 0;
 }
 
-.register-form__panel-feature--title {
+.auth-panel-feature--title {
   font-size: 1.2rem;
 }
 
-.register-form__panel-feature--description {
+.auth-panel-feature--description {
   color: var(--color-text-muted);
 }

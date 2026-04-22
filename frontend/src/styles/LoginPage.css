@@ -1,5 +1,5 @@
 @media (min-width: 768px) {
-  .register-page__inner {
+  .login-page__inner {
     display: flex;
     flex-direction: row-reverse;
     gap: 2rem;

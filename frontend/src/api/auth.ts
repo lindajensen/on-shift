@@ -6,6 +6,7 @@ export async function registerWorker(data: {
   password: string;
 }) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return { success: true };
 }
 
@@ -16,5 +17,13 @@ export async function registerEmployer(data: {
   password: string;
 }) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  return { success: true };
+}
+
+//TODO: Replace with real API calls when backend is ready
+export async function loginUser(data: { email: string; password: string }) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   return { success: true };
 }

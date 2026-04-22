@@ -41,3 +41,8 @@ export interface RegisterValidationErrors {
   password?: string;
   confirmPassword?: string;
 }
+
+export interface LoginValidationErrors {
+  email?: string;
+  password?: string;
+}
