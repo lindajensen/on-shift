@@ -6,7 +6,11 @@ import { LoginValidationErrors } from "../types";
 
 import "../styles/AuthForm.css";
 
-function LoginForm() {
+interface LoginFormProps {
+  onClose?: () => void;
+}
+
+function LoginForm({ onClose }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -64,7 +68,7 @@ function LoginForm() {
     <div className="auth-form">
       <div className="auth-form__container">
         <header className="auth-form__header">
-          <h1 className="auth-form__title">Logga in</h1>
+          <h1 className="auth-form__title">Välkommen</h1>
           <p className="auth-form__subtitle">Logga in på ditt konto</p>
         </header>
       </div>
@@ -124,7 +128,11 @@ function LoginForm() {
         </div>
         <p className="auth-form__login-text">
           Inget konto?{" "}
-          <Link className="auth-form__login-link" to="/registrera">
+          <Link
+            className="auth-form__login-link"
+            to="/registrera"
+            onClick={onClose}
+          >
             Registrera dig
           </Link>
         </p>
