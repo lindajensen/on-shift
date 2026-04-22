@@ -111,15 +111,16 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
 
     setIsSubmitting(true);
 
+    //? Do I want auto-login or redirect to login page?
     try {
       if (role === "worker") {
         await registerWorker({ firstName, lastName, email, password });
 
-        navigate("/arbetstagare/dashboard");
+        navigate("/logga-in");
       } else {
         await registerEmployer({ restaurantName, email, password });
 
-        navigate("/arbetsgivare/dashboard");
+        navigate("/logga-in");
       }
     } catch (error) {
       console.error("Registration error:", error);
@@ -136,7 +137,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
           <h1 className="auth-form__title">Skapa konto</h1>
           <p className="auth-form__subtitle">Kom igång på under 2 minuter</p>
         </header>
-        
+
         <div className="auth-form__actions">
           <button
             onClick={() => {
