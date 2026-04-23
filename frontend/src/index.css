@@ -240,9 +240,15 @@ input:focus {
 }
 
 /* Errors */
-.form-error {
+.form-error,
+.server-error {
   font-size: 0.8rem;
   color: var(--color-error);
+}
+
+.server-error {
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 /* Misc */

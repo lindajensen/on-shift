@@ -119,7 +119,7 @@ function LoginForm({ onClose }: LoginFormProps) {
             "Logga in"
           )}
         </button>
-        {serverError && <span className="form-error">{serverError}</span>}
+        {serverError && <span className="server-error">{serverError}</span>}
       </form>
 
       <div className="auth-form__footer">
