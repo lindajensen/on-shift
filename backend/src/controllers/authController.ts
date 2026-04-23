@@ -3,42 +3,59 @@ import client from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export async function registerUser(request: Request, response: Response) {
+//! Måste lägga till return types och JSDocs
+
+/**
+ * Reegisters a new user. Validates the input, checks for existing users, hashes the password and saves the user in the database. Also creates a profile based on the user's role.
+ * @param request
+ * @param response
+ * @returns A JSON response with a message indicating the result of the registration process.
+ */
+export async function registerUser(
+  request: Request,
+  response: Response,
+): Promise<void> {
   const { email, password, role, firstName, lastName, restaurantName } =
     request.body;
 
   try {
     // Validate email, password and role
     if (!email || !password) {
-      return response
-        .status(400)
-        .json({ message: "Du måste fylla i alla fält" });
+      response.status(400).json({ message: "Du måste fylla i alla fält" });
+      return;
     }
 
     if (!role || !["worker", "employer"].includes(role)) {
-      return response.status(400).json({ message: "Ogiltig roll" });
+      response.status(400).json({ message: "Ogiltig roll" });
+      return;
     }
 
     if (password.length < 8) {
-      return response
+      response
         .status(400)
         .json({ message: "Lösenordet måste vara minst 8 tecken" });
+
+      return;
     }
     if (!/[A-Z]/.test(password)) {
-      return response
+      response
         .status(400)
         .json({ message: "Lösenordet måste innehålla minst en stor bokstav" });
+      return;
     }
+
     if (!/[a-z]/.test(password)) {
-      return response
+      response
         .status(400)
         .json({ message: "Lösenordet måste innehålla minst en liten bokstav" });
+      return;
     }
 
     if (!/[0-9]/.test(password)) {
-      return response
+      response
         .status(400)
         .json({ message: "Lösenordet måste innehålla minst en siffra" });
+      return;
     }
 
     // Check existing user
@@ -50,9 +67,11 @@ export async function registerUser(request: Request, response: Response) {
     const existingUser = existingUserResult.rows[0];
 
     if (existingUser) {
-      return response.status(400).json({
+      response.status(400).json({
         message: "En användare med den här e-postadressen finns redan",
       });
+
+      return;
     }
 
     // Hash password
@@ -87,7 +106,16 @@ export async function registerUser(request: Request, response: Response) {
   }
 }
 
-export async function loginUser(request: Request, response: Response) {
+/**
+ * Logs in a user. Validates the input, checks for the user in the database, compares the password and generates a JWT if the credentials are correct.
+ * @param request
+ * @param response
+ * @returns A JSON response with a message indicating the result of the login process, a JWT token if the login was successful and the user's role.
+ */
+export async function loginUser(
+  request: Request,
+  response: Response,
+): Promise<void> {
   const { email, password } = request.body;
 
   try {
@@ -98,18 +126,18 @@ export async function loginUser(request: Request, response: Response) {
     const user = result.rows[0];
 
     if (!user) {
-      return response
-        .status(400)
-        .json({ message: "Fel e-postadress eller lösenord" });
+      response.status(400).json({ message: "Fel e-postadress eller lösenord" });
+
+      return;
     }
 
     // Compare password
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return response
-        .status(400)
-        .json({ message: "Fel e-postadress eller lösenord" });
+      response.status(400).json({ message: "Fel e-postadress eller lösenord" });
+
+      return;
     }
 
     // Generate JWT
