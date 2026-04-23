@@ -157,7 +157,11 @@ export async function loginUser(
       { expiresIn: "1h" },
     );
 
-    response.status(200).json({ message: "Inloggad", token, role: user.role });
+    response.status(200).json({
+      message: "Inloggad",
+      token,
+      user: { id: user.id, email: user.email, role: user.role },
+    });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
