@@ -114,11 +114,11 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
     //? Do I want auto-login or redirect to login page?
     try {
       if (role === "worker") {
-        await registerWorker({ firstName, lastName, email, password });
+        await registerWorker({ firstName, lastName, email, password, role });
 
         navigate("/logga-in");
       } else {
-        await registerEmployer({ restaurantName, email, password });
+        await registerEmployer({ restaurantName, email, password, role });
 
         navigate("/logga-in");
       }
