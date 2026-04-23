@@ -401,7 +401,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
               "Skapa konto"
             )}
           </button>
-          {serverError && <span className="form-error">{serverError}</span>}
+          {serverError && <span className="server-error">{serverError}</span>}
         </form>
 
         <div className="auth-form__footer">
