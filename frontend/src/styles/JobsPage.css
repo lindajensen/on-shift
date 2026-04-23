@@ -38,6 +38,7 @@
   scrollbar-width: none;
   overflow-x: auto;
   padding-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .jobs__filters::-webkit-scrollbar {

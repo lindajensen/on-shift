@@ -12,6 +12,10 @@ import LoginPage from "./pages/LoginPage";
 import JobsPage from "./pages/JobsPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 
+import Dashboard from "./pages/Dashboard";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import "./App.css";
 
 const router = createBrowserRouter(
@@ -25,8 +29,10 @@ const router = createBrowserRouter(
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
       </Route>
 
-      {/* WorkerLayout */}
-      {/* EmployerLayout */}
+      {/* WorkerLayout and EmployerLayout */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
     </>,
   ),
 );
