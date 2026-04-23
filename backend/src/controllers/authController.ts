@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import client from "../db";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function registerUser(request: Request, response: Response) {
   const { email, password, role, firstName, lastName, restaurantName } =
@@ -81,6 +82,54 @@ export async function registerUser(request: Request, response: Response) {
     }
 
     response.status(201).json({ message: "Konto skapat" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+export async function loginUser(request: Request, response: Response) {
+  const { email, password } = request.body;
+
+  try {
+    const result = await client.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return response
+        .status(400)
+        .json({ message: "Fel e-postadress eller lösenord" });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!isMatch) {
+      return response
+        .status(400)
+        .json({ message: "Fel e-postadress eller lösenord" });
+    }
+
+    // Generate JWT
+    const jwtSecret = process.env.JWT_SECRET;
+
+    if (!jwtSecret) {
+      throw new Error("JWT_SECRET is not defined");
+    }
+
+    const token = jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+      },
+      jwtSecret,
+      { expiresIn: "1h" },
+    );
+
+    response.status(200).json({ message: "Inloggad", token, role: user.role });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
