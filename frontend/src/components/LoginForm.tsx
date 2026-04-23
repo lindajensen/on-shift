@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth";
+import { useAuth } from "../context/useAuth";
 import { validateEmail } from "../utils/validation";
 import { LoginValidationErrors } from "../types";
 
@@ -20,6 +21,8 @@ function LoginForm({ onClose }: LoginFormProps) {
   const [serverError, setServerError] = useState("");
 
   const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   function validateUser() {
     const newErrors: { [key: string]: string } = {};
@@ -53,7 +56,9 @@ function LoginForm({ onClose }: LoginFormProps) {
     setIsSubmitting(true);
 
     try {
-      await loginUser({ email, password });
+      const result = await loginUser({ email, password });
+
+      login(result.token, result.user);
 
       navigate("/dashboard");
     } catch (error) {
