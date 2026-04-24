@@ -93,3 +93,13 @@ export interface ApplicationPreview {
   end_time: string;
   status: string;
 }
+
+export interface Review {
+  id: number;
+  rating: number;
+  comment: string;
+  created_at: string;
+  reviewer_name: string;
+  role: string;
+  job_date: string;
+}
