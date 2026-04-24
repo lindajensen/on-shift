@@ -25,6 +25,17 @@ export interface Job {
   tags: string[];
 }
 
+export interface JobPreview {
+  id: number;
+  role: string;
+  restaurantName: string;
+  location: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  compensation: number;
+}
+
 export interface Restaurant {
   id: number;
   name: string;
@@ -74,6 +85,7 @@ export interface WorkerProfile {
 }
 
 export interface ApplicationPreview {
+  id: number;
   restaurant_name: string;
   role: string;
   job_date: string;
