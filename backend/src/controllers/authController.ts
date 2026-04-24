@@ -119,9 +119,17 @@ export async function loginUser(
   const { email, password } = request.body;
 
   try {
-    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
-      email,
-    ]);
+    const result = await pool.query(
+      `
+      SELECT u.*,
+        COALESCE(wp.name, ep.name) AS name
+      FROM users u
+      LEFT JOIN worker_profile wp ON u.id = wp.user_id
+      LEFT JOIN employer_profile ep ON u.id = ep.user_id
+      WHERE u.email = $1
+      `,
+      [email],
+    );
 
     const user = result.rows[0];
 
@@ -152,6 +160,7 @@ export async function loginUser(
         userId: user.id,
         email: user.email,
         role: user.role,
+        name: user.name,
       },
       jwtSecret,
       { expiresIn: "7d" },
@@ -160,7 +169,12 @@ export async function loginUser(
     response.status(200).json({
       message: "Inloggad",
       token,
-      user: { id: user.id, email: user.email, role: user.role },
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+      },
     });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
