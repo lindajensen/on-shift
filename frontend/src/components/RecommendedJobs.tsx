@@ -17,8 +17,6 @@ function RecommendedJobs() {
   useEffect(() => {
     async function fetchRecommendedJobs() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-
         const data = await getRecommendedJobs();
         setJobs(data);
       } catch (error) {
