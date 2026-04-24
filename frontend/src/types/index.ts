@@ -61,3 +61,14 @@ export interface AuthUser {
   email: string;
   role: string;
 }
+
+export interface WorkerProfile {
+  id: number;
+  name: string;
+  bio: string;
+  experienceLevel: string;
+  education: string;
+  email: string;
+  phone: string;
+  is_available: boolean;
+}
