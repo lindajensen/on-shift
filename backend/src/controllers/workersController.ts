@@ -31,6 +31,12 @@ export async function toggleAvailability(
   response.status(200).json({ message: "Tillgänglighet uppdaterad" });
 }
 
+/**
+ * Fetches the profile information of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the worker's profile information.
+ */
 export async function getWorkerProfile(request: Request, response: Response) {
   const user = request.user;
 
@@ -148,6 +154,52 @@ export async function getRecommendedJobs(
     );
 
     response.status(200).json(recommendedJobs.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches the reviews of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of the worker's reviews, including the reviewer's name, rating, comment, and creation date.
+ */
+export async function getWorkerReviews(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const reviews = await pool.query(
+      `
+      SELECT
+        r.id,
+        r.rating,
+        r.comment,
+        r.created_at,
+        ep.name AS reviewer_name,
+        j.role,
+        j.job_date
+      FROM review r
+      JOIN employer_profile ep ON r.reviewer_id = ep.user_id
+      JOIN job j ON r.job_id = j.id
+      WHERE r.reviewee_id = $1
+      ORDER BY r.created_at DESC
+    `,
+      [userId],
+    );
+
+    response.status(200).json(reviews.rows);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
