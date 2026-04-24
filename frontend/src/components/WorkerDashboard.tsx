@@ -8,8 +8,6 @@ import LatestReview from "./LatestReview";
 import { getWorkerProfile } from "../api/worker";
 import { WorkerProfile } from "../types";
 
-import "../styles/WorkerDashboard.css";
-
 function WorkerDashboard() {
   const [workerProfile, setWorkerProfile] = useState<WorkerProfile | null>(
     null,
