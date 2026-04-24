@@ -1,9 +1,8 @@
+/// <reference path="../types/express.d.ts" />
 import { Request, Response } from "express";
 import client from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-//! Måste lägga till return types och JSDocs
 
 /**
  * Reegisters a new user. Validates the input, checks for existing users, hashes the password and saves the user in the database. Also creates a profile based on the user's role.
