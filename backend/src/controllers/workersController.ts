@@ -2,12 +2,23 @@
 import { Request, Response } from "express";
 import pool from "../db";
 
-export async function toggleAvailability(request: Request, response: Response) {
+/**
+ * Toggles the availability status of the logged in worker.
+ * @param request - The request object containing the new availability status in the body.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function toggleAvailability(
+  request: Request,
+  response: Response,
+): Promise<void> {
   const user = request.user;
   const { isAvailable } = request.body;
 
   if (!user) {
-    return response.status(401).json({ message: "Åtkomst nekad" });
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
   }
 
   const userId = user.userId;
@@ -41,14 +52,22 @@ export async function getWorkerProfile(request: Request, response: Response) {
   }
 }
 
+/**
+ * Fetches the applications of the currently logged in worker.
+ * @param request
+ * @param response
+ * @returns A JSON array of the worker's applications.
+ */
 export async function getWorkerApplications(
   request: Request,
   response: Response,
-) {
+): Promise<void> {
   const user = request.user;
 
   if (!user) {
-    return response.status(401).json({ message: "Åtkomst nekad" });
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
   }
 
   const userId = user.userId;
@@ -57,6 +76,7 @@ export async function getWorkerApplications(
     const applications = await pool.query(
       `
       SELECT
+        a.id,
         a.status,
         j.role,
         j.job_date,
@@ -74,6 +94,60 @@ export async function getWorkerApplications(
     );
 
     response.status(200).json(applications.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches recommended jobs for the currently logged in worker based on their roles and past applications.
+ * @param request
+ * @param response
+ * @returns A JSON array of recommended jobs for the worker.
+ */
+export async function getRecommendedJobs(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const recommendedJobs = await pool.query(
+      `
+      SELECT
+        j.id,
+        j.role,
+        j.job_date,
+        j.start_time,
+        j.end_time,
+        j.compensation,
+        ep.name AS restaurant_name,
+        ep.address AS location
+      FROM job j
+      JOIN employer_profile ep ON j.employer_id = ep.id
+      WHERE j.role IN (
+        SELECT role FROM worker_role
+        WHERE worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
+      )
+      AND j.job_date >= CURRENT_DATE
+      AND j.id NOT IN (
+        SELECT job_id FROM application
+        WHERE worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
+      )
+      ORDER BY j.job_date ASC
+      `,
+      [userId],
+    );
+
+    response.status(200).json(recommendedJobs.rows);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
