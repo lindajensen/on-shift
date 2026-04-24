@@ -72,3 +72,12 @@ export interface WorkerProfile {
   phone: string;
   is_available: boolean;
 }
+
+export interface ApplicationPreview {
+  restaurant_name: string;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+}
