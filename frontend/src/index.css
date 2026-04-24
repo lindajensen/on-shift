@@ -239,6 +239,21 @@ input:focus {
   color: var(--color-text-muted);
 }
 
+.badge--hired {
+  background-color: #e8f0ee;
+  color: #1a3d34;
+}
+
+.badge--pending {
+  background-color: #fff4ed;
+  color: #c45c00;
+}
+
+.badge--rejected {
+  background-color: #fce8e8;
+  color: #c62828;
+}
+
 /* Errors */
 .form-error,
 .server-error {
