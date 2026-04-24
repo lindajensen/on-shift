@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
+import AuthLayout from "./layouts/AuthLayout";
+
 import LandingPage from "./pages/LandingPage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -30,8 +32,10 @@ const router = createBrowserRouter(
       </Route>
 
       {/* WorkerLayout and EmployerLayout */}
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+      <Route element={<AuthLayout />}>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Route>
     </>,
   ),
