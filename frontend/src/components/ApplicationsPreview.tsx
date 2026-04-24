@@ -9,6 +9,7 @@ import { ChevronRight } from "lucide-react";
 // import ErrorMessage from "./ErrorMessage";
 
 import "../styles/ApplicationsPreview.css";
+import { capitalize } from "../utils/text";
 
 function ApplicationsPreview() {
   const [applications, setApplications] = useState<ApplicationPreview[]>([]);
@@ -21,8 +22,6 @@ function ApplicationsPreview() {
       try {
         const data = await getAllApplications();
         setApplications(data);
-
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta ansökningar", error);
       } finally {
@@ -31,6 +30,8 @@ function ApplicationsPreview() {
     }
     fetchApplications();
   }, []);
+
+  //TODO: Implement error state
 
   return (
     <section className="applications-preview">
@@ -45,7 +46,7 @@ function ApplicationsPreview() {
       {isLoading && (
         <div className="applications-list">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="application-skeleton" />
+            <div key={i} className="application-skeleton skeleton" />
           ))}
         </div>
       )}
@@ -53,7 +54,7 @@ function ApplicationsPreview() {
       {!isLoading && (
         <ul className="applications-preview__list">
           {applications.slice(0, 3).map((application) => (
-            <li className="applications-preview__item">
+            <li key={application.id} className="applications-preview__item">
               <article className="applications-preview__card">
                 {/* <div className="applications-preview__avatar">RV</div> */}
                 <div className="applications-preview__info">
@@ -61,7 +62,8 @@ function ApplicationsPreview() {
                     {application.restaurant_name}
                   </h3>
                   <p className="applications-preview__meta">
-                    {application.role} · {formatDate(application.job_date)} kl.{" "}
+                    {capitalize(application.role)} ·{" "}
+                    {formatDate(application.job_date)} kl.{" "}
                     {formatTime(application.start_time)} -{" "}
                     {formatTime(application.end_time)}
                   </p>
