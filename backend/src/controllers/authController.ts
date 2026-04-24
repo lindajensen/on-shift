@@ -1,9 +1,9 @@
+/// <reference path="../types/express.d.ts" />
 import { Request, Response } from "express";
-import client from "../db";
+// import client from "../db";
+import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-//! Måste lägga till return types och JSDocs
 
 /**
  * Reegisters a new user. Validates the input, checks for existing users, hashes the password and saves the user in the database. Also creates a profile based on the user's role.
@@ -59,7 +59,7 @@ export async function registerUser(
     }
 
     // Check existing user
-    const existingUserResult = await client.query(
+    const existingUserResult = await pool.query(
       "SELECT * FROM users WHERE email = $1",
       [email],
     );
@@ -78,7 +78,7 @@ export async function registerUser(
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Save in database
-    const newUser = await client.query(
+    const newUser = await pool.query(
       "INSERT INTO users (email, password_hash, role) VALUES ($1, $2, $3) RETURNING id",
       [email, hashedPassword, role],
     );
@@ -89,12 +89,12 @@ export async function registerUser(
     if (role === "worker") {
       const name = `${firstName} ${lastName}`;
 
-      await client.query(
+      await pool.query(
         "INSERT INTO worker_profile (user_id, name) VALUES ($1, $2)",
         [userId, name],
       );
     } else {
-      await client.query(
+      await pool.query(
         "INSERT INTO employer_profile (user_id, name) VALUES ($1, $2)",
         [userId, restaurantName],
       );
@@ -119,7 +119,7 @@ export async function loginUser(
   const { email, password } = request.body;
 
   try {
-    const result = await client.query("SELECT * FROM users WHERE email = $1", [
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
 
@@ -154,7 +154,7 @@ export async function loginUser(
         role: user.role,
       },
       jwtSecret,
-      { expiresIn: "1h" },
+      { expiresIn: "7d" },
     );
 
     response.status(200).json({

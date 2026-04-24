@@ -1,0 +1,62 @@
+.latest-review {
+  padding: 1.2rem 0;
+}
+
+.latest-review__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.latest-review__link {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* .latest-review__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+} */
+
+.latest-review__card {
+  border: 2px solid var(--color-border);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.latest-review__card-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+.latest-review__card-employer {
+  font-size: 1.2rem;
+}
+
+.latest-review__card-date {
+  color: var(--color-text-muted);
+}
+
+.latest-review__card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.latest-review__card-rating-icon {
+  stroke: #f5a623;
+  fill: #f5a623;
+}
+
+.latest-review__card-comment {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.latest-review__skeleton {
+  height: 120px;
+}

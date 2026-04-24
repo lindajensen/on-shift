@@ -35,7 +35,7 @@ function JobDetailsPage() {
         );
         setRestaurant(restaurantData);
       } catch (error) {
-        console.error("Failed to fetch job details", error);
+        console.error("Kunde inte hämta jobbinformation", error);
         setError("Inget jobb hittades");
       } finally {
         setIsLoading(false);

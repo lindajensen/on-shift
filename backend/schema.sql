@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS employer_profile CASCADE;
 DROP TABLE IF EXISTS worker_profile CASCADE;
+DROP TABLE IF EXISTS worker_role CASCADE;
 DROP TABLE IF EXISTS job CASCADE;
 DROP TABLE IF EXISTS availability CASCADE;
 DROP TABLE IF EXISTS availability CASCADE;
@@ -34,13 +35,20 @@ CREATE TABLE worker_profile (
   user_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   bio TEXT,
-  experience_level TEXT CHECK (experience_level IN ('beginner', 'junior', 'experienced', 'senior')),
   education TEXT,
   email TEXT,
   phone TEXT,
   is_available BOOLEAN DEFAULT FALSE,
 
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE worker_role (
+  id SERIAL PRIMARY KEY,
+  worker_id INTEGER NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('servitör', 'kock', 'bartender', 'diskare', 'runner', 'servis extra')),
+  experience_level TEXT CHECK (experience_level IN ('beginner', 'junior', 'experienced', 'senior')),
+  FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
 );
 
 CREATE TABLE job (

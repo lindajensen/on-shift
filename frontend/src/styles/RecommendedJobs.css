@@ -1,0 +1,81 @@
+.recommended-jobs {
+  padding: 1.2rem 0;
+}
+
+.recommended-jobs__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.recommended-jobs__link {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.recommended-jobs__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.recommended-jobs__list {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.recommended-jobs__list::-webkit-scrollbar {
+  display: none;
+}
+
+.recommended-jobs__card {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 1rem;
+  border-radius: var(--radius-lg);
+  min-width: 260px;
+  flex-shrink: 0;
+}
+
+.recommended-jobs__role {
+  font-size: 1.2rem;
+}
+
+.recommended-jobs__employer {
+  margin-bottom: 0.8rem;
+}
+
+.recommended-jobs__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.recommended-jobs__card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.recommended-jobs__rate {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.recommended-jobs__apply-btn {
+  color: #fff;
+  color: var(--color-primary);
+  height: 2.3rem;
+  padding: 0 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+}
+
+.recommended-jobs__skeleton {
+  min-width: 16.25rem;
+  height: 11.25rem;
+}

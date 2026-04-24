@@ -1,5 +1,7 @@
+/// <reference path="../types/express.d.ts" />
 import { Response, Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { AuthPayload } from "../types/express";
 
 export async function authenticateToken(
   request: Request,
@@ -20,7 +22,7 @@ export async function authenticateToken(
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
-    request.user = decoded;
+    request.user = decoded as AuthPayload;
     next();
   } catch (error) {
     return response.status(401).json({ message: "Ogiltig token" });
