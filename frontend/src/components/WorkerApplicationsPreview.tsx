@@ -4,15 +4,17 @@ import { getAllApplications } from "../api/applications";
 import { formatDate, formatTime } from "../utils/date";
 import { getStatusLabel } from "../utils/formatters";
 import { capitalize } from "../utils/text";
-import { ApplicationPreview } from "../types";
+import { WorkerApplicationPreview } from "../types";
 import { ChevronRight } from "lucide-react";
 
 // import ErrorMessage from "./ErrorMessage";
 
 import "../styles/Preview.css";
 
-function ApplicationsPreview() {
-  const [applications, setApplications] = useState<ApplicationPreview[]>([]);
+function WorkerApplicationsPreview() {
+  const [applications, setApplications] = useState<WorkerApplicationPreview[]>(
+    [],
+  );
 
   const [isLoading, setIsLoading] = useState(true);
   // const [error, setError] = useState<string | null>(null);
@@ -85,4 +87,4 @@ function ApplicationsPreview() {
   );
 }
 
-export default ApplicationsPreview;
+export default WorkerApplicationsPreview;
