@@ -19,7 +19,6 @@ function LatestReview() {
       try {
         const data = await getWorkerReviews();
         setReviews(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta betyg", error);
       } finally {
