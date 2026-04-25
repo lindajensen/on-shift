@@ -85,9 +85,19 @@ export interface WorkerProfile {
   is_available: boolean;
 }
 
-export interface ApplicationPreview {
+export interface WorkerApplicationPreview {
   id: number;
   restaurant_name: string;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+}
+
+export interface EmployerApplicationPreview {
+  id: number;
+  worker_name: string;
   role: string;
   job_date: string;
   start_time: string;
