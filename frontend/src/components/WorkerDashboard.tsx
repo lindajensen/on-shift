@@ -8,7 +8,7 @@ import LatestReview from "./LatestReview";
 import { getWorkerProfile } from "../api/worker";
 import { WorkerProfile } from "../types";
 
-import "../styles/WorkerDashboard.css";
+import "../styles/Dashboard.css";
 
 function WorkerDashboard() {
   const [workerProfile, setWorkerProfile] = useState<WorkerProfile | null>(
@@ -39,11 +39,11 @@ function WorkerDashboard() {
   if (!workerProfile) return;
 
   return (
-    <section className="worker-dashboard">
+    <section className="dashboard">
       <div className="section__inner">
-        <header className="worker-dashboard__header">
-          <h1 className="worker-dashboard__title">Hej {firstName}!</h1>
-          <p className="worker-dashboard__subtitle">Är du redo för nya pass?</p>
+        <header className="dashboard__header">
+          <h1 className="dashboard__title">Hej {firstName}!</h1>
+          <p className="dashboard__subtitle">Är du redo för nya pass?</p>
         </header>
 
         <AvailabilityToggle />
