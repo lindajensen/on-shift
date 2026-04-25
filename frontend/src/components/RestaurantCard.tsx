@@ -1,3 +1,4 @@
+import { getInitials } from "../utils/text";
 import { Star } from "lucide-react";
 
 import "../styles/RestaurantCard.css";
@@ -9,16 +10,11 @@ interface RestaurantCardProps {
 }
 
 function RestaurantCard({ name, location, rating }: RestaurantCardProps) {
-  const avatar = name
-    .split(" ")
-    .filter((word) => /^[a-zA-ZåäöÅÄÖ]/.test(word))
-    .slice(0, 2)
-    .map((word) => word[0])
-    .join("");
+  const initials = name ? getInitials(name) : "";
 
   return (
     <article className="restaurant-card">
-      <div className="restaurant-card__avatar avatar">{avatar}</div>
+      <div className="restaurant-card__avatar avatar">{initials}</div>
 
       <div className="restaurant-card__info">
         <h3 className="restaurant-card__name">{name}</h3>
