@@ -10,7 +10,7 @@ import "../styles/Preview.css";
 
 function JobListingsPreview() {
   const [jobListings, setJobListings] = useState<JobListingPreview[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchJobListings() {
