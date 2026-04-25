@@ -104,6 +104,7 @@ p {
 a {
   font-size: clamp(0.875rem, 0.5vw + 0.6rem, 0.9375rem);
   text-decoration: none;
+  font-family: var(--font-body);
   color: inherit;
 }
 
@@ -269,8 +270,10 @@ input:focus {
 /* Misc */
 .avatar {
   border-radius: 50%;
-  background: var(--color-accent-light);
-  color: var(--color-accent);
+  /* background: var(--color-accent-light);
+  color: var(--color-accent); */
+  background-color: var(--color-primary);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;

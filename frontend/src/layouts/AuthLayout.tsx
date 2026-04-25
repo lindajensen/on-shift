@@ -6,6 +6,8 @@ import BottomNav from "../components/BottomNav";
 function AuthLayout() {
   const { user } = useAuth();
 
+  if (!user) return <Outlet />;
+
   return (
     <div className="layout">
       <AuthHeader />

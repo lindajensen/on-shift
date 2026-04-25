@@ -10,8 +10,6 @@
 .restaurant-card__avatar {
   width: 2.5rem;
   height: 2.5rem;
-  background-color: var(--color-accent-light);
-  border: 2px solid var(--color-accent-light);
 }
 
 .restaurant-card__meta {
