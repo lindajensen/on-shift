@@ -95,6 +95,15 @@ export interface ApplicationPreview {
   status: string;
 }
 
+export interface JobListingPreview {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  application_count: string;
+}
+
 export interface Review {
   id: number;
   rating: number;
