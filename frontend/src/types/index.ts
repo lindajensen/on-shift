@@ -28,11 +28,11 @@ export interface Job {
 export interface JobPreview {
   id: number;
   role: string;
-  restaurantName: string;
+  restaurant_name: string;
   location: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
   compensation: number;
 }
 
@@ -85,7 +85,7 @@ export interface WorkerProfile {
   is_available: boolean;
 }
 
-export interface ApplicationPreview {
+export interface WorkerApplicationPreview {
   id: number;
   restaurant_name: string;
   role: string;
@@ -93,6 +93,25 @@ export interface ApplicationPreview {
   start_time: string;
   end_time: string;
   status: string;
+}
+
+export interface EmployerApplicationPreview {
+  id: number;
+  worker_name: string;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+}
+
+export interface JobListingPreview {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  application_count: string;
 }
 
 export interface Review {
@@ -103,4 +122,16 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
+}
+
+interface WorkerRole {
+  role: string;
+  experience_level: string;
+}
+
+export interface SavedWorkerPreview {
+  id: number;
+  worker_name: string;
+  roles: WorkerRole[];
+  rating: number | null;
 }

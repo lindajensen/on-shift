@@ -128,13 +128,13 @@ function JobsPage() {
         <LoginNudge />
 
         {filteredJobs.length === 0 ? (
-          <div className="jobs__empty">
-            <div className="jobs__empty-icon">
+          <div className="empty">
+            <div className="empty-icon">
               <Search size={18} />
             </div>
             <div>
-              <p className="jobs__empty-title">Inga pass hittades</p>
-              <p className="jobs__empty-text">
+              <p className="empty-title">Inga pass hittades</p>
+              <p className="empty-text">
                 Prova ett annat filter eller sök på något annat.
               </p>
             </div>

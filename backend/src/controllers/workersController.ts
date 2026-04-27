@@ -37,11 +37,16 @@ export async function toggleAvailability(
  * @param response - The response object.
  * @returns A JSON object containing the worker's profile information.
  */
-export async function getWorkerProfile(request: Request, response: Response) {
+export async function getWorkerProfile(
+  request: Request,
+  response: Response,
+): Promise<void> {
   const user = request.user;
 
   if (!user) {
-    return response.status(401).json({ message: "Åtkomst nekad" });
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
   }
 
   const userId = user.userId;
@@ -60,8 +65,8 @@ export async function getWorkerProfile(request: Request, response: Response) {
 
 /**
  * Fetches the applications of the currently logged in worker.
- * @param request
- * @param response
+ * @param request - The request object.
+ * @param response - The response object.
  * @returns A JSON array of the worker's applications.
  */
 export async function getWorkerApplications(
@@ -107,8 +112,8 @@ export async function getWorkerApplications(
 
 /**
  * Fetches recommended jobs for the currently logged in worker based on their roles and past applications.
- * @param request
- * @param response
+ * @param request - The request object.
+ * @param response - The response object.
  * @returns A JSON array of recommended jobs for the worker.
  */
 export async function getRecommendedJobs(

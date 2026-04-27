@@ -282,6 +282,11 @@ input:focus {
   flex-shrink: 0;
 }
 
+.rating-star {
+  fill: #f5a623;
+  color: #f5a623;
+}
+
 .skeleton {
   border-radius: var(--radius-md);
   background: linear-gradient(
@@ -322,7 +327,7 @@ input:focus {
 }
 
 /* Fallback */
-.jobs__empty {
+.empty {
   display: flex;
   gap: 0.8rem;
   padding: 1rem;
@@ -331,7 +336,7 @@ input:focus {
   border-radius: var(--radius-lg);
 }
 
-.jobs__empty-icon {
+.empty-icon {
   width: 2.5rem;
   height: 2.5rem;
   background-color: var(--color-primary-light);
@@ -343,11 +348,11 @@ input:focus {
   color: var(--color-primary);
 }
 
-.jobs__empty-title {
+.empty-title {
   font-size: 0.94rem;
   font-weight: 600;
 }
 
-.jobs__empty-text {
+.empty-text {
   color: var(--color-text-muted);
 }

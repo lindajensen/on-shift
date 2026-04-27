@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getWorkerReviews } from "../api/worker";
-import { formatDate } from "../utils/date";
+import { formatDateWithYear } from "../utils/date";
 import { capitalize } from "../utils/text";
 import { Review } from "../types";
 import { ChevronRight, Star } from "lucide-react";
 
 import "../styles/LatestReview.css";
 
-function LatestReview() {
+function LatestWorkerReview() {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +27,9 @@ function LatestReview() {
     }
     fetchReviews();
   }, []);
+
+  //TODO: Fallback if no review
+  //TODO: Review number (5.0) is hardcoded
 
   return (
     <section className="latest-review">
@@ -50,7 +53,7 @@ function LatestReview() {
                     {review.reviewer_name}
                   </h3>
                   <p className="latest-review__card-date">
-                    {formatDate(review.created_at)}
+                    {formatDateWithYear(review.created_at)}
                   </p>
                 </div>
 
@@ -65,7 +68,8 @@ function LatestReview() {
 
                 <footer className="latest-review__card-footer">
                   <p className="latest-review__footer-text">
-                    {capitalize(review.role)} · {formatDate(review.job_date)}
+                    {capitalize(review.role)} ·{" "}
+                    {formatDateWithYear(review.job_date)}
                   </p>
                 </footer>
               </article>
@@ -77,4 +81,4 @@ function LatestReview() {
   );
 }
 
-export default LatestReview;
+export default LatestWorkerReview;

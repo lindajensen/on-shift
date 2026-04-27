@@ -1,7 +1,7 @@
-.worker-dashboard {
+.dashboard {
   padding-bottom: 1.3rem;
 }
 
-.worker-dashboard__subtitle {
+.dashboard__subtitle {
   color: var(--color-text-muted);
 }
