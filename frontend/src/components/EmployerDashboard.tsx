@@ -1,5 +1,6 @@
 import JobListingsPreview from "./JobListingsPreview";
 import ApplicationsPreview from "./EmployerApplicationsPreview";
+import SavedWorkersPreview from "./SavedWorkersPreview";
 
 import "../styles/Dashboard.css";
 
@@ -16,6 +17,7 @@ function EmployerDashboard() {
 
         <JobListingsPreview />
         <ApplicationsPreview />
+        <SavedWorkersPreview />
       </div>
     </section>
   );
