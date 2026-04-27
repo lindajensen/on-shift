@@ -94,6 +94,12 @@ export async function getEmployerApplications(
   }
 }
 
+/**
+ * Fetches the saved workers for the currently logged in restaurant.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of saved workers with roles and average rating.
+ */
 export async function getSavedWorkers(
   request: Request,
   response: Response,
@@ -128,6 +134,53 @@ export async function getSavedWorkers(
     );
 
     response.status(200).json(savedWorkers.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches all reviews left for the currently logged in restaurant.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of reviews with reviewer name, rating, comment and job details.
+ */
+export async function getEmployerReviews(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const reviews = await pool.query(
+      `
+      SELECT
+        r.id,
+        r.rating,
+        r.comment,
+        r.created_at,
+        wp.name AS reviewer_name,
+        j.role,
+        j.job_date
+      FROM review r
+      JOIN worker_profile wp ON r.reviewer_id = wp.user_id
+      JOIN job j ON r.job_id = j.id
+      JOIN employer_profile ep ON j.employer_id = ep.id
+      WHERE ep.user_id = $1
+      ORDER BY r.created_at DESC
+      `,
+      [userId],
+    );
+
+    response.status(200).json(reviews.rows);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
