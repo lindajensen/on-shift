@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import pool from "../db";
-import { request } from "node:http";
 
 /**
  * Fetches the job listings of the currently logged in restaurant.
@@ -48,6 +47,12 @@ export async function getJobListings(
   }
 }
 
+/**
+ * Fetches all applications submitted to the logged in restaurants's job listings.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of applications with worker name, job details and status.
+ */
 export async function getEmployerApplications(
   request: Request,
   response: Response,
@@ -84,6 +89,45 @@ export async function getEmployerApplications(
     );
 
     response.status(200).json(applications.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+export async function getSavedWorkers(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const savedWorkers = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.name AS worker_name,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        AVG(r.rating) AS rating
+      FROM saved_worker sw
+      JOIN worker_profile wp ON sw.worker_id = wp.id
+      JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      JOIN employer_profile ep ON sw.employer_id = ep.id
+      WHERE ep.user_id = $1
+      GROUP BY wp.id, wp.name;
+      `,
+      [userId],
+    );
+
+    response.status(200).json(savedWorkers.rows);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
