@@ -21,7 +21,6 @@ function LatestEmployerReview() {
       try {
         const data = await getEmployerReviews();
         setReviews(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta betyg", error);
       } finally {
