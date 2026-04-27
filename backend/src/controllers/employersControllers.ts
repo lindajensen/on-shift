@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import pool from "../db";
+import { request } from "node:http";
 
 /**
  * Fetches the job listings of the currently logged in restaurant.
@@ -42,6 +43,47 @@ export async function getJobListings(
     );
 
     response.status(200).json(listings.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+export async function getEmployerApplications(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const applications = await pool.query(
+      `
+      SELECT
+        a.id,
+        a.status,
+        j.role,
+        j.job_date,
+        j.start_time,
+        j.end_time,
+        wp.name AS worker_name
+      FROM application a
+      JOIN job j ON a.job_id = j.id
+      JOIN worker_profile wp ON a.worker_id = wp.id
+      JOIN employer_profile ep ON j.employer_id = ep.id
+      WHERE ep.user_id = $1
+      ORDER BY a.created_at DESC
+      `,
+      [userId],
+    );
+
+    response.status(200).json(applications.rows);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
