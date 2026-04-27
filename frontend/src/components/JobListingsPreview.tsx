@@ -17,7 +17,6 @@ function JobListingsPreview() {
       try {
         const data = await getAllJobListings();
         setJobListings(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta annonser", error);
       } finally {
