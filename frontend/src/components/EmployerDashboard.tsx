@@ -1,4 +1,5 @@
 import JobListingsPreview from "./JobListingsPreview";
+import ApplicationsPreview from "./EmployerApplicationsPreview";
 
 import "../styles/Dashboard.css";
 
@@ -11,9 +12,10 @@ function EmployerDashboard() {
           <p className="dashboard__subtitle">Är du att hitta personal?</p>
         </header>
 
-        {/* Stats */}
+        {/* STATCARDS? */}
 
         <JobListingsPreview />
+        <ApplicationsPreview />
       </div>
     </section>
   );
