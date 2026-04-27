@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AvailabilityToggle from "./AvailabilityToggle";
 import ApplicationsPreview from "./WorkerApplicationsPreview";
 import RecommendedJobs from "./RecommendedJobs";
-import LatestReview from "./LatestReview";
+import LatestReview from "./LatestWorkerReview";
 
 import { getWorkerProfile } from "../api/worker";
 import { WorkerProfile } from "../types";
