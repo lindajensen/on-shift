@@ -30,6 +30,8 @@ export async function getJobListings(
         j.job_date,
         j.start_time,
         j.end_time,
+        j.compensation,
+        j.status,
         COUNT(a.id) AS application_count
       FROM job j
       LEFT JOIN application a ON a.job_id = j.id
