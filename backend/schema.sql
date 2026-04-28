@@ -46,7 +46,7 @@ CREATE TABLE worker_profile (
 CREATE TABLE worker_role (
   id SERIAL PRIMARY KEY,
   worker_id INTEGER NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('servitör', 'kock', 'bartender', 'diskare', 'runner', 'servis extra')),
+  role TEXT NOT NULL CHECK (role IN ('waiter', 'chef', 'bartender', 'dishwasher', 'runner', 'extra_service')),
   experience_level TEXT CHECK (experience_level IN ('beginner', 'junior', 'experienced', 'senior')),
   FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
 );
@@ -60,6 +60,8 @@ CREATE TABLE job (
   job_date DATE NOT NULL,
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
+  available_slots INTEGER NOT NULL DEFAULT 1,
+  is_urgent BOOLEAN NOT NULL DEFAULT FALSE,
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'filled', 'closed')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
