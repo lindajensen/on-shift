@@ -25,3 +25,16 @@ export function getExperienceLevel(experience_level: string): string {
       return experience_level;
   }
 }
+
+export function getJobStatusLabel(status: string): string {
+  switch (status) {
+    case "active":
+      return "Aktiv";
+    case "filled":
+      return "Tillsatt";
+    case "closed":
+      return "Avslutad";
+    default:
+      return status;
+  }
+}
