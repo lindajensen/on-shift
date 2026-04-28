@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { getAllJobListings } from "../api/employerJobs";
 import { capitalize } from "../utils/text";
 import { formatDate, formatTime } from "../utils/date";
-import { JobListingPreview } from "../types";
+import { EmployerJobListing } from "../types";
 import { ChevronRight } from "lucide-react";
 
 import "../styles/Preview.css";
 
 function JobListingsPreview() {
-  const [jobListings, setJobListings] = useState<JobListingPreview[]>([]);
+  const [jobListings, setJobListings] = useState<EmployerJobListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
