@@ -60,6 +60,7 @@ CREATE TABLE job (
   job_date DATE NOT NULL,
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'filled', 'closed')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
   FOREIGN KEY (employer_id) REFERENCES employer_profile(id) ON DELETE CASCADE
