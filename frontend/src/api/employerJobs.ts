@@ -1,4 +1,4 @@
-import { JobListingPreview, EmployerApplicationPreview } from "../types";
+import { EmployerJobListing, EmployerApplicationPreview } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -7,7 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @returns A promise that resolves to an array of job listings.
  * @throws An error if the request fails.
  */
-export async function getAllJobListings(): Promise<JobListingPreview[]> {
+export async function getAllJobListings(): Promise<EmployerJobListing[]> {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${API_BASE_URL}/api/employers/jobs`, {
