@@ -43,8 +43,11 @@ export interface EmployerJobListing {
   start_time: string;
   end_time: string;
   compensation: number;
+  available_slots: number;
   status: string;
   application_count: string;
+  description: string | null;
+  is_urgent: boolean;
 }
 
 export interface Restaurant {
