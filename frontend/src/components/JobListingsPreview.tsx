@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllJobListings } from "../api/employerJobs";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerJobListing } from "../types";
 import { ChevronRight } from "lucide-react";
@@ -57,7 +57,7 @@ function JobListingsPreview() {
               <article className="preview__card">
                 <div className="preview__info">
                   <h3 className="preview__name">
-                    {capitalize(jobListing.role)}
+                    {getRoleLabel(jobListing.role)}
                   </h3>
                   <p className="preview__meta">
                     {formatDate(jobListing.job_date)} kl.{" "}
