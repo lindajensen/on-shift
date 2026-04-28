@@ -45,3 +45,18 @@ export async function getJobApplications(): Promise<
 
   return response.json();
 }
+
+export async function deleteJobListing(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/jobs/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort annonsen. Försök igen senare.");
+  }
+}
