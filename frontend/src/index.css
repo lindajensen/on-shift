@@ -198,10 +198,19 @@ section {
 /* Form */
 label {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 500;
+  margin-bottom: 0.1rem;
 }
 
-input {
+input,
+select,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input,
+select {
   height: 2.8rem;
   padding: 0 0.875rem;
   border-radius: var(--radius-md);
@@ -210,11 +219,22 @@ input {
   background-color: transparent;
   font-family: var(--font-body);
   color: var(--color-text);
-  /* margin-bottom: 0.8rem; */
 }
 
-input:focus {
+input:focus,
+select:focus,
+textarea:focus {
   border-color: var(--color-primary);
+}
+
+textarea {
+  padding: 0.875rem 0.875rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background-color: var(--color-bg-alt);
+  background-color: transparent;
+  font-family: var(--font-body);
+  color: var(--color-text);
 }
 
 /* Badge */
@@ -224,7 +244,6 @@ input:focus {
   font-size: 0.75rem;
   font-weight: 500;
   padding: 0.4rem 0.625rem;
-  /* border-radius: var(--radius-lg); */
   border-radius: var(--radius-full);
   white-space: nowrap;
 }
@@ -339,8 +358,6 @@ input:focus {
 /* Misc */
 .avatar {
   border-radius: 50%;
-  /* background: var(--color-accent-light);
-  color: var(--color-accent); */
   background-color: var(--color-primary);
   color: #fff;
   display: flex;
@@ -424,4 +441,11 @@ input:focus {
 
 .empty-text {
   color: var(--color-text-muted);
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .auth-layout .layout__content {
+    margin-left: 12.5rem;
+  }
 }
