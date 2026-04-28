@@ -36,6 +36,17 @@ export interface JobPreview {
   compensation: number;
 }
 
+export interface EmployerJobListing {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  status: string;
+  application_count: string;
+}
+
 export interface Restaurant {
   id: number;
   name: string;
@@ -103,15 +114,6 @@ export interface EmployerApplicationPreview {
   start_time: string;
   end_time: string;
   status: string;
-}
-
-export interface JobListingPreview {
-  id: number;
-  role: string;
-  job_date: string;
-  start_time: string;
-  end_time: string;
-  application_count: string;
 }
 
 export interface Review {
