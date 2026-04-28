@@ -226,7 +226,8 @@ input:focus {
   font-size: 0.75rem;
   font-weight: 500;
   padding: 0.4rem 0.625rem;
-  border-radius: var(--radius-lg);
+  /* border-radius: var(--radius-lg); */
+  border-radius: var(--radius-full);
   white-space: nowrap;
 }
 
