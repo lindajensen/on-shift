@@ -187,3 +187,36 @@ export async function getEmployerReviews(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Deletes a job listing if it belongs to the currently logged in restaurant.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A success message if the listing was deleted, or an error message if something went wrong.
+ */
+export async function deleteJobListing(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `DELETE FROM job WHERE id = $1 AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)`,
+      [id, userId],
+    );
+
+    response.status(200).json({ message: "Annonsen har tagits bort" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
