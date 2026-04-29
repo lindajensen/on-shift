@@ -24,9 +24,10 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     job?.available_slots?.toString() || "",
   );
   const [description, setDescription] = useState(job?.description || "");
-
   const [isUrgent, setIsUrgent] = useState(job?.is_urgent || false);
-
+  const [requiresExperience, setRequiresExperience] = useState(
+    job?.requires_experience || false,
+  );
   const [errors, setErrors] = useState<JobModalErrors>({});
   const [serverError, setServerError] = useState("");
 
@@ -34,9 +35,13 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
   //TODO: Claude Design Code header???
   //TODO: Move serverError rendering
 
-  function handleToggle() {
+  function handleUrgentToggle() {
     const updatedUrgency = !isUrgent;
     setIsUrgent(updatedUrgency);
+  }
+
+  function handleExperienceToggle() {
+    setRequiresExperience((previous) => !previous);
   }
 
   function validateJobForm() {
@@ -56,6 +61,9 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     if (!startTime) newErrors.startTime = "Ange en starttid";
 
     if (!endTime) newErrors.endTime = "Ange en sluttid";
+
+    if (startTime && endTime && startTime >= endTime)
+      newErrors.endTime = "Sluttiden måste vara efter starttiden";
 
     if (!compensation.trim()) newErrors.compensation = "Ange ersättning";
 
@@ -78,10 +86,13 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
       availableSlots,
       description,
       isUrgent,
+      requires_experience: requiresExperience,
     };
 
     try {
       await onSave(newJobListing);
+
+      console.log("Saved new job listing", newJobListing);
     } catch (error) {
       console.error("Kunde inte spara annonsen", error);
       setServerError("Något gick fel. Försök igen senare.");
@@ -279,7 +290,28 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
               type="checkbox"
               className="toggle__input"
               checked={isUrgent}
-              onChange={handleToggle}
+              onChange={handleUrgentToggle}
+            />
+            <span className="toggle__slider"></span>
+          </label>
+        </div>
+
+        <div className="divider"></div>
+
+        <div className="job-modal__toggle-row">
+          <div className="job-modal__toggle-info">
+            <p className="job-modal__toggle-title">Erfarenhet krävs</p>
+            <p className="job-modal__toggle-subtitle">
+              Markera om erfarenhet är ett krav
+            </p>
+          </div>
+
+          <label className="toggle">
+            <input
+              type="checkbox"
+              className="toggle__input"
+              checked={requiresExperience}
+              onChange={handleExperienceToggle}
             />
             <span className="toggle__slider"></span>
           </label>
