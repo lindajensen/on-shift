@@ -58,20 +58,6 @@ export interface Restaurant {
   jobsPosted: number;
 }
 
-export interface RegisterValidationErrors {
-  firstName?: string;
-  lastName?: string;
-  restaurantName?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-}
-
-export interface LoginValidationErrors {
-  email?: string;
-  password?: string;
-}
-
 export interface LoginResponse {
   token: string;
   user: {
@@ -139,4 +125,39 @@ export interface SavedWorkerPreview {
   worker_name: string;
   roles: WorkerRole[];
   rating: number | null;
+}
+
+export interface JobFormData {
+  role: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  compensation: string;
+  availableSlots: string;
+  description: string;
+  isUrgent: boolean;
+}
+
+// Errors
+export interface RegisterValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  restaurantName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
+export interface LoginValidationErrors {
+  email?: string;
+  password?: string;
+}
+
+export interface JobModalErrors {
+  role?: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  compensation?: string;
+  availableSlots?: string;
 }
