@@ -4,7 +4,7 @@ import { getAllJobListings } from "../api/employerJobs";
 import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerJobListing } from "../types";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CalendarX2 } from "lucide-react";
 
 import "../styles/Preview.css";
 
@@ -50,7 +50,16 @@ function JobListingsPreview() {
         </div>
       )}
 
-      {!isLoading && (
+      {!isLoading && jobListings.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">
+            <CalendarX2 size={18} />
+          </div>
+          <div>
+            <p className="empty-text">Du har inga annonser just nu.</p>
+          </div>
+        </div>
+      ) : (
         <ul className="preview__list">
           {jobListings.slice(0, 3).map((jobListing) => (
             <li key={jobListing.id} className="preview__item">

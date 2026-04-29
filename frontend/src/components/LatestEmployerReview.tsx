@@ -4,7 +4,7 @@ import { getEmployerReviews } from "../api/employer";
 import { formatDateWithYear } from "../utils/date";
 import { getRoleLabel } from "../utils/formatters";
 import { Review } from "../types";
-import { ChevronRight, Star } from "lucide-react";
+import { ChevronRight, Star, StarOff } from "lucide-react";
 
 import "../styles/LatestReview.css";
 
@@ -42,7 +42,16 @@ function LatestEmployerReview() {
 
       {isLoading && <div className="latest-review__skeleton skeleton" />}
 
-      {!isLoading && (
+      {!isLoading && reviews.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">
+            <StarOff size={18} />
+          </div>
+          <div>
+            <p className="empty-text">Du har inga fått några betyg än.</p>
+          </div>
+        </div>
+      ) : (
         <ul className="latest-review__list">
           {reviews.slice(0, 1).map((review) => (
             <li key={review.id} className="latest-review__item">

@@ -4,7 +4,7 @@ import { getJobApplications } from "../api/employerJobs";
 import { getStatusLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerApplicationPreview } from "../types";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ClipboardX } from "lucide-react";
 
 import "../styles/Preview.css";
 
@@ -51,7 +51,16 @@ function EmployerApplicationsPreview() {
         </div>
       )}
 
-      {!isLoading && (
+      {!isLoading && applications.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">
+            <ClipboardX size={18} />
+          </div>
+          <div>
+            <p className="empty-text">Du har inga ansökningar än.</p>
+          </div>
+        </div>
+      ) : (
         <ul className="preview__list">
           {applications.slice(0, 3).map((application) => (
             <li key={application.id} className="preview__item">
