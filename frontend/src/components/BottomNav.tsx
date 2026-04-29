@@ -88,7 +88,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <span>Hitta personal</span>
               </NavLink>
               <NavLink
-                to="/annonser"
+                to="/mina-annonser"
                 className={({ isActive }) =>
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }

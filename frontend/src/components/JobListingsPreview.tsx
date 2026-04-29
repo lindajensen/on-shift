@@ -4,7 +4,7 @@ import { getAllJobListings } from "../api/employerJobs";
 import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerJobListing } from "../types";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CalendarX2 } from "lucide-react";
 
 import "../styles/Preview.css";
 
@@ -27,16 +27,18 @@ function JobListingsPreview() {
     fetchJobListings();
   }, []);
 
-  //TODO: Switch useState isLoading to true
-  //TODO: Check skeleton in applicationslist
   //TODO: Implement error state
   //TODO: Items clickable link to detailspage?
+
+  const activeJobListings = jobListings.filter(
+    (job) => job.status === "active" || job.status === "filled",
+  );
 
   return (
     <section className="preview">
       <header className="preview__header">
         <h2 className="preview__title">Mina annonser</h2>
-        <Link className="preview__link" to="/ansokningar">
+        <Link className="preview__link" to="/mina-annonser">
           Visa alla
           <ChevronRight />
         </Link>
@@ -50,9 +52,18 @@ function JobListingsPreview() {
         </div>
       )}
 
-      {!isLoading && (
+      {!isLoading && jobListings.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">
+            <CalendarX2 size={18} />
+          </div>
+          <div>
+            <p className="empty-text">Du har inga annonser just nu.</p>
+          </div>
+        </div>
+      ) : (
         <ul className="preview__list">
-          {jobListings.slice(0, 3).map((jobListing) => (
+          {activeJobListings.slice(0, 3).map((jobListing) => (
             <li key={jobListing.id} className="preview__item">
               <article className="preview__card">
                 <div className="preview__info">

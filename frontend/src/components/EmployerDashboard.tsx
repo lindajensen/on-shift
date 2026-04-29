@@ -1,5 +1,5 @@
 import JobListingsPreview from "./JobListingsPreview";
-import ApplicationsPreview from "./EmployerApplicationsPreview";
+import EmployerApplicationsPreview from "./EmployerApplicationsPreview";
 import SavedWorkersPreview from "./SavedWorkersPreview";
 import LatestEmployerReview from "./LatestEmployerReview";
 
@@ -17,7 +17,7 @@ function EmployerDashboard() {
         {/* STATCARDS? */}
 
         <JobListingsPreview />
-        <ApplicationsPreview />
+        <EmployerApplicationsPreview />
         <SavedWorkersPreview />
         <LatestEmployerReview />
       </div>

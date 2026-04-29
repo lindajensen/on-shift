@@ -36,7 +36,7 @@ const router = createBrowserRouter(
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/annonser" element={<JobListingsPage />} />
+          <Route path="/mina-annonser" element={<JobListingsPage />} />
         </Route>
       </Route>
     </>,
