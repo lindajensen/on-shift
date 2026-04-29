@@ -62,9 +62,6 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
 
     if (!endTime) newErrors.endTime = "Ange en sluttid";
 
-    if (startTime && endTime && startTime >= endTime)
-      newErrors.endTime = "Sluttiden måste vara efter starttiden";
-
     if (!compensation.trim()) newErrors.compensation = "Ange ersättning";
 
     if (!availableSlots || Number(availableSlots) < 1)
@@ -74,10 +71,14 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     return Object.keys(newErrors).length === 0;
   }
 
-  async function handleAddJobbListing() {
+  /**
+   * Handles the form submission for creating or updating a job listing.
+   * @returns void
+   */
+  async function handleSubmit() {
     if (!validateJobForm()) return;
 
-    const newJobListing = {
+    const jobData = {
       role,
       date,
       startTime,
@@ -90,9 +91,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     };
 
     try {
-      await onSave(newJobListing);
-
-      console.log("Saved new job listing", newJobListing);
+      await onSave(jobData);
     } catch (error) {
       console.error("Kunde inte spara annonsen", error);
       setServerError("Något gick fel. Försök igen senare.");
@@ -333,7 +332,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
           <button
             type="button"
             className="btn btn--primary job-modal__submit"
-            onClick={() => handleAddJobbListing()}
+            onClick={() => handleSubmit()}
           >
             {job ? "Spara ändringar" : "Lägg till pass"}
           </button>
