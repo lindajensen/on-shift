@@ -62,6 +62,7 @@ CREATE TABLE job (
   end_time TIME NOT NULL,
   available_slots INTEGER NOT NULL DEFAULT 1,
   is_urgent BOOLEAN NOT NULL DEFAULT FALSE,
+  requires_experience BOOLEAN NOT NULL DEFAULT FALSE,
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'filled', 'closed')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
