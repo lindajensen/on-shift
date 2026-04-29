@@ -4,6 +4,7 @@ import {
   getEmployerApplications,
   getSavedWorkers,
   getEmployerReviews,
+  createJobListing,
   deleteJobListing,
 } from "../controllers/employersControllers";
 import { authenticateToken } from "../middleware/auth";
@@ -14,6 +15,7 @@ router.get("/jobs", authenticateToken, getJobListings);
 router.get("/applications", authenticateToken, getEmployerApplications);
 router.get("/saved-workers", authenticateToken, getSavedWorkers);
 router.get("/reviews", authenticateToken, getEmployerReviews);
+router.post("/jobs", authenticateToken, createJobListing);
 router.delete("/jobs/:id", authenticateToken, deleteJobListing);
 
 export default router;

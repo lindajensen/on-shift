@@ -31,6 +31,9 @@ export async function getJobListings(
         j.start_time,
         j.end_time,
         j.compensation,
+        j.available_slots,
+        j.description,
+        j.is_urgent,
         j.status,
         COUNT(a.id) AS application_count
       FROM job j
@@ -183,6 +186,66 @@ export async function getEmployerReviews(
     );
 
     response.status(200).json(reviews.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Creates a new job listing for the currently logged in employer.
+ * @param request - The request object containing the job data.
+ * @param response - The response object.
+ * @returns A JSON object of the newly created job listing.
+ */
+export async function createJobListing(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  const {
+    role,
+    date,
+    startTime,
+    endTime,
+    compensation,
+    availableSlots,
+    description,
+    isUrgent,
+  } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const result = await pool.query(
+      `
+      INSERT INTO job (employer_id, role, description, compensation, job_date, start_time, end_time, available_slots, is_urgent)
+      VALUES (
+        (SELECT id FROM employer_profile WHERE user_id = $1),
+        $2, $3, $4, $5, $6, $7, $8, $9
+      )
+      RETURNING *
+      `,
+      [
+        userId,
+        role,
+        description,
+        compensation,
+        date,
+        startTime,
+        endTime,
+        availableSlots,
+        isUrgent,
+      ],
+    );
+
+    response.status(201).json(result.rows[0]);
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
