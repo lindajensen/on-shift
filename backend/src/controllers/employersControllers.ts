@@ -254,6 +254,72 @@ export async function createJobListing(
   }
 }
 
+export async function updateJobListing(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  const {
+    role,
+    date,
+    startTime,
+    endTime,
+    compensation,
+    availableSlots,
+    description,
+    isUrgent,
+    requires_experience,
+  } = request.body;
+
+  try {
+    const result = await pool.query(
+      `
+      UPDATE job
+      SET
+        role = $2,
+        description = $3,
+        compensation = $4,
+        job_date = $5,
+        start_time = $6,
+        end_time = $7,
+        available_slots = $8,
+        is_urgent = $9,
+        requires_experience = $10
+      WHERE id = $1
+      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $11)
+      RETURNING *
+      `,
+      [
+        id,
+        role,
+        description,
+        compensation,
+        date,
+        startTime,
+        endTime,
+        availableSlots,
+        isUrgent,
+        requires_experience,
+        userId,
+      ],
+    );
+
+    response.status(201).json(result.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
 /**
  * Deletes a job listing if it belongs to the currently logged in restaurant.
  * @param request - The request object.
