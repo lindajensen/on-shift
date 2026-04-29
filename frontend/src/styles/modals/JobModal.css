@@ -1,0 +1,60 @@
+.job-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.job-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.job-modal__subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.job-modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-modal__field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 0.5rem;
+}
+
+.job-modal__row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.job-modal__submit {
+  margin-top: 0.3rem;
+}
+
+.job-modal__footer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.job-modal__footer .btn--primary {
+  flex: 1;
+}
+
+/* Toggle */
+.job-modal__toggle-row {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+}
+
+.job-modal__toggle-title {
+  font-weight: 500;
+}
+
+.job-modal__toggle-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
