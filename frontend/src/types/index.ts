@@ -48,6 +48,7 @@ export interface EmployerJobListing {
   application_count: string;
   description: string | null;
   is_urgent: boolean;
+  requires_experience: boolean;
 }
 
 export interface Restaurant {
@@ -136,6 +137,7 @@ export interface JobFormData {
   availableSlots: string;
   description: string;
   isUrgent: boolean;
+  requires_experience: boolean;
 }
 
 // Errors
