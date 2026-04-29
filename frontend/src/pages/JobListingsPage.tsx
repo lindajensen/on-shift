@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   getAllJobListings,
   createJobListing,
+  updateJobListing,
   deleteJobListing,
 } from "../api/employerJobs";
 import { formatDate, formatTime } from "../utils/date";
@@ -60,6 +61,15 @@ function JobListingsPage() {
     try {
       if (selectedJob) {
         //Update listing
+        const updatedJob = await updateJobListing(jobData, selectedJob.id);
+
+        setEmployerJobListings((prev) =>
+          prev.map((job) =>
+            job.id === selectedJob.id
+              ? { ...updatedJob, application_count: job.application_count }
+              : job,
+          ),
+        );
       } else {
         //Add new listing
         const newJob = await createJobListing(jobData);
@@ -84,8 +94,6 @@ function JobListingsPage() {
   );
 
   //TODO: Error handling
-  //TODO: Implement action buttons (edit)
-  //TODO: Implement add new job listing button
 
   return (
     <>
