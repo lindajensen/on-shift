@@ -27,10 +27,12 @@ function JobListingsPreview() {
     fetchJobListings();
   }, []);
 
-  //TODO: Switch useState isLoading to true
-  //TODO: Check skeleton in applicationslist
   //TODO: Implement error state
   //TODO: Items clickable link to detailspage?
+
+  const activeJobListings = jobListings.filter(
+    (job) => job.status === "active" || job.status === "filled",
+  );
 
   return (
     <section className="preview">
@@ -61,7 +63,7 @@ function JobListingsPreview() {
         </div>
       ) : (
         <ul className="preview__list">
-          {jobListings.slice(0, 3).map((jobListing) => (
+          {activeJobListings.slice(0, 3).map((jobListing) => (
             <li key={jobListing.id} className="preview__item">
               <article className="preview__card">
                 <div className="preview__info">
