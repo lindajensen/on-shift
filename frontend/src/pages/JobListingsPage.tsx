@@ -12,6 +12,7 @@ import { EmployerJobListing, JobFormData } from "../types";
 
 import Modal from "../components/modals/Modal";
 import JobModal from "../components/modals/JobModal";
+import ErrorMessage from "../components/ErrorMessage";
 
 import { Plus, Clock, Edit, Trash2, CalendarX2 } from "lucide-react";
 
@@ -31,6 +32,7 @@ function JobListingsPage() {
   const [activeTab, setActiveTab] = useState<"aktiva" | "avslutade">("aktiva");
 
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchEmployerJobListings() {
@@ -38,7 +40,8 @@ function JobListingsPage() {
         const data = await getAllJobListings();
         setEmployerJobListings(data);
       } catch (error) {
-        console.error("Kunde inte hämta annonser", error);
+        console.error("Kunde inte hämta pass", error);
+        setError("Inga pass hittades");
       } finally {
         setIsLoading(false);
       }
@@ -53,7 +56,7 @@ function JobListingsPage() {
         previous.filter((job) => job.id !== id),
       );
     } catch (error) {
-      console.error("Kunde inte ta bort annonsen", error);
+      console.error("Kunde inte ta bort passet", error);
     }
   }
 
@@ -93,7 +96,7 @@ function JobListingsPage() {
     (job) => job.status === "closed",
   );
 
-  //TODO: Error handling
+  if (error) return <ErrorMessage message={error} />;
 
   return (
     <>
