@@ -102,12 +102,12 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     <article className="job-modal">
       <header className="job-modal__header">
         <h2 className="job-modal__title">
-          {job ? "Redigera pass" : "Lägg till pass"}
+          {job ? "Redigera annons" : "Lägg till annons"}
         </h2>
         <p className="job-modal__subtitle">
           {job
-            ? "Redigera informationen om passet"
-            : "Fyll i information om passet"}
+            ? "Redigera informationen om annonsen"
+            : "Fyll i information om annonsen"}
         </p>
       </header>
 
@@ -334,7 +334,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             className="btn btn--primary job-modal__submit"
             onClick={() => handleSubmit()}
           >
-            {job ? "Spara ändringar" : "Lägg till pass"}
+            {job ? "Spara ändringar" : "Lägg till annons"}
           </button>
         </div>
       </form>

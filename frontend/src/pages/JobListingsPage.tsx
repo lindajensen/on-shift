@@ -103,7 +103,7 @@ function JobListingsPage() {
       <section className="job-listings-page">
         <div className="section__inner">
           <header className="job-listings-page__header">
-            <h1 className="job-listings-page__title">Mina pass</h1>
+            <h1 className="job-listings-page__title">Mina annonser</h1>
             <button
               className="btn btn--primary"
               onClick={() => {
@@ -112,7 +112,7 @@ function JobListingsPage() {
               }}
             >
               <Plus size={18} />
-              Nytt pass
+              Ny annons
             </button>
           </header>
 

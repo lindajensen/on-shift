@@ -36,7 +36,7 @@ function JobListingsPreview() {
     <section className="preview">
       <header className="preview__header">
         <h2 className="preview__title">Mina annonser</h2>
-        <Link className="preview__link" to="/ansokningar">
+        <Link className="preview__link" to="/mina-annonser">
           Visa alla
           <ChevronRight />
         </Link>
