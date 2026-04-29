@@ -48,7 +48,7 @@ function LatestEmployerReview() {
             <StarOff size={18} />
           </div>
           <div>
-            <p className="empty-text">Du har inga fått några betyg än.</p>
+            <p className="empty-text">Du har inte fått några betyg än.</p>
           </div>
         </div>
       ) : (
