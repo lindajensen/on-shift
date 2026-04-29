@@ -78,6 +78,28 @@ export async function createJobListing(
 }
 
 /**
+ * Updates an existing job listing with new data.
+ * @param jobData - The updated data for the job listing.
+ * @param id - The ID of the job listing to update.
+ * @returns A promise that resolves to the updated job listing.
+ * @throws An error if the request fails.
+ */
+export async function updateJobListing(jobData: JobFormData, id: number) {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/jobs/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(jobData),
+  });
+
+  return response.json();
+}
+
+/**
  * Deletes a job listing by its ID.
  * @param id - The ID of the job listing to delete.
  * @returns A promise that resolves when the job listing is deleted.
