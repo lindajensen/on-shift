@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getRecommendedJobs } from "../api/worker";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { JobPreview } from "../types";
 import { ChevronRight, Clock, MapPin } from "lucide-react";
@@ -54,7 +54,7 @@ function RecommendedJobs() {
           {jobs.slice(0, 3).map((job) => (
             <li key={job.id} className="card-list__item">
               <article className="card-list__card">
-                <h3 className="card-list__role">{capitalize(job.role)}</h3>
+                <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
                 <p className="card-list__employer">{job.restaurant_name}</p>
 
                 <div className="card-list__meta">

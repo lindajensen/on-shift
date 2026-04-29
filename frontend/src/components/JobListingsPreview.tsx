@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllJobListings } from "../api/employerJobs";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
-import { JobListingPreview } from "../types";
+import { EmployerJobListing } from "../types";
 import { ChevronRight } from "lucide-react";
 
 import "../styles/Preview.css";
 
 function JobListingsPreview() {
-  const [jobListings, setJobListings] = useState<JobListingPreview[]>([]);
+  const [jobListings, setJobListings] = useState<EmployerJobListing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function JobListingsPreview() {
               <article className="preview__card">
                 <div className="preview__info">
                   <h3 className="preview__name">
-                    {capitalize(jobListing.role)}
+                    {getRoleLabel(jobListing.role)}
                   </h3>
                   <p className="preview__meta">
                     {formatDate(jobListing.job_date)} kl.{" "}

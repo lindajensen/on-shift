@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getEmployerReviews } from "../api/employer";
 import { formatDateWithYear } from "../utils/date";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { Review } from "../types";
 import { ChevronRight, Star } from "lucide-react";
 
@@ -69,7 +69,7 @@ function LatestEmployerReview() {
 
                 <footer className="latest-review__card-footer">
                   <p className="latest-review__footer-text">
-                    {capitalize(review.role)} ·{" "}
+                    {getRoleLabel(review.role)} ·{" "}
                     {formatDateWithYear(review.job_date)}
                   </p>
                 </footer>

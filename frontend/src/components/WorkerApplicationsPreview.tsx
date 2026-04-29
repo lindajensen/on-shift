@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getAllApplications } from "../api/applications";
 import { formatDate, formatTime } from "../utils/date";
 import { getStatusLabel } from "../utils/formatters";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { WorkerApplicationPreview } from "../types";
 import { ChevronRight } from "lucide-react";
 
@@ -64,7 +64,7 @@ function WorkerApplicationsPreview() {
                     {application.restaurant_name}
                   </h3>
                   <p className="preview__meta">
-                    {capitalize(application.role)} ·{" "}
+                    {getRoleLabel(application.role)} ·{" "}
                     {formatDate(application.job_date)} kl.{" "}
                     {formatTime(application.start_time)} -{" "}
                     {formatTime(application.end_time)}

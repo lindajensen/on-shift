@@ -9,7 +9,7 @@ function AuthLayout() {
   if (!user) return <Outlet />;
 
   return (
-    <div className="layout">
+    <div className="layout auth-layout">
       <AuthHeader />
       <main className="layout__content">
         <Outlet />

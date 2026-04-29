@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getSavedWorkers } from "../api/employer";
-import { capitalize } from "../utils/text";
+import { getRoleLabel } from "../utils/formatters";
 import { getExperienceLevel } from "../utils/formatters";
 import { SavedWorkerPreview } from "../types";
 import { ChevronRight, Star, Bookmark } from "lucide-react";
@@ -61,7 +61,7 @@ function SavedWorkersPreview() {
           <div>
             <p className="empty-text">
               Du har ingen sparad personal än. Gå till "Hitta personal" för att
-              börja lägga till favoriter."
+              börja lägga till favoriter.
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ function SavedWorkersPreview() {
                   {savedWorker.roles.map((role, index) => (
                     <li key={index} className="card-list__role-item">
                       {" "}
-                      {capitalize(role.role)} |{" "}
+                      {getRoleLabel(role.role)} |{" "}
                       {getExperienceLevel(role.experience_level)}
                     </li>
                   ))}

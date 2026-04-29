@@ -30,6 +30,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <Home size={22} />
                 <span>Hem</span>
               </NavLink>
+
               <NavLink
                 to="/jobb"
                 className={({ isActive }) =>
@@ -39,6 +40,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <Search size={22} />
                 <span>Hitta pass</span>
               </NavLink>
+
               <NavLink
                 to="/ansokningar"
                 className={({ isActive }) =>
@@ -48,6 +50,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <ClipboardList size={22} />
                 <span>Ansökningar</span>
               </NavLink>
+
               <NavLink
                 to="/profil"
                 className={({ isActive }) =>
@@ -62,6 +65,9 @@ function BottomNav({ role }: BottomNavProps) {
         ) : (
           <>
             <nav className="bottom-nav">
+              <p className="bottom-nav__logo">
+                <span>on</span>Shift
+              </p>
               <NavLink
                 to="/dashboard"
                 className={({ isActive }) =>
@@ -71,6 +77,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <Home size={22} />
                 <span>Hem</span>
               </NavLink>
+
               <NavLink
                 to="/personal"
                 className={({ isActive }) =>

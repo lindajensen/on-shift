@@ -72,9 +72,9 @@
     width: 100%;
   }
 
-  .layout__content {
+  /* .layout__content {
     margin-left: 13rem;
-  }
+  } */
 
   .bottom-nav__item svg {
     padding: 0;
