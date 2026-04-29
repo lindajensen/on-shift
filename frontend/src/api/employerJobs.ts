@@ -1,4 +1,8 @@
-import { EmployerJobListing, EmployerApplicationPreview } from "../types";
+import {
+  EmployerJobListing,
+  EmployerApplicationPreview,
+  JobFormData,
+} from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -46,6 +50,39 @@ export async function getJobApplications(): Promise<
   return response.json();
 }
 
+/**
+ * Creates a new job listing for the logged in restaurant.
+ * @param jobData - The data for the new job listing.
+ * @returns A promise that resolves to the created job listing.
+ * @throws An error if the request fails.
+ */
+export async function createJobListing(
+  jobData: JobFormData,
+): Promise<EmployerJobListing> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/jobs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(jobData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte skapa annonsen. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Deletes a job listing by its ID.
+ * @param id - The ID of the job listing to delete.
+ * @returns A promise that resolves when the job listing is deleted.
+ * @throws An error if the request fails.
+ */
 export async function deleteJobListing(id: number): Promise<void> {
   const token = localStorage.getItem("token");
 
