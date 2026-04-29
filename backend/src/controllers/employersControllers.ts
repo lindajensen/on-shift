@@ -34,6 +34,7 @@ export async function getJobListings(
         j.available_slots,
         j.description,
         j.is_urgent,
+        j.requires_experience,
         j.status,
         COUNT(a.id) AS application_count
       FROM job j
@@ -203,6 +204,14 @@ export async function createJobListing(
 ): Promise<void> {
   const user = request.user;
 
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
   const {
     role,
     date,
@@ -212,23 +221,16 @@ export async function createJobListing(
     availableSlots,
     description,
     isUrgent,
+    requires_experience,
   } = request.body;
-
-  if (!user) {
-    response.status(401).json({ message: "Åtkomst nekad" });
-
-    return;
-  }
-
-  const userId = user.userId;
 
   try {
     const result = await pool.query(
       `
-      INSERT INTO job (employer_id, role, description, compensation, job_date, start_time, end_time, available_slots, is_urgent)
+      INSERT INTO job (employer_id, role, description, compensation, job_date, start_time, end_time, available_slots, is_urgent, requires_experience)
       VALUES (
         (SELECT id FROM employer_profile WHERE user_id = $1),
-        $2, $3, $4, $5, $6, $7, $8, $9
+        $2, $3, $4, $5, $6, $7, $8, $9, $10
       )
       RETURNING *
       `,
@@ -242,6 +244,7 @@ export async function createJobListing(
         endTime,
         availableSlots,
         isUrgent,
+        requires_experience,
       ],
     );
 
