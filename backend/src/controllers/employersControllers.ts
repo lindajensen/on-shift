@@ -53,6 +53,65 @@ export async function getJobListings(
   }
 }
 
+export async function getJobDetails(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const { id } = request.params;
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const jobDetails = await pool.query(
+      `
+      SELECT
+        j.id,
+        j.role,
+        j.job_date,
+        j.start_time,
+        j.end_time,
+        j.compensation,
+        j.available_slots,
+        j.description,
+        j.demands,
+        j.is_urgent,
+        j.requires_experience,
+        j.status,
+        ep.address AS location,
+        JSON_AGG(
+          json_build_object(
+            'id', a.id,
+            'worker_name', wp.name,
+            'role', (SELECT role FROM worker_role WHERE worker_id = wp.id LIMIT 1),
+            'experience_level', (SELECT experience_level FROM worker_role WHERE worker_id = wp.id LIMIT 1),
+            'status', a.status,
+            'rating', (SELECT ROUND(AVG(r.rating)::numeric, 1) FROM review r WHERE r.reviewee_id = wp.user_id)
+          )
+        ) FILTER (WHERE a.id IS NOT NULL) AS applications
+      FROM job j
+      LEFT JOIN application a ON a.job_id = j.id
+      LEFT JOIN worker_profile wp ON a.worker_id = wp.id
+      JOIN employer_profile ep ON j.employer_id = ep.id
+      WHERE j.id = $1 AND ep.user_id = $2
+      GROUP BY j.id, ep.address
+      `,
+      [id, userId],
+    );
+
+    response.status(200).json(jobDetails.rows[0]);
+  } catch (error) {
+    console.error("getJobDetails error:", error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
 /**
  * Fetches all applications submitted to the logged in restaurants's job listings.
  * @param request - The request object.
@@ -220,6 +279,7 @@ export async function createJobListing(
     compensation,
     availableSlots,
     description,
+    demands,
     isUrgent,
     requires_experience,
   } = request.body;
@@ -227,10 +287,10 @@ export async function createJobListing(
   try {
     const result = await pool.query(
       `
-      INSERT INTO job (employer_id, role, description, compensation, job_date, start_time, end_time, available_slots, is_urgent, requires_experience)
+      INSERT INTO job (employer_id, role, description, compensation, job_date, start_time, end_time, available_slots, demands, is_urgent, requires_experience)
       VALUES (
         (SELECT id FROM employer_profile WHERE user_id = $1),
-        $2, $3, $4, $5, $6, $7, $8, $9, $10
+        $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
       )
       RETURNING *
       `,
@@ -243,6 +303,7 @@ export async function createJobListing(
         startTime,
         endTime,
         availableSlots,
+        demands,
         isUrgent,
         requires_experience,
       ],
@@ -254,6 +315,12 @@ export async function createJobListing(
   }
 }
 
+/**
+ * Updates an existing job listing if it belongs to the currently logged in restaurant.
+ * @param request - The request object
+ * @param response - The resposne obkect
+ * @returns A JSON object of the updated job listing, or an error message if something went wrong.
+ */
 export async function updateJobListing(
   request: Request,
   response: Response,
@@ -277,6 +344,7 @@ export async function updateJobListing(
     compensation,
     availableSlots,
     description,
+    demands,
     isUrgent,
     requires_experience,
   } = request.body;
@@ -294,9 +362,10 @@ export async function updateJobListing(
         end_time = $7,
         available_slots = $8,
         is_urgent = $9,
-        requires_experience = $10
+        requires_experience = $10,
+        demands = $11
       WHERE id = $1
-      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $11)
+      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $12)
       RETURNING *
       `,
       [
@@ -310,6 +379,7 @@ export async function updateJobListing(
         availableSlots,
         isUrgent,
         requires_experience,
+        demands,
         userId,
       ],
     );

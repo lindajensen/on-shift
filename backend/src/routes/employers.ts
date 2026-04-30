@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   getJobListings,
+  getJobDetails,
   getEmployerApplications,
   getSavedWorkers,
   getEmployerReviews,
@@ -13,6 +14,7 @@ import { authenticateToken } from "../middleware/auth";
 const router = Router();
 
 router.get("/jobs", authenticateToken, getJobListings);
+router.get("/jobs/:id", authenticateToken, getJobDetails);
 router.get("/applications", authenticateToken, getEmployerApplications);
 router.get("/saved-workers", authenticateToken, getSavedWorkers);
 router.get("/reviews", authenticateToken, getEmployerReviews);
