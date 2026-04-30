@@ -24,6 +24,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     job?.available_slots?.toString() || "",
   );
   const [description, setDescription] = useState(job?.description || "");
+  const [demands, setDemands] = useState(job?.demands || "");
   const [isUrgent, setIsUrgent] = useState(job?.is_urgent || false);
   const [requiresExperience, setRequiresExperience] = useState(
     job?.requires_experience || false,
@@ -31,9 +32,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
   const [errors, setErrors] = useState<JobModalErrors>({});
   const [serverError, setServerError] = useState("");
 
-  //TODO: Funkar toggle?
-  //TODO: Claude Design Code header???
-  //TODO: Move serverError rendering
+  //? Move serverError rendering
 
   function handleUrgentToggle() {
     const updatedUrgency = !isUrgent;
@@ -86,6 +85,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
       compensation,
       availableSlots,
       description,
+      demands,
       isUrgent,
       requires_experience: requiresExperience,
     };
@@ -269,6 +269,23 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);
+            }}
+          ></textarea>
+        </div>
+
+        <div className="job-modal__field">
+          <label className="job-modal__label" htmlFor="demands">
+            Krav (valfritt)
+          </label>
+          <textarea
+            className="job-modal__textarea"
+            name="demands"
+            id="demands"
+            rows={4}
+            placeholder="Skriv ett krav per rad, t.ex. Erfarenhet av kassasystem..."
+            value={demands}
+            onChange={(e) => {
+              setDemands(e.target.value);
             }}
           ></textarea>
         </div>
