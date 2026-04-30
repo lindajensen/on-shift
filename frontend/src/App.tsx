@@ -15,7 +15,8 @@ import JobsPage from "./pages/JobsPage";
 import JobDetailsPage from "./pages/JobDetailsPage";
 
 import Dashboard from "./pages/Dashboard";
-import JobListingsPage from "./pages/JobListingsPage";
+import EmployerJobListingsPage from "./pages/EmployerJobListingsPage";
+import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -36,7 +37,11 @@ const router = createBrowserRouter(
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/mina-annonser" element={<JobListingsPage />} />
+          <Route path="/mina-annonser" element={<EmployerJobListingsPage />} />
+          <Route
+            path="/mina-annonser/:id"
+            element={<EmployerJobDetailsPage />}
+          />
         </Route>
       </Route>
     </>,
