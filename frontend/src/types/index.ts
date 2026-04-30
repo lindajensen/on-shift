@@ -74,6 +74,7 @@ export interface EmployerApplicationDetail {
   role: string;
   experience_level: string;
   status: string;
+  rating: number | null;
 }
 
 export interface Restaurant {
