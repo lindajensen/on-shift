@@ -7,6 +7,8 @@ import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
 
 import JobInfoSection from "../components/JobInfoSection";
 import ApplicationsSection from "../components/ApplicationsSection";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 import "../styles/EmployerJobDetailsPage.css";
 
@@ -16,6 +18,7 @@ function EmployerJobDetailsPage() {
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
 
@@ -45,11 +48,11 @@ function EmployerJobDetailsPage() {
     fetchJobDetails();
   }, [id]);
 
-  if (!job) return;
+  if (isLoading) return <LoadingSpinner subtitle="Hämtar annons" />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!job) return <ErrorMessage message="Ingen annons hittades" />;
 
   //TODO: Delete and Edit
-  //TODO: Loading (skeleton) or spinner
-  //TODO: Errorhandling
   //TODO: Accessibility
   //TODO: Desktop
   //TODO: Fix hover styling dropdown menu
