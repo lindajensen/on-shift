@@ -16,9 +16,9 @@ import ErrorMessage from "../components/ErrorMessage";
 
 import { Plus, Clock, Edit, Trash2, CalendarX2 } from "lucide-react";
 
-import "../styles/JobListingsPage.css";
+import "../styles/EmployerJobListingsPage.css";
 
-function JobListingsPage() {
+function EmployerJobListingsPage() {
   const [employerJobListings, setEmployerJobListings] = useState<
     EmployerJobListing[]
   >([]);
@@ -159,7 +159,7 @@ function JobListingsPage() {
                   {activeListings.map((job) => (
                     <li key={job.id} className="job-listings-page__item">
                       <Link
-                        to={`/annonser/${job.id}`}
+                        to={`/mina-annonser/${job.id}`}
                         className="job-listings-page__card-link"
                       >
                         <article className="job-listings-page__card">
@@ -342,4 +342,4 @@ function JobListingsPage() {
   );
 }
 
-export default JobListingsPage;
+export default EmployerJobListingsPage;
