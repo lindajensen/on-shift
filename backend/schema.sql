@@ -56,6 +56,7 @@ CREATE TABLE job (
   employer_id INTEGER NOT NULL,
   role TEXT NOT NULL,
   description TEXT,
+  demands TEXT,
   compensation NUMERIC (10, 2) NOT NULL,
   job_date DATE NOT NULL,
   start_time TIME NOT NULL,
