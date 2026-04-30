@@ -65,7 +65,7 @@ function JobInfoSection({
           </div>
 
           <div>
-            <span className="job-info__label">Ersätting</span>
+            <span className="job-info__label">Ersättning</span>
             <span className="job-info__value">
               {formatCompensation(compensation)}
             </span>
