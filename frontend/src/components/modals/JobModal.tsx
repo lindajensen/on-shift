@@ -1,18 +1,27 @@
 import { useState } from "react";
-import { EmployerJobListing, JobModalErrors, JobFormData } from "../../types";
+import {
+  EmployerJobListing,
+  EmployerJobDetails,
+  JobModalErrors,
+  JobFormData,
+} from "../../types";
 import { Asterisk } from "lucide-react";
 
 import "../../styles/modals/JobModal.css";
 
 interface JobModalProps {
-  job: EmployerJobListing | null;
+  job: EmployerJobListing | EmployerJobDetails | null;
   onClose: () => void;
   onSave: (jobData: JobFormData) => Promise<void>;
 }
 
 function JobModal({ job, onClose, onSave }: JobModalProps) {
   const [role, setRole] = useState(job?.role || "");
-  const [date, setDate] = useState(job?.job_date?.split("T")[0] || "");
+  const [date, setDate] = useState(() => {
+    if (!job?.job_date) return "";
+    const date = new Date(job.job_date);
+    return date.toLocaleDateString("sv-SE");
+  });
   const [startTime, setStartTime] = useState(job?.start_time || "");
   const [endTime, setEndTime] = useState(job?.end_time || "");
   const [compensation, setCompensation] = useState(
