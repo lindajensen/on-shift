@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   getRoleLabel,
@@ -21,20 +21,25 @@ import "../styles/ApplicationsSection.css";
 
 interface ApplicationsSectionProps {
   applications: EmployerApplicationDetail[] | null;
+  openMenuId: number | null;
+  setOpenMenuId: (id: number | null) => void;
+  onOpen: () => void;
 }
 
-function ApplicationsSection({ applications }: ApplicationsSectionProps) {
-  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
-
+function ApplicationsSection({
+  applications,
+  openMenuId,
+  setOpenMenuId,
+  onOpen,
+}: ApplicationsSectionProps) {
   useEffect(() => {
     function handleClickOutside() {
       setOpenMenuId(null);
     }
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  }, [setOpenMenuId]);
 
-  //TODO: Rating
   //TODO: CV button <a href={cv_url} target="_blank">
   //TODO: Anställ button
   //TODO: Message button
@@ -83,6 +88,9 @@ function ApplicationsSection({ applications }: ApplicationsSectionProps) {
                         className="application-card__more"
                         onClick={(e) => {
                           e.stopPropagation();
+                          if (openMenuId !== application.id) {
+                            onOpen();
+                          }
                           setOpenMenuId(
                             openMenuId === application.id
                               ? null
@@ -113,7 +121,7 @@ function ApplicationsSection({ applications }: ApplicationsSectionProps) {
                     <ul className="application-card__menu-list">
                       <li className="application-card__menu-item">
                         <User2 size={16} />
-                        <Link to="x" className="application-card__menu-btn">
+                        <Link to="#" className="application-card__menu-btn">
                           Gå till profil
                         </Link>
                       </li>
