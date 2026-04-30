@@ -2,6 +2,7 @@ import {
   EmployerJobListing,
   EmployerApplicationPreview,
   JobFormData,
+  EmployerJobDetails,
 } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -22,6 +23,28 @@ export async function getAllJobListings(): Promise<EmployerJobListing[]> {
 
   if (!response.ok) {
     throw new Error("Kunde inte hämta annonser. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetches the details of a specific job listing by its ID.
+ * @param id - The ID of the job listing to fetch.
+ * @returns A promise that resolves to the job listing details.
+ * @throws An error if the request fails.
+ */
+export async function getJobDetails(id: number): Promise<EmployerJobDetails> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/jobs/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta annonsen. Försök igen senare.");
   }
 
   return response.json();
