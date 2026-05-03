@@ -93,8 +93,15 @@ function EmployerJobDetailsPage() {
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Ingen annons hittades" />;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const jobDate = new Date(job.job_date);
+  jobDate.setHours(0, 0, 0, 0);
+  const isPastDate = jobDate < today;
+
+  const isFilled = job.status === "filled";
+
   //TODO: Accessibility
-  //TODO: Desktop
   //TODO: Fix hover styling dropdown menu
   //? Calculate available_spots if people are hired?
 
@@ -133,14 +140,15 @@ function EmployerJobDetailsPage() {
                   <button
                     className="job-details-page__menu-btn"
                     onClick={() => setIsJobModalOpen(true)}
-                    disabled={job.status === "filled"}
+                    disabled={isFilled}
                   >
                     <Edit size={16} />
                     Redigera
                   </button>
                   {job.status === "closed" ? (
                     <button
-                      className="job-details-page__menu-btn"
+                      className="job-details-page__menu-btn job-details-page__menu-btn--reopen"
+                      disabled={isPastDate}
                       onClick={() => handleReopen(job.id)}
                     >
                       <RotateCcw size={16} />
@@ -149,6 +157,7 @@ function EmployerJobDetailsPage() {
                   ) : (
                     <button
                       className="job-details-page__menu-btn job-details-page__menu-btn--danger"
+                      disabled={isFilled}
                       onClick={() => setJobToClose(job.id)}
                     >
                       <XCircle size={16} />

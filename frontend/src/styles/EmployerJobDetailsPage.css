@@ -44,10 +44,6 @@
   border: none;
 }
 
-.job-details-page__header .job-card__tags {
-  margin-top: 0.3rem;
-}
-
 /* Drop Down Menu */
 .job-details-page__menu {
   position: absolute;
@@ -91,4 +87,17 @@
 
 .job-details-page__menu-btn--danger {
   color: var(--color-error);
+}
+
+.job-details-page__menu-btn--danger:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.job-details-page__menu-btn--reopen {
+  color: #2e7d32;
+}
+
+.job-details-page__header .job-card__tags {
+  margin-top: 0.3rem;
 }
