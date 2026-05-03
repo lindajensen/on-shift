@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getJobDetails } from "../api/employerJobs";
+import {
+  getJobDetails,
+  updateJobListing,
+  closeJobListing,
+  reopenJobListing,
+} from "../api/employerJobs";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
-import { EmployerJobDetails } from "../types";
-import { MoreHorizontal, Edit, Trash2 } from "lucide-react";
+import { EmployerJobDetails, JobFormData } from "../types";
+import { MoreHorizontal, Edit, XCircle, RotateCcw } from "lucide-react";
 
 import JobInfoSection from "../components/JobInfoSection";
 import ApplicationsSection from "../components/ApplicationsSection";
+import Modal from "../components/modals/Modal";
+import JobModal from "../components/modals/JobModal";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -16,6 +23,7 @@ function EmployerJobDetailsPage() {
   const [job, setJob] = useState<EmployerJobDetails | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +48,7 @@ function EmployerJobDetailsPage() {
         setJob(data);
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
+        setError("Ingen annons hittades");
       } finally {
         setIsLoading(false);
       }
@@ -48,89 +57,152 @@ function EmployerJobDetailsPage() {
     fetchJobDetails();
   }, [id]);
 
+  async function handleSave(jobData: JobFormData) {
+    try {
+      const updatedJob = await updateJobListing(jobData, job!.id);
+      setJob({ ...updatedJob, applications: job!.applications });
+      setIsJobModalOpen(false);
+    } catch (error) {
+      console.error("Kunde inte spara annonsen", error);
+    }
+  }
+
+  async function handleClose(id: number) {
+    try {
+      await closeJobListing(id);
+      setJob((prev) => (prev ? { ...prev, status: "closed" } : prev));
+      setIsMenuOpen(false);
+    } catch (error) {
+      console.error("Kunde inte avsluta annonsen", error);
+    }
+  }
+
+  async function handleReopen(id: number) {
+    try {
+      await reopenJobListing(id);
+      setJob((prev) => (prev ? { ...prev, status: "active" } : prev));
+      setIsMenuOpen(false);
+    } catch (error) {
+      console.error("Kunde inte återaktivera annonsen", error);
+    }
+  }
+
   if (isLoading) return <LoadingSpinner subtitle="Hämtar annons" />;
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Ingen annons hittades" />;
 
-  //TODO: Delete and Edit
+  //TODO: Avsluta/återaktivera annons
   //TODO: Accessibility
   //TODO: Desktop
   //TODO: Fix hover styling dropdown menu
   //? Calculate available_spots if people are hired?
 
   return (
-    <section className="job-details-page">
-      <div className="section__inner">
-        <header className="job-details-page__header">
-          <div className="job-details-page__status-row">
-            <div
-              className={`job-details-page__indicator job-details-page__indicator--${job.status}`}
-            ></div>
-            <p className="job-details-page__status">
-              {getJobStatusLabel(job.status)}
-            </p>
-          </div>
+    <>
+      <section className="job-details-page">
+        <div className="section__inner">
+          <header className="job-details-page__header">
+            <div className="job-details-page__status-row">
+              <div
+                className={`job-details-page__indicator job-details-page__indicator--${job.status}`}
+              ></div>
+              <p className="job-details-page__status">
+                {getJobStatusLabel(job.status)}
+              </p>
+            </div>
 
-          <div className="job-details-page__title-row">
-            <h1 className="job-details-page__title">
-              {getRoleLabel(job.role)}
-            </h1>
-            <button
-              className="job-details-page__more-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpenMenuId(null);
-                setIsMenuOpen(!isMenuOpen);
-              }}
-            >
-              <MoreHorizontal size={24} />
-            </button>
+            <div className="job-details-page__title-row">
+              <h1 className="job-details-page__title">
+                {getRoleLabel(job.role)}
+              </h1>
+              <button
+                className="job-details-page__more-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenMenuId(null);
+                  setIsMenuOpen(!isMenuOpen);
+                }}
+              >
+                <MoreHorizontal size={24} />
+              </button>
 
-            {/* Drop Down Menu */}
-            {isMenuOpen && (
-              <div className="job-details-page__menu">
-                <button className="job-details-page__menu-btn">
-                  <Edit size={16} />
-                  Redigera
-                </button>
-                <button className="job-details-page__menu-btn job-details-page__menu-btn--danger">
-                  <Trash2 size={16} />
-                  Ta bort
-                </button>
-              </div>
-            )}
-          </div>
+              {/* Drop Down Menu */}
+              {isMenuOpen && (
+                <div className="job-details-page__menu">
+                  <button
+                    className="job-details-page__menu-btn"
+                    onClick={() => setIsJobModalOpen(true)}
+                    disabled={job.status === "filled"}
+                  >
+                    <Edit size={16} />
+                    Redigera
+                  </button>
+                  {job.status === "closed" ? (
+                    <button
+                      className="job-details-page__menu-btn"
+                      onClick={() => handleReopen(job.id)}
+                    >
+                      <RotateCcw size={16} />
+                      Återaktivera annons
+                    </button>
+                  ) : (
+                    <button
+                      className="job-details-page__menu-btn job-details-page__menu-btn--danger"
+                      onClick={() => handleClose(job.id)}
+                    >
+                      <XCircle size={16} />
+                      Avsluta annons
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
 
-          <div className="job-card__tags">
-            {job.is_urgent && <span className="badge badge--accent">Akut</span>}
-            {job.requires_experience && (
-              <span className="badge badge--accent">Erfarenhet</span>
-            )}
-          </div>
-        </header>
+            <div className="job-card__tags">
+              {job.is_urgent && (
+                <span className="badge badge--accent">Akut</span>
+              )}
+              {job.requires_experience && (
+                <span className="badge badge--accent">Erfarenhet</span>
+              )}
+            </div>
+          </header>
 
-        <div className="divider"></div>
+          <div className="divider"></div>
 
-        <JobInfoSection
-          job_date={job.job_date}
-          start_time={job.start_time}
-          end_time={job.end_time}
-          compensation={job.compensation}
-          available_slots={job.available_slots}
-          description={job.description}
-          demands={job.demands}
-          is_urgent={job.is_urgent}
-          requires_experience={job.requires_experience}
+          <JobInfoSection
+            job_date={job.job_date}
+            start_time={job.start_time}
+            end_time={job.end_time}
+            compensation={job.compensation}
+            available_slots={job.available_slots}
+            description={job.description}
+            demands={job.demands}
+            is_urgent={job.is_urgent}
+            requires_experience={job.requires_experience}
+          />
+
+          <ApplicationsSection
+            applications={job.applications}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
+            onOpen={() => setIsMenuOpen(false)}
+          />
+        </div>
+      </section>
+
+      <Modal
+        isOpen={isJobModalOpen}
+        onClose={() => setIsJobModalOpen(false)}
+        showCloseButton={false}
+      >
+        <JobModal
+          job={job}
+          onClose={() => setIsJobModalOpen(false)}
+          onSave={handleSave}
         />
-
-        <ApplicationsSection
-          applications={job.applications}
-          openMenuId={openMenuId}
-          setOpenMenuId={setOpenMenuId}
-          onOpen={() => setIsMenuOpen(false)}
-        />
-      </div>
-    </section>
+      </Modal>
+    </>
   );
 }
 
