@@ -16,11 +16,11 @@
 }
 
 .job-details-page__indicator--active {
-  background-color: #22c55e;
+  background-color: var(--color-success);
 }
 
 .job-details-page__indicator--filled {
-  background-color: #3b82f6;
+  background-color: #1a6eb5;
 }
 
 .job-details-page__indicator--closed {
@@ -42,6 +42,10 @@
 .job-details-page__more-btn {
   background: none;
   border: none;
+}
+
+.job-details-page__header .job-card__tags {
+  margin-top: 0.3rem;
 }
 
 /* Drop Down Menu */
