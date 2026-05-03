@@ -21,6 +21,8 @@ import "../styles/EmployerJobDetailsPage.css";
 
 function EmployerJobDetailsPage() {
   const [job, setJob] = useState<EmployerJobDetails | null>(null);
+  const [jobToClose, setJobToClose] = useState<number | null>(null);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
@@ -91,7 +93,6 @@ function EmployerJobDetailsPage() {
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Ingen annons hittades" />;
 
-  //TODO: Avsluta/återaktivera annons
   //TODO: Accessibility
   //TODO: Desktop
   //TODO: Fix hover styling dropdown menu
@@ -148,7 +149,7 @@ function EmployerJobDetailsPage() {
                   ) : (
                     <button
                       className="job-details-page__menu-btn job-details-page__menu-btn--danger"
-                      onClick={() => handleClose(job.id)}
+                      onClick={() => setJobToClose(job.id)}
                     >
                       <XCircle size={16} />
                       Avsluta annons
@@ -202,6 +203,35 @@ function EmployerJobDetailsPage() {
           onSave={handleSave}
         />
       </Modal>
+
+      {jobToClose && (
+        <div className="confirm-overlay" onClick={() => setJobToClose(null)}>
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Avsluta annons?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill avsluta annonsen? Nya ansökningar
+              kommer inte längre att tas emot.
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setJobToClose(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className=" btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  handleClose(jobToClose);
+                  setJobToClose(null);
+                }}
+              >
+                Avsluta annons
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
