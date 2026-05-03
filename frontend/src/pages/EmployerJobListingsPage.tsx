@@ -4,7 +4,8 @@ import {
   getAllJobListings,
   createJobListing,
   updateJobListing,
-  deleteJobListing,
+  closeJobListing,
+  reopenJobListing,
 } from "../api/employerJobs";
 import { formatDate, formatTime } from "../utils/date";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
@@ -14,7 +15,14 @@ import Modal from "../components/modals/Modal";
 import JobModal from "../components/modals/JobModal";
 import ErrorMessage from "../components/ErrorMessage";
 
-import { Plus, Clock, Edit, Trash2, CalendarX2 } from "lucide-react";
+import {
+  Plus,
+  Clock,
+  Edit,
+  CalendarX2,
+  XCircle,
+  RotateCcw,
+} from "lucide-react";
 
 import "../styles/EmployerJobListingsPage.css";
 
@@ -25,7 +33,7 @@ function EmployerJobListingsPage() {
   const [selectedJob, setSelectedJob] = useState<EmployerJobListing | null>(
     null,
   );
-  const [jobToDelete, setJobToDelete] = useState<number | null>(null);
+  const [jobToClose, setJobToClose] = useState<number | null>(null);
 
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
 
@@ -48,17 +56,6 @@ function EmployerJobListingsPage() {
     }
     fetchEmployerJobListings();
   }, []);
-
-  async function handleDelete(id: number) {
-    try {
-      await deleteJobListing(id);
-      setEmployerJobListings((previous) =>
-        previous.filter((job) => job.id !== id),
-      );
-    } catch (error) {
-      console.error("Kunde inte ta bort passet", error);
-    }
-  }
 
   async function handleSave(jobData: JobFormData) {
     try {
@@ -89,12 +86,40 @@ function EmployerJobListingsPage() {
     }
   }
 
-  const activeListings = employerJobListings.filter(
-    (job) => job.status === "active" || job.status === "filled",
-  );
-  const closedListings = employerJobListings.filter(
-    (job) => job.status === "closed",
-  );
+  async function handleClose(id: number) {
+    try {
+      await closeJobListing(id);
+      setEmployerJobListings((prev) =>
+        prev.map((job) => (job.id === id ? { ...job, status: "closed" } : job)),
+      );
+    } catch (error) {
+      console.error("Kunde inte avsluta annonsen", error);
+    }
+  }
+
+  async function handleReopen(id: number) {
+    try {
+      await reopenJobListing(id);
+      await closeJobListing(id);
+      setEmployerJobListings((prev) =>
+        prev.map((job) => (job.id === id ? { ...job, status: "active" } : job)),
+      );
+    } catch (error) {
+      console.error("Kunde inte återaktivera annonsen", error);
+    }
+  }
+
+  const activeListings = employerJobListings
+    .filter((job) => job.status === "active" || job.status === "filled")
+    .sort(
+      (a, b) => new Date(a.job_date).getTime() - new Date(b.job_date).getTime(),
+    );
+
+  const closedListings = employerJobListings
+    .filter((job) => job.status === "closed")
+    .sort(
+      (a, b) => new Date(b.job_date).getTime() - new Date(a.job_date).getTime(),
+    );
 
   if (error) return <ErrorMessage message={error} />;
 
@@ -156,76 +181,95 @@ function EmployerJobListingsPage() {
                 </div>
               ) : (
                 <ul className="job-listings-page__list">
-                  {activeListings.map((job) => (
-                    <li key={job.id} className="job-listings-page__item">
-                      <Link
-                        to={`/mina-annonser/${job.id}`}
-                        className="job-listings-page__card-link"
-                      >
-                        <article className="job-listings-page__card">
-                          <header className="job-listings-page__card-header">
-                            <div
-                              className={`job-listings-page__card-indicator job-listings-page__card-indicator--${job.status}`}
-                            ></div>
-                            <p className="job-listings-page__card-status">
-                              {getJobStatusLabel(job.status)}
-                            </p>
-                          </header>
+                  {activeListings.map((job) => {
+                    const isFilled = job.status === "filled";
 
-                          <div className="job-listings-page__card-body">
-                            <h2 className="job-listings-page__card-role">
-                              {getRoleLabel(job.role)}
-                            </h2>
-                            <p className="job-listings-page__card-rate">
-                              {Number(job.compensation).toFixed(0)} kr/h
-                            </p>
-                          </div>
+                    return (
+                      <li key={job.id} className="job-listings-page__item">
+                        <Link
+                          to={`/mina-annonser/${job.id}`}
+                          className="job-listings-page__card-link"
+                        >
+                          <article className="job-listings-page__card">
+                            <header className="job-listings-page__card-header">
+                              <div
+                                className={`job-listings-page__card-indicator job-listings-page__card-indicator--${job.status}`}
+                              ></div>
+                              <p className="job-listings-page__card-status">
+                                {getJobStatusLabel(job.status)}
+                              </p>
+                            </header>
 
-                          <div className="job-listings-page__card-meta">
-                            <Clock size={14} />
-                            <p className="job-listings-page__card-meta-text">
-                              {formatDate(job.job_date)} kl.{" "}
-                              {formatTime(job.start_time)} -{" "}
-                              {formatTime(job.end_time)}
-                            </p>
-                          </div>
-
-                          <div className="divider"></div>
-
-                          <div className="job-listings-page__card-footer">
-                            <span className="badge badge--accent">
-                              {parseInt(job.application_count)}{" "}
-                              {parseInt(job.application_count) === 1
-                                ? "ansökning"
-                                : "ansökningar"}
-                            </span>
-
-                            <div className="job-listings-page__card-actions">
-                              <button
-                                className="job-listings-page__card-edit-btn"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setSelectedJob(job);
-                                  setIsJobModalOpen(true);
-                                }}
-                              >
-                                <Edit size={20} />
-                              </button>
-                              <button
-                                className="job-listings-page__card-delete-btn"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setJobToDelete(job.id);
-                                }}
-                              >
-                                <Trash2 size={20} />
-                              </button>
+                            <div className="job-listings-page__card-body">
+                              <h2 className="job-listings-page__card-role">
+                                {getRoleLabel(job.role)}
+                              </h2>
+                              <p className="job-listings-page__card-rate">
+                                {Number(job.compensation).toFixed(0)} kr/h
+                              </p>
                             </div>
-                          </div>
-                        </article>
-                      </Link>
-                    </li>
-                  ))}
+
+                            <div className="job-listings-page__card-meta">
+                              <Clock size={14} />
+                              <p className="job-listings-page__card-meta-text">
+                                {formatDate(job.job_date)} kl.{" "}
+                                {formatTime(job.start_time)} -{" "}
+                                {formatTime(job.end_time)}
+                              </p>
+                            </div>
+
+                            <div className="divider"></div>
+
+                            <div className="job-listings-page__card-footer">
+                              <span className="badge badge--accent">
+                                {parseInt(job.application_count)}{" "}
+                                {parseInt(job.application_count) === 1
+                                  ? "ansökning"
+                                  : "ansökningar"}
+                              </span>
+
+                              <div className="job-listings-page__card-actions">
+                                <button
+                                  className="job-listings-page__card-edit-btn"
+                                  disabled={isFilled}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    setSelectedJob(job);
+                                    setIsJobModalOpen(true);
+                                  }}
+                                >
+                                  <Edit size={20} />
+                                </button>
+
+                                {job.status === "closed" ? (
+                                  <button
+                                    className="job-listings-page__card-reopen-btn"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleReopen(job.id);
+                                    }}
+                                  >
+                                    <RotateCcw size={20} />
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="job-listings-page__card-close-btn"
+                                    disabled={isFilled}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setJobToClose(job.id);
+                                    }}
+                                  >
+                                    <XCircle size={20} />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </article>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </>
@@ -244,54 +288,75 @@ function EmployerJobListingsPage() {
                 </div>
               ) : (
                 <ul className="job-listings-page__list">
-                  {closedListings.map((job) => (
-                    <li key={job.id} className="job-listings-page__item">
-                      <Link
-                        to={`/annonser/${job.id}`}
-                        className="job-listings-page__card-link"
-                      >
-                        <article className="job-listings-page__card">
-                          <header className="job-listings-page__card-header">
-                            <div
-                              className={`job-listings-page__card-indicator job-listings-page__card-indicator--${job.status}`}
-                            ></div>
-                            <p className="job-listings-page__card-status">
-                              {getJobStatusLabel(job.status)}
-                            </p>
-                          </header>
+                  {closedListings.map((job) => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const jobDate = new Date(job.job_date);
+                    jobDate.setHours(0, 0, 0, 0);
+                    const isPastDate = jobDate < today;
 
-                          <div className="job-listings-page__card-body">
-                            <h2 className="job-listings-page__card-role">
-                              {getRoleLabel(job.role)}
-                            </h2>
-                            <p className="job-listings-page__card-rate">
-                              {Number(job.compensation).toFixed(0)} kr/h
-                            </p>
-                          </div>
+                    return (
+                      <li key={job.id} className="job-listings-page__item">
+                        <Link
+                          to={`/mina-annonser/${job.id}`}
+                          className="job-listings-page__card-link"
+                        >
+                          <article className="job-listings-page__card">
+                            <header className="job-listings-page__card-header">
+                              <div
+                                className={`job-listings-page__card-indicator job-listings-page__card-indicator--${job.status}`}
+                              ></div>
+                              <p className="job-listings-page__card-status">
+                                {getJobStatusLabel(job.status)}
+                              </p>
+                            </header>
 
-                          <div className="job-listings-page__card-meta">
-                            <Clock size={14} />
-                            <p className="job-listings-page__card-meta-text">
-                              {formatDate(job.job_date)} kl.{" "}
-                              {formatTime(job.start_time)} -{" "}
-                              {formatTime(job.end_time)}
-                            </p>
-                          </div>
+                            <div className="job-listings-page__card-body">
+                              <h2 className="job-listings-page__card-role">
+                                {getRoleLabel(job.role)}
+                              </h2>
+                              <p className="job-listings-page__card-rate">
+                                {Number(job.compensation).toFixed(0)} kr/h
+                              </p>
+                            </div>
 
-                          <div className="divider"></div>
+                            <div className="job-listings-page__card-meta">
+                              <Clock size={14} />
+                              <p className="job-listings-page__card-meta-text">
+                                {formatDate(job.job_date)} kl.{" "}
+                                {formatTime(job.start_time)} -{" "}
+                                {formatTime(job.end_time)}
+                              </p>
+                            </div>
 
-                          <div className="job-listings-page__card-footer">
-                            <span className="badge badge--accent">
-                              {parseInt(job.application_count)}{" "}
-                              {parseInt(job.application_count) === 1
-                                ? "ansökning"
-                                : "ansökningar"}
-                            </span>
-                          </div>
-                        </article>
-                      </Link>
-                    </li>
-                  ))}
+                            <div className="divider"></div>
+
+                            <div className="job-listings-page__card-footer">
+                              <span className="badge badge--accent">
+                                {parseInt(job.application_count)}{" "}
+                                {parseInt(job.application_count) === 1
+                                  ? "ansökning"
+                                  : "ansökningar"}
+                              </span>
+
+                              <div className="job-listings-page__card-actions">
+                                <button
+                                  className="job-listings-page__card-reopen-btn"
+                                  disabled={isPastDate}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    handleReopen(job.id);
+                                  }}
+                                >
+                                  <RotateCcw size={20} />
+                                </button>
+                              </div>
+                            </div>
+                          </article>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </>
@@ -311,28 +376,29 @@ function EmployerJobListingsPage() {
         />
       </Modal>
 
-      {jobToDelete && (
-        <div className="confirm-overlay" onClick={() => setJobToDelete(null)}>
+      {jobToClose && (
+        <div className="confirm-overlay" onClick={() => setJobToClose(null)}>
           <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
-            <h3 className="confirm-dialog__heading">Ta bort annons?</h3>
+            <h3 className="confirm-dialog__heading">Avsluta annons?</h3>
             <p className="confirm-dialog__subheading">
-              Vill du verkligen ta bort annonsen? Åtgärden kan inte ångras.
+              Är du säker på att du vill avsluta annonsen? Nya ansökningar
+              kommer inte längre att tas emot.
             </p>
             <div className="confirm-buttons">
               <button
                 className="btn confirm-button confirm-button--cancel"
-                onClick={() => setJobToDelete(null)}
+                onClick={() => setJobToClose(null)}
               >
                 Avbryt
               </button>
               <button
                 className=" btn confirm-button confirm-button--delete"
                 onClick={() => {
-                  handleDelete(jobToDelete);
-                  setJobToDelete(null);
+                  handleClose(jobToClose);
+                  setJobToClose(null);
                 }}
               >
-                Ta bort
+                Avsluta annons
               </button>
             </div>
           </div>

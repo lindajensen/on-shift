@@ -106,7 +106,8 @@
 }
 
 .job-listings-page__card-edit-btn,
-.job-listings-page__card-delete-btn {
+.job-listings-page__card-close-btn,
+.job-listings-page__card-reopen-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,13 +126,33 @@
   background-color: #e5e7eb;
 }
 
-.job-listings-page__card-delete-btn {
+.job-listings-page__card-close-btn {
   background-color: #fce8e8;
   color: #c62828;
 }
 
-.job-listings-page__card-delete-btn:hover {
+.job-listings-page__card-close-btn:hover {
   background-color: #fbd5d5;
+}
+
+.job-listings-page__card-reopen-btn {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.job-listings-page__card-reopen-btn:hover {
+  background-color: #d5ecd6;
+}
+
+.job-listings-page__card-reopen-btn:disabled,
+.job-listings-page__card-close-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.job-listings-page__card-edit-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
 }
 
 .job-listings-page__skeleton {
