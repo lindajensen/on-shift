@@ -12,6 +12,8 @@ export function getStatusLabel(status: string): string {
 }
 
 export function getExperienceLevel(experience_level: string): string {
+  if (!experience_level) return "Okänd nivå";
+
   switch (experience_level) {
     case "beginner":
       return "Nybörjare";
@@ -40,6 +42,8 @@ export function getJobStatusLabel(status: string): string {
 }
 
 export function getRoleLabel(role: string): string {
+  if (!role) return "Okänt yrke";
+
   switch (role) {
     case "waiter":
       return "Servitör";

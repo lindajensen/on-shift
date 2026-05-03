@@ -47,8 +47,34 @@ export interface EmployerJobListing {
   status: string;
   application_count: string;
   description: string | null;
+  demands: string | null;
   is_urgent: boolean;
   requires_experience: boolean;
+}
+
+export interface EmployerJobDetails {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  available_slots: number;
+  description: string | null;
+  demands: string | null;
+  is_urgent: boolean;
+  requires_experience: boolean;
+  status: string;
+  applications: EmployerApplicationDetail[];
+}
+
+export interface EmployerApplicationDetail {
+  id: number;
+  worker_name: string;
+  role: string;
+  experience_level: string;
+  status: string;
+  rating: number | null;
 }
 
 export interface Restaurant {

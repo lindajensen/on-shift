@@ -2,6 +2,7 @@ import {
   EmployerJobListing,
   EmployerApplicationPreview,
   JobFormData,
+  EmployerJobDetails,
 } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -22,6 +23,28 @@ export async function getAllJobListings(): Promise<EmployerJobListing[]> {
 
   if (!response.ok) {
     throw new Error("Kunde inte hämta annonser. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetches the details of a specific job listing by its ID.
+ * @param id - The ID of the job listing to fetch.
+ * @returns A promise that resolves to the job listing details.
+ * @throws An error if the request fails.
+ */
+export async function getJobDetails(id: number): Promise<EmployerJobDetails> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/jobs/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta annonsen. Försök igen senare.");
   }
 
   return response.json();
@@ -97,6 +120,54 @@ export async function updateJobListing(jobData: JobFormData, id: number) {
   });
 
   return response.json();
+}
+
+/**
+ * Closes a job listing by its ID, changing its status to "closed".
+ * @param id - The ID of the job listing to close.
+ * @returns A promise that resolves when the job listing is closed.
+ * @throws An error if the request fails.
+ */
+export async function closeJobListing(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/jobs/${id}/close`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response) {
+    throw new Error("Kunde inte avsluta annonsen");
+  }
+}
+
+/**
+ * Reopens a job listing by its ID, changing its status to "active".
+ * @param id - The ID of the job listing to close.
+ * @returns A promise that resolves when the job listing is reopen.
+ * @throws An error if the request fails.
+ */
+export async function reopenJobListing(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/jobs/${id}/reopen`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response) {
+    throw new Error("Kunde inte avsluta annonsen");
+  }
 }
 
 /**

@@ -1,0 +1,59 @@
+.job-info__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.job-info__item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.job-info__icon-container {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-primary-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.job-info__item span {
+  display: flex;
+  flex-direction: column;
+}
+
+.job-info__label {
+  /* color: var(--color-text-muted); */
+  margin-bottom: 0.2rem;
+  font-weight: 600;
+}
+
+.job-info__section {
+  margin-bottom: 1rem;
+}
+
+.job-info__section-title {
+  /* color: var(--color-text-muted); */
+  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.job-info__requirement {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+/* Empty State */
+.job-info__section-text--empty {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
