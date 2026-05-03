@@ -391,12 +391,12 @@ export async function updateJobListing(
 }
 
 /**
- * Deletes a job listing if it belongs to the currently logged in restaurant.
- * @param request - The request object.
- * @param response - The response object.
- * @returns A success message if the listing was deleted, or an error message if something went wrong.
+ * Closes a job listing if it belongs to the currently logged in restaurant by setting its status to "closed".
+ * @param request - The request object
+ * @param response - The response object
+ * @returns A success message if the listing was closed, or an error message if something went wrong.
  */
-export async function deleteJobListing(
+export async function closeJobListing(
   request: Request,
   response: Response,
 ): Promise<void> {
@@ -413,12 +413,50 @@ export async function deleteJobListing(
 
   try {
     await pool.query(
-      `DELETE FROM job WHERE id = $1 AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)`,
+      `
+      UPDATE job SET status = 'closed' WHERE id = $1 AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      `,
       [id, userId],
     );
 
-    response.status(200).json({ message: "Annonsen har tagits bort" });
+    response.status(200).json({ message: "Annonsen har avslutats" });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Reopens a job listing if it belongs to the currently logged in restaurant by setting its status to "active".
+ * @param request - The request object
+ * @param response - The response object
+ * @returns A success message if the listing was repopened, or an error message if something went wrong.
+ */
+export async function reopenJobListing(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+      UPDATE job SET status = 'active' WHERE id = $1 AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      `,
+      [id, userId],
+    );
+
+    response.status(200).json({ message: "Annonsen har återaktiverats" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
