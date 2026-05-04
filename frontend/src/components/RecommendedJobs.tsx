@@ -4,7 +4,7 @@ import { getRecommendedJobs } from "../api/worker";
 import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { JobPreview } from "../types";
-import { ChevronRight, Clock, MapPin } from "lucide-react";
+import { ChevronRight, Clock, MapPin, SearchX } from "lucide-react";
 
 import "../styles/CardList.css";
 
@@ -49,7 +49,16 @@ function RecommendedJobs() {
         </ul>
       )}
 
-      {!isLoading && (
+      {!isLoading && jobs.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">
+            <SearchX size={18} />
+          </div>
+          <div>
+            <p className="empty-text">Inga rekommenderade pass hittades.</p>
+          </div>
+        </div>
+      ) : (
         <ul className="card-list__list">
           {jobs.slice(0, 3).map((job) => (
             <li key={job.id} className="card-list__item">
