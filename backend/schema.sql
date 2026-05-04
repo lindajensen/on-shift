@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS application CASCADE;
 DROP TABLE IF EXISTS review CASCADE;
 DROP TABLE IF EXISTS saved_worker CASCADE;
 DROP TABLE IF EXISTS saved_employer CASCADE;
+DROP TABLE IF EXISTS saved_job CASCADE;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -132,4 +133,14 @@ CREATE TABLE saved_employer (
 
   FOREIGN KEY (employer_id) REFERENCES employer_profile(id) ON DELETE CASCADE,
   FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
+);
+
+CREATE TABLE saved_job (
+  id SERIAL PRIMARY KEY,
+  worker_id INTEGER NOT NULL,
+  job_id INTEGER NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE (worker_id, job_id),
+  FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE,
+  FOREIGN KEY (job_id) REFERENCES job(id) ON DELETE CASCADE
 );

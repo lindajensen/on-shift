@@ -6,6 +6,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 import { getJobById } from "../api/jobs";
+import { saveJob, unsaveJob } from "../api/worker";
 import { useAuth } from "../context/useAuth";
 import { getRoleLabel, formatCompensation } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
@@ -17,6 +18,7 @@ import "../styles/JobDetailsPage.css";
 
 function JobDetailsPage() {
   const [job, setJob] = useState<PublicJobListing | null>(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,11 +45,29 @@ function JobDetailsPage() {
     fetchJobDetails();
   }, [id]);
 
+  async function handleSave(id: number) {
+    try {
+      await saveJob(id);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Kunde inte spara pass", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveJob(id);
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Kunde inte ta bort sparat pass", error);
+    }
+  }
+
   if (isLoading) return <LoadingSpinner subtitle="Hämtar pass" />;
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
-  //TODO: Implement Save and Apply functionality
+  //TODO: Implement Apply functionality
   //? Where put published date
 
   return (
@@ -57,7 +77,17 @@ function JobDetailsPage() {
           <div className="job-details__header-text">
             <div className="job-details__title-row">
               <h1 className="job-details__title">{getRoleLabel(job.role)}</h1>
-              <Bookmark size={30} />
+
+              {user?.role === "worker" && (
+                <button
+                  className={`job-details__bookmark-btn ${isSaved ? "job-details__bookmark-btn--saved" : ""}`}
+                  onClick={() =>
+                    isSaved ? handleUnsave(job.id) : handleSave(job.id)
+                  }
+                >
+                  <Bookmark size={20} />
+                </button>
+              )}
             </div>
             <p className="job-details__name">{job.restaurant_name}</p>
             <ul className="job-card__tags">

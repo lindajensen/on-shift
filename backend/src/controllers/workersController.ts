@@ -209,3 +209,79 @@ export async function getWorkerReviews(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Saves a job to the currently logged in worker's list of saved jobs.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the save operation.
+ */
+export async function saveJob(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { jobId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+      INSERT INTO saved_job (worker_id, job_id)
+      VALUES (
+        (SELECT id FROM worker_profile WHERE user_id = $1),
+        $2
+      )
+      `,
+      [userId, jobId],
+    );
+
+    response.status(201).json({ message: "Passet har sparats" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Removes a saved job from the currently logged in worker's list of saved jobs.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
+ */
+export async function unsaveJob(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { jobId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+      DELETE FROM saved_job
+      WHERE job_id = $1
+      AND worker_id = (SELECT id FROM worker_profile WHERE user_id = $2)
+      `,
+      [jobId, userId],
+    );
+
+    response.status(201).json({ message: "Passet har tagits bort" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}

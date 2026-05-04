@@ -90,3 +90,63 @@ export async function getWorkerReviews(): Promise<Review[]> {
 
   return response.json();
 }
+
+export async function getSavedJobs() {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta sparade pass. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Saves a job to the currently logged in worker's list of saved jobs.
+ * @param id - The ID of the job to save.
+ * @returns A promise that resolves to the saved job preview.
+ * @throws An error if the request fails.
+ */
+export async function saveJob(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ jobId: id }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte spara pass. Försök igen senare.");
+  }
+}
+
+/**
+ * Deletes a job from the currently logged in worker's list of saved jobs.
+ * @param id - The ID of the job to unsave.
+ * @returns A promise that resolves when the job is unsaved.
+ * @throws An error if the request fails.
+ */
+export async function unsaveJob(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort sparat pass. Försök igen senare.");
+  }
+}
