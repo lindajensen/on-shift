@@ -16,7 +16,6 @@ function JobListings() {
       try {
         const data = await getAllJobs();
         setJobs(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta pass", error);
       }
