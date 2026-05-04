@@ -5,8 +5,8 @@ import "../styles/RestaurantCard.css";
 
 interface RestaurantCardProps {
   name: string;
-  location: string;
-  rating: number;
+  location: string | null;
+  rating: number | null;
 }
 
 function RestaurantCard({ name, location, rating }: RestaurantCardProps) {
@@ -19,7 +19,12 @@ function RestaurantCard({ name, location, rating }: RestaurantCardProps) {
       <div className="restaurant-card__info">
         <h3 className="restaurant-card__name">{name}</h3>
         <p className="restaurant-card__meta">
-          {location} | <Star size={14} /> {rating}
+          {location}{" "}
+          {rating && (
+            <span>
+              | <Star size={14} /> {Number(rating).toFixed(1)}
+            </span>
+          )}
         </p>
       </div>
     </article>
