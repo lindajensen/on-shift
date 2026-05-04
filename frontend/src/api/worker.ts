@@ -1,4 +1,4 @@
-import { WorkerProfile, JobPreview, Review } from "../types";
+import { WorkerProfile, JobPreview, Review, SavedJob } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -91,7 +91,12 @@ export async function getWorkerReviews(): Promise<Review[]> {
   return response.json();
 }
 
-export async function getSavedJobs() {
+/**
+ * Fetches the list of jobs that the currently logged in worker has saved.
+ * @returns A promise that resolves to an array of saved job previews.
+ * @throws An error if the request fails.
+ */
+export async function getSavedJobs(): Promise<SavedJob[]> {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs`, {
