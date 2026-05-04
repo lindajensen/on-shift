@@ -65,3 +65,12 @@ export function formatCompensation(amount: number): string {
     ? `${Number(amount).toFixed(0)} kr/h`
     : `${Number(amount).toFixed(2)} kr/h`;
 }
+
+export function getShiftType(startTime: string, jobDate: string): string {
+  const hour = parseInt(startTime.split(":")[0]);
+  const day = new Date(jobDate).getDay();
+
+  if (day === 0 || day === 6) return "helg";
+  if (hour >= 17) return "kväll";
+  return "dag";
+}

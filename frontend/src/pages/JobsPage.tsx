@@ -1,24 +1,34 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../context/useAuth";
+
 import LoginNudge from "../components/LoginNudge";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 import { getAllJobs } from "../api/jobs";
-import { Job } from "../types";
+import {
+  getShiftType,
+  formatCompensation,
+  getRoleLabel,
+} from "../utils/formatters";
+import { formatDate, formatTime } from "../utils/date";
+import { PublicJobListing } from "../types";
 
 import { Search, MapPin, Clock } from "lucide-react";
 
 import "../styles/JobsPage.css";
 
 function JobsPage() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [jobs, setJobs] = useState<PublicJobListing[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("Alla");
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { user } = useAuth();
 
   const filters = [
     "Alla",
@@ -38,21 +48,28 @@ function JobsPage() {
   const filteredJobs = jobs.filter((job) => {
     const matchesQuery =
       job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.restaurantName
+      job.restaurant_name
         .toLocaleLowerCase()
         .includes(searchQuery.toLowerCase());
 
     const today = new Date().toISOString().split("T")[0];
 
-    if (activeFilter === "Akut") return job.isUrgent && matchesQuery;
+    if (activeFilter === "Akut") return job.is_urgent && matchesQuery;
     if (activeFilter === "Ingen erfarenhet")
-      return !job.requiresExperience && matchesQuery;
-    if (activeFilter === "Idag") return job.date === today && matchesQuery;
-    if (activeFilter === "Dag") return job.shiftType === "dag" && matchesQuery;
+      return !job.requires_experience && matchesQuery;
+    if (activeFilter === "Idag") return job.job_date === today && matchesQuery;
+    if (activeFilter === "Dag")
+      return (
+        getShiftType(job.start_time, job.job_date) === "dag" && matchesQuery
+      );
     if (activeFilter === "Kväll")
-      return job.shiftType === "kväll" && matchesQuery;
+      return (
+        getShiftType(job.start_time, job.job_date) === "kväll" && matchesQuery
+      );
     if (activeFilter === "Helg")
-      return job.shiftType === "helg" && matchesQuery;
+      return (
+        getShiftType(job.start_time, job.job_date) === "helg" && matchesQuery
+      );
     if (activeFilter === "Servitör")
       return job.role === "Servitör" && matchesQuery;
     if (activeFilter === "Bartender")
@@ -71,7 +88,7 @@ function JobsPage() {
         const data = await getAllJobs();
         setJobs(data);
       } catch (error) {
-        console.error("Failed to fetch jobs", error);
+        console.error("Kunde inte hämta pass", error);
         setError(
           "Vi kunde inte hämta passen just nu. Kontrollera din anslutning och försök igen.",
         );
@@ -82,24 +99,26 @@ function JobsPage() {
     fetchJobs();
   }, []);
 
-  //! Do not show all job openings if not logged in
-
-  //TODO: Fix hardcoded subheading
-  //TODO: Fetch from backend
   //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
   //TODO: Wrap /jobs in dynamic(?) layout based on if user is logged in or not
+  //TODO: Vad göra med jobb där datum är passerat?
 
   if (isLoading) return <LoadingSpinner subtitle="Hämtar lediga pass" />;
   if (error) return <ErrorMessage message={error} />;
+
+  const visibleJobs = user ? filteredJobs : filteredJobs.slice(0, 8);
 
   return (
     <section className="jobs">
       <div className="section__inner">
         <header className="jobs__header">
           <h1 className="jobs__heading">Lediga pass</h1>
-          <p className="jobs__subheading">
-            Visa 8 av 124 lediga pass. Logga in för att se alla.
-          </p>
+          {!user && (
+            <p className="jobs__subheading">
+              Visar {Math.min(8, filteredJobs.length)} av {filteredJobs.length}{" "}
+              lediga pass. Logga in för att se alla.
+            </p>
+          )}
         </header>
 
         <div className="jobs__search">
@@ -127,7 +146,7 @@ function JobsPage() {
 
         <LoginNudge />
 
-        {filteredJobs.length === 0 ? (
+        {visibleJobs.length === 0 ? (
           <div className="empty">
             <div className="empty-icon">
               <Search size={18} />
@@ -141,53 +160,55 @@ function JobsPage() {
           </div>
         ) : (
           <ul className="job-list">
-            {filteredJobs.map((job) => (
+            {visibleJobs.map((job) => (
               <li key={job.id} className="job-list__item">
                 <Link to={`/jobb/${job.id}`}>
                   <article className="job-card">
                     <div className="job-card__header">
-                      <h3 className="job-card__role">{job.role}</h3>
+                      <h3 className="job-card__role">
+                        {getRoleLabel(job.role)}
+                      </h3>
                       <span className="job-card__pay">
-                        {job.compensation} kr/h
+                        {formatCompensation(job.compensation)}
                       </span>
                     </div>
-                    <p className="job-card__restaurant">{job.restaurantName}</p>
+                    <p className="job-card__restaurant">
+                      {job.restaurant_name}
+                    </p>
 
                     <div className="job-card__meta">
                       <div className="job-card__meta-item">
                         <Clock size={14} />
                         <p className="job-card__meta-text">
-                          {job.date} kl. {job.startTime} - {job.endTime}
+                          {formatDate(job.job_date)} kl.{" "}
+                          {formatTime(job.start_time)} -{" "}
+                          {formatTime(job.end_time)}
                         </p>
                       </div>
                       <div className="job-card__meta-item">
                         <MapPin size={14} />
-                        <p className="job-card__meta-text">{job.location}</p>
+                        <p className="job-card__meta-text">
+                          {job.location ?? "Plats ej angiven"}
+                        </p>
                       </div>
+
+                      <ul className="job-card__tags">
+                        {job.is_urgent && (
+                          <li className="badge badge--accent">Akut</li>
+                        )}
+                        {job.requires_experience && (
+                          <li className="badge badge--accent">Erfarenhet</li>
+                        )}
+                      </ul>
                     </div>
 
                     <div className="divider"></div>
 
                     <div className="job-card__footer-meta">
-                      <ul className="job-card__tags">
-                        {job.tags.map((tag) => (
-                          <li key={tag} className="badge badge--accent">
-                            {tag}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <p className="job-card__published">{job.postedAt}</p>
+                      <p className="job-card__published">
+                        Publicerat den {formatDate(job.created_at)}
+                      </p>
                     </div>
-
-                    {/* <footer className="job-card__actions">
-                      <Link className="btn btn--outline" to={`/jobb/${job.id}`}>
-                        Läs mer
-                      </Link>
-                      <Link className="btn btn--primary" to="/login">
-                        Ansök
-                      </Link>
-                    </footer> */}
                   </article>
                 </Link>
               </li>

@@ -1,14 +1,31 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { MapPin, Clock, ChevronRight } from "lucide-react";
+import { getAllJobs } from "../api/jobs";
+import { getRoleLabel, formatCompensation } from "../utils/formatters";
+import { formatDate, formatTime } from "../utils/date";
+import { PublicJobListing } from "../types";
+import { Search, MapPin, Clock, ChevronRight } from "lucide-react";
 
 import "../styles/JobListings.css";
 
 function JobListings() {
+  const [jobs, setJobs] = useState<PublicJobListing[]>([]);
+
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const data = await getAllJobs();
+        setJobs(data);
+      } catch (error) {
+        console.error("Kunde inte hämta pass", error);
+      }
+    }
+
+    fetchJobs();
+  }, []);
+
   return (
-    //TODO: Fetch from database and only show the last 6 jobs
-    //TODO: Publicerad xxx är fult
-    //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
-    //TODO: fix link to /jobb/:id
+    //TODO: Error and loading state (see JobsPage)
 
     <section className="job-listings">
       <div className="section__inner">
@@ -25,98 +42,71 @@ function JobListings() {
           </Link>
         </header>
 
-        <ul className="job-list">
-          <li className="job-list__item">
-            <Link to="/jobb/:id">
-              <article className="job-card">
-                <div className="job-card__header">
-                  <h3 className="job-card__role">Kock</h3>
-                  <span className="job-card__pay">220 kr/h</span>
-                </div>
-                <p className="job-card__restaurant">Restaurang Volt</p>
-
-                <div className="job-card__meta">
-                  <div className="job-card__meta-item">
-                    <Clock size={14} />
-                    <p className="job-card__meta-text">
-                      Idag kl. 17:00 - 22:00
+        {jobs.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">
+              <Search size={18} />
+            </div>
+            <div>
+              <p className="empty-title">Inga pass hittades</p>
+            </div>
+          </div>
+        ) : (
+          <ul className="job-list">
+            {jobs.slice(0, 4).map((job) => (
+              <li className="job-list__item">
+                <Link to={`/jobb/${job.id}`}>
+                  <article className="job-card">
+                    <div className="job-card__header">
+                      <h3 className="job-card__role">
+                        {getRoleLabel(job.role)}
+                      </h3>
+                      <span className="job-card__pay">
+                        {formatCompensation(job.compensation)}
+                      </span>
+                    </div>
+                    <p className="job-card__restaurant">
+                      {job.restaurant_name}
                     </p>
-                  </div>
-                  <div className="job-card__meta-item">
-                    <MapPin size={14} />
-                    <p className="job-card__meta-text">Södermalm, Stockholm</p>
-                  </div>
-                </div>
 
-                <div className="divider"></div>
+                    <div className="job-card__meta">
+                      <div className="job-card__meta-item">
+                        <Clock size={14} />
+                        <p className="job-card__meta-text">
+                          {formatDate(job.job_date)} kl.{" "}
+                          {formatTime(job.start_time)} -{" "}
+                          {formatTime(job.end_time)}
+                        </p>
+                      </div>
+                      <div className="job-card__meta-item">
+                        <MapPin size={14} />
+                        <p className="job-card__meta-text">
+                          {job.location ?? "Plats ej angiven"}
+                        </p>
+                      </div>
+                    </div>
 
-                <div className="job-card__footer-meta">
-                  <div className="job-card__tags">
-                    <span className="badge badge--accent">Akut</span>
-                    <span className="badge badge--accent">Erfarenhet</span>
-                  </div>
-                  <p className="job-card__published">
-                    Publicerad: Idag kl. 14:00
-                  </p>
-                </div>
+                    <div className="job-card__footer-meta">
+                      <ul className="job-card__tags">
+                        {job.is_urgent && (
+                          <li className="badge badge--accent">Akut</li>
+                        )}
+                        {job.requires_experience && (
+                          <li className="badge badge--accent">Erfarenhet</li>
+                        )}
+                      </ul>
 
-                {/* <footer className="job-card__actions">
-                  <Link className="btn btn--outline" to="jobb/:id">
-                    Läs mer
-                  </Link>
-                  <Link className="btn btn--primary" to="/login">
-                    Ansök
-                  </Link>
-                </footer> */}
-              </article>
-            </Link>
-          </li>
-
-          <li className="job-list__item">
-            <Link to="/jobb/:id">
-              <article className="job-card">
-                <div className="job-card__header">
-                  <h3 className="job-card__role">Diskare</h3>
-                  <span className="job-card__pay">150 kr/h</span>
-                </div>
-                <p className="job-card__restaurant">Brasserie Balzac</p>
-
-                <div className="job-card__meta">
-                  <div className="job-card__meta-item">
-                    <Clock size={14} />
-                    <p className="job-card__meta-text">
-                      Lördag kl. 11:00 - 16:00
-                    </p>
-                  </div>
-                  <div className="job-card__meta-item">
-                    <MapPin size={14} />
-                    <p className="job-card__meta-text">Vasastan, Stockholm</p>
-                  </div>
-                </div>
-
-                <div className="divider"></div>
-
-                <div className="job-card__footer-meta">
-                  <div className="job-card__tags">
-                    <span className="badge badge--accent">Högt tempo</span>
-                  </div>
-                  <p className="job-card__published">
-                    Publicerad: Igår kl. 11:00
-                  </p>
-                </div>
-
-                {/* <footer className="job-card__actions">
-                  <Link className="btn btn--outline" to="/jobs/:id">
-                    Läs mer
-                  </Link>
-                  <Link className="btn btn--primary" to="/login">
-                    Ansök
-                  </Link>
-                </footer> */}
-              </article>
-            </Link>
-          </li>
-        </ul>
+                      <div className="divider"></div>
+                      <p className="job-card__published">
+                        Publicerad: {formatDate(job.created_at)}
+                      </p>
+                    </div>
+                  </article>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );

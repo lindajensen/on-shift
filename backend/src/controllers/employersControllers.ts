@@ -107,7 +107,6 @@ export async function getJobDetails(
 
     response.status(200).json(jobDetails.rows[0]);
   } catch (error) {
-    console.error("getJobDetails error:", error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -459,4 +458,3 @@ export async function reopenJobListing(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
-

@@ -1,42 +1,40 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import RestaurantCard from "../components/RestaurantCard";
 import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 import { getJobById } from "../api/jobs";
-import { getRestaurantByName } from "../api/restaurants";
-import { Job, Restaurant } from "../types";
+import { useAuth } from "../context/useAuth";
+import { getRoleLabel, formatCompensation } from "../utils/formatters";
+import { formatDate, formatTime } from "../utils/date";
+import { PublicJobListing } from "../types";
 
 import { Clock, MapPin, Wallet, Users2, Check, Bookmark } from "lucide-react";
 
 import "../styles/JobDetailsPage.css";
 
 function JobDetailsPage() {
-  const [job, setJob] = useState<Job | null>(null);
-  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [job, setJob] = useState<PublicJobListing | null>(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
+  const { user } = useAuth();
 
   useEffect(() => {
+    if (!id) return;
+    const jobId = Number(id);
+
     async function fetchJobDetails() {
-      if (!id) return;
-
       try {
-        const jobData = await getJobById(id);
-        setJob(jobData);
-
-        const restaurantData = await getRestaurantByName(
-          jobData.restaurantName,
-        );
-        setRestaurant(restaurantData);
+        const data = await getJobById(jobId);
+        setJob(data);
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
-        setError("Inget jobb hittades");
+        setError("Inget pass hittades");
       } finally {
         setIsLoading(false);
       }
@@ -49,7 +47,7 @@ function JobDetailsPage() {
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
-  //TODO: Implement Save and Apply functionalit
+  //TODO: Implement Save and Apply functionality
   //? Where put published date
 
   return (
@@ -58,23 +56,16 @@ function JobDetailsPage() {
         <header className="job-details__header">
           <div className="job-details__header-text">
             <div className="job-details__title-row">
-              <h1 className="job-details__title">{job.role}</h1>
+              <h1 className="job-details__title">{getRoleLabel(job.role)}</h1>
               <Bookmark size={30} />
             </div>
-            <p className="job-details__name">{job.restaurantName}</p>
+            <p className="job-details__name">{job.restaurant_name}</p>
             <ul className="job-card__tags">
-              {job.isUrgent && <li className="badge badge--accent">Akut</li>}
-              {job.tags.map((tag) => (
-                <li key={tag} className="badge badge--accent">
-                  {tag}
-                </li>
-              ))}
+              {job.is_urgent && <li className="badge badge--accent">Akut</li>}
+              {job.requires_experience && (
+                <li className="badge badge--accent">Erfarenhet</li>
+              )}
             </ul>
-          </div>
-
-          <div className="job-details__header-actions">
-            {/* <button className="btn btn--outline">Spara</button> */}
-            <button className="btn btn--primary">Ansök</button>
           </div>
         </header>
 
@@ -88,7 +79,8 @@ function JobDetailsPage() {
             <span>
               <span className="job-details__info-label">Datum och tid</span>
               <span className="job-details__info-value">
-                {job.date} kl. {job.startTime} - {job.endTime}
+                {formatDate(job.job_date)} kl. {formatTime(job.start_time)} -{" "}
+                {formatTime(job.end_time)}
               </span>
             </span>
           </li>
@@ -98,7 +90,10 @@ function JobDetailsPage() {
             </div>
             <span>
               <span className="job-details__info-label">Plats</span>
-              <span className="job-details__info-value">{job.location}</span>
+              <span className="job-details__info-value">
+                {" "}
+                {job.location ?? "Plats ej angiven"}
+              </span>
             </span>
           </li>
           <li className="job-details__info-item">
@@ -108,7 +103,7 @@ function JobDetailsPage() {
             <span>
               <span className="job-details__info-label">Ersättning</span>
               <span className="job-details__info-value">
-                {job.compensation} kr/h
+                {formatCompensation(job.compensation)}
               </span>
             </span>
           </li>
@@ -119,7 +114,8 @@ function JobDetailsPage() {
             <span>
               <span className="job-details__info-label">Antal platser</span>
               <span className="job-details__info-value">
-                {job.availableSlots} platser
+                {job.available_slots}{" "}
+                {job.available_slots === 1 ? "plats" : "platser"}
               </span>
             </span>
           </li>
@@ -133,23 +129,30 @@ function JobDetailsPage() {
         </div>
         <div className="job-details__section">
           <h2 className="job-details__section-title">Krav</h2>
-          <ul className="job-details__requirements">
-            {job.requirements.map((requirement) => (
-              <li key={requirement} className="job-details__requirement">
-                <Check size={18} />
-                {requirement}
-              </li>
-            ))}
-          </ul>
+          {job.demands ? (
+            <ul className="job-details__requirements">
+              {job.demands
+                .split("\n")
+                .filter((line) => line.trim())
+                .map((demand, index) => (
+                  <li key={index} className="job-details__requirement">
+                    <Check size={18} />
+                    {demand}
+                  </li>
+                ))}
+            </ul>
+          ) : (
+            <p className="job-info__empty-text">Inga krav har lagts till.</p>
+          )}
         </div>
         <div className="divider"></div>
         <div className="job-details__restaurant">
           <h2 className="job-details__section-title">Restaurang</h2>
-          {restaurant && (
+          {job && (
             <RestaurantCard
-              name={restaurant.name}
-              location={restaurant.location}
-              rating={restaurant.rating}
+              name={job.restaurant_name}
+              location={job.location ?? "Plats ej angiven"}
+              rating={job.rating}
             />
           )}
         </div>
@@ -157,8 +160,13 @@ function JobDetailsPage() {
         <div className="divider"></div>
 
         <footer className="job-details__actions">
-          {/* <button className="btn btn--outline">Spara</button> */}
-          <button className="btn btn--primary">Ansök</button>
+          {user ? (
+            <button className="btn btn--primary">Ansök</button>
+          ) : (
+            <Link className="btn btn--primary" to="/logga-in">
+              Logga in för att ansöka
+            </Link>
+          )}
         </footer>
       </div>
     </section>

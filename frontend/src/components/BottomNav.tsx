@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { Home, Search, ClipboardList, User2 } from "lucide-react";
 
 import "../styles/BottomNav.css";
@@ -18,9 +18,9 @@ function BottomNav({ role }: BottomNavProps) {
         {role === "worker" ? (
           <>
             <nav className="bottom-nav">
-              <p className="bottom-nav__logo">
+              <Link to="/" className="bottom-nav__logo">
                 <span>on</span>Shift
-              </p>
+              </Link>
               <NavLink
                 to="/dashboard"
                 className={({ isActive }) =>
@@ -65,9 +65,9 @@ function BottomNav({ role }: BottomNavProps) {
         ) : (
           <>
             <nav className="bottom-nav">
-              <p className="bottom-nav__logo">
+              <Link to="/" className="bottom-nav__logo">
                 <span>on</span>Shift
-              </p>
+              </Link>
               <NavLink
                 to="/dashboard"
                 className={({ isActive }) =>
