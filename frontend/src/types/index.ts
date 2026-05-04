@@ -3,26 +3,24 @@ export interface Worker {
   experience: string;
   availability: string;
   location: string;
-  rating: number;
 }
 
-export interface Job {
+export interface PublicJobListing {
   id: number;
   role: string;
-  restaurantName: string;
-  location: string;
-  date: string;
-  startTime: string;
-  endTime: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
   compensation: number;
-  availableSlots: number;
-  isUrgent: boolean;
-  requiresExperience: boolean;
-  requirements: string[];
-  shiftType: "dag" | "kväll" | "helg";
-  description?: string;
-  postedAt: string;
-  tags: string[];
+  available_slots: number;
+  description: string | null;
+  demands: string | null;
+  is_urgent: boolean;
+  requires_experience: boolean;
+  created_at: string;
+  restaurant_name: string;
+  location: string | null;
+  rating: number | null;
 }
 
 export interface JobPreview {
@@ -77,13 +75,13 @@ export interface EmployerApplicationDetail {
   rating: number | null;
 }
 
-export interface Restaurant {
-  id: number;
-  name: string;
-  location: string;
-  rating: number;
-  jobsPosted: number;
-}
+// export interface Restaurant {
+//   id: number;
+//   name: string;
+//   location: string;
+//   rating: number;
+//   jobsPosted: number;
+// }
 
 export interface LoginResponse {
   token: string;
