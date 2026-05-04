@@ -6,7 +6,7 @@
   text-align: center;
   min-height: 60vh;
   gap: 1rem;
-  padding: 1.5rem 2rem;
+  padding: 0 2rem 1.5rem 2rem;
 }
 
 .error-message__icon-container {
