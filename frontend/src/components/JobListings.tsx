@@ -54,7 +54,7 @@ function JobListings() {
         ) : (
           <ul className="job-list">
             {jobs.slice(0, 4).map((job) => (
-              <li className="job-list__item">
+              <li key={job.id} className="job-list__item">
                 <Link to={`/jobb/${job.id}`}>
                   <article className="job-card">
                     <div className="job-card__header">
