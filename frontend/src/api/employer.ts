@@ -1,6 +1,27 @@
-import { SavedWorkerPreview, Review } from "../types";
+import { SavedWorkerPreview, Review, Worker } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+/**
+ * Fetches all workers.
+ * @returns A promise that resolves to an array of workers.
+ * @throws An error if the request fails.
+ */
+export async function getAllWorkers(): Promise<Worker[]> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/workers`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response) {
+    throw new Error("Kunde inte hämta sparad personal. Försök igen senare.");
+  }
+
+  return response.json();
+}
 
 /**
  * Fetches saved workers for the currently logged in restaurant.
