@@ -6,6 +6,8 @@ import {
   getAllWorkers,
   getRandomWorkers,
   getSavedWorkers,
+  saveWorker,
+  unsaveWorker,
   getEmployerReviews,
   createJobListing,
   updateJobListing,
@@ -22,6 +24,8 @@ router.get("/applications", authenticateToken, getEmployerApplications);
 router.get("/workers", authenticateToken, getAllWorkers);
 router.get("/workers/random", getRandomWorkers);
 router.get("/saved-workers", authenticateToken, getSavedWorkers);
+router.post("/saved-workers", authenticateToken, saveWorker);
+router.delete("/saved-workers", authenticateToken, unsaveWorker);
 router.get("/reviews", authenticateToken, getEmployerReviews);
 router.post("/jobs", authenticateToken, createJobListing);
 router.put("/jobs/:id", authenticateToken, updateJobListing);

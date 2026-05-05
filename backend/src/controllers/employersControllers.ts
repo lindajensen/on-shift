@@ -279,6 +279,86 @@ export async function getSavedWorkers(
 }
 
 /**
+ * Saves a worker to the currently logged in restaurant's saved workers list.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A success message if the worker was saved, or an error message if something went wrong.
+ */
+export async function saveWorker(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { workerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  console.log("userId:", userId);
+  console.log("workerId:", workerId);
+
+  try {
+    await pool.query(
+      `
+      INSERT INTO saved_worker (employer_id, worker_id)
+      VALUES (
+        (SELECT id FROM employer_profile WHERE user_id = $1),
+        $2
+      )
+      `,
+      [userId, workerId],
+    );
+
+    response.status(201).json({ message: "Arbetstagaren har sparats" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Removes a worker from the currently logged in restaurant's list of saved workers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
+ */
+export async function unsaveWorker(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { workerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+     DELETE FROM saved_worker
+      WHERE worker_id = $1
+      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      `,
+      [workerId, userId],
+    );
+
+    response.status(201).json({ message: "Arbetstagaren har tagits bort" });
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches all reviews left for the currently logged in restaurant.
  * @param request - The request object.
  * @param response - The response object.
