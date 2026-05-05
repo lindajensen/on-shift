@@ -3,6 +3,10 @@
   border: none;
 }
 
+.job-details__bookmark-btn--saved svg {
+  fill: currentColor;
+}
+
 .job-details__name {
   color: var(--color-text-muted);
   margin-bottom: 0.5rem;
@@ -20,10 +24,6 @@
 
 .job-details__title-row svg {
   margin-top: 0.4rem;
-}
-
-.job-details__bookmark-btn--saved svg {
-  fill: currentColor;
 }
 
 .job-details .job-card__tags {
