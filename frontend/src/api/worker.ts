@@ -115,7 +115,7 @@ export async function getSavedJobs(): Promise<SavedJob[]> {
 /**
  * Saves a job to the currently logged in worker's list of saved jobs.
  * @param id - The ID of the job to save.
- * @returns A promise that resolves to the saved job preview.
+ * @returns A promise that resolves when the job is saved.
  * @throws An error if the request fails.
  */
 export async function saveJob(id: number): Promise<void> {
@@ -144,11 +144,13 @@ export async function saveJob(id: number): Promise<void> {
 export async function unsaveJob(id: number): Promise<void> {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-jobs`, {
     method: "DELETE",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+    body: JSON.stringify({ jobId: id }),
   });
 
   if (!response.ok) {
