@@ -23,8 +23,6 @@ function WorkerListings() {
     fetchRandomWorkers();
   }, []);
 
-  //TODO: Fetch from database and only show 3-4 random workers
-
   return (
     <section className="worker-listings">
       <div className="section__inner">
