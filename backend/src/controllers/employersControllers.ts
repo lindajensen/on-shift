@@ -29,6 +29,7 @@ export async function getAllWorkers(request: Request, response: Response) {
       FROM worker_profile wp
       JOIN worker_role wr ON wr.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.is_available = true
       GROUP BY wp.id, wp.name, wp.is_available, wp.city
       ORDER BY wp.name ASC
       `,
@@ -64,6 +65,7 @@ export async function getRandomWorkers(
       FROM worker_profile wp
       JOIN worker_role wr ON wr.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.is_available = true
       GROUP BY wp.id, wp.name, wp.is_available, wp.city
       ORDER BY RANDOM()
       LIMIT 3
@@ -298,9 +300,6 @@ export async function saveWorker(
   }
 
   const userId = user.userId;
-
-  console.log("userId:", userId);
-  console.log("workerId:", workerId);
 
   try {
     await pool.query(
