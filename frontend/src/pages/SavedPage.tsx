@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getSavedJobs, unsaveJob } from "../api/worker";
 import { getRoleLabel, formatCompensation } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
@@ -81,66 +82,68 @@ function SavedPage() {
             <ul className="saved-page__list">
               {savedJobs.map((job) => (
                 <li key={job.job_id} className="saved-page__item">
-                  <article className="saved-card">
-                    <header className="saved-card__header">
-                      <div className="saved-card__title-row">
-                        <h2 className="saved-card__title">
-                          {getRoleLabel(job.role)}
-                        </h2>
-                        <button
-                          className="saved-card__btn"
-                          onClick={() => handleUnsave(job.job_id)}
-                        >
-                          <Bookmark size={20} />
-                        </button>
-                      </div>
-                      <p className="saved-card__restaurant">
-                        {job.restaurant_name}
-                      </p>
-                    </header>
+                  <Link to={`/jobb/${job.job_id}`}>
+                    <article className="saved-card">
+                      <header className="saved-card__header">
+                        <div className="saved-card__title-row">
+                          <h2 className="saved-card__title">
+                            {getRoleLabel(job.role)}
+                          </h2>
+                          <button
+                            className="saved-card__btn"
+                            onClick={() => handleUnsave(job.job_id)}
+                          >
+                            <Bookmark size={20} />
+                          </button>
+                        </div>
+                        <p className="saved-card__restaurant">
+                          {job.restaurant_name}
+                        </p>
+                      </header>
 
-                    <div className="saved-card__meta">
-                      <div className="saved-card__meta-item">
-                        <Clock size={14} />
-                        <p className="saved-card__meta-text">
-                          {formatDate(job.job_date)} kl.{" "}
-                          {formatTime(job.start_time)} -{" "}
-                          {formatTime(job.end_time)}
+                      <div className="saved-card__meta">
+                        <div className="saved-card__meta-item">
+                          <Clock size={14} />
+                          <p className="saved-card__meta-text">
+                            {formatDate(job.job_date)} kl.{" "}
+                            {formatTime(job.start_time)} -{" "}
+                            {formatTime(job.end_time)}
+                          </p>
+                        </div>
+
+                        <div className="saved-card__meta-item">
+                          <MapPin size={14} />
+                          <p className="saved-card__meta-text">
+                            {job.location ?? "Ingen plats angiven"}
+                          </p>
+                        </div>
+
+                        <div className="saved-card__meta-item">
+                          <Wallet size={14} />
+                          <p className="saved-card__meta-text">
+                            {formatCompensation(job.compensation)}
+                          </p>
+                        </div>
+
+                        <ul className="saved-card__tags">
+                          {job.is_urgent && (
+                            <li className="badge badge--accent">Akut</li>
+                          )}
+                          {job.requires_experience && (
+                            <li className="badge badge--accent">Erfarenhet</li>
+                          )}
+                        </ul>
+                      </div>
+
+                      <div className="divider"></div>
+
+                      <div className="saved-card__footer">
+                        <p className="saved-card__published">
+                          Publicerat den {formatDate(job.created_at)}
                         </p>
                       </div>
-
-                      <div className="saved-card__meta-item">
-                        <MapPin size={14} />
-                        <p className="saved-card__meta-text">
-                          {job.location ?? "Ingen plats angiven"}
-                        </p>
-                      </div>
-
-                      <div className="saved-card__meta-item">
-                        <Wallet size={14} />
-                        <p className="saved-card__meta-text">
-                          {formatCompensation(job.compensation)}
-                        </p>
-                      </div>
-
-                      <ul className="saved-card__tags">
-                        {job.is_urgent && (
-                          <li className="badge badge--accent">Akut</li>
-                        )}
-                        {job.requires_experience && (
-                          <li className="badge badge--accent">Erfarenhet</li>
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="divider"></div>
-
-                    <div className="saved-card__footer">
-                      <p className="saved-card__published">
-                        Publicerat den {formatDate(job.created_at)}
-                      </p>
-                    </div>
-                  </article>
+                    </article>
+                  </Link>
                 </li>
               ))}
             </ul>
