@@ -120,29 +120,6 @@ function JobDetailsPage() {
 
         <div className="divider"></div>
 
-        <div className="job-details__section">
-          <h2 className="job-details__section-title">Om passet</h2>
-          <p className="job-details__section-text">{job.description}</p>
-        </div>
-        <div className="job-details__section">
-          <h2 className="job-details__section-title">Krav</h2>
-          {job.demands ? (
-            <ul className="job-details__requirements">
-              {job.demands
-                .split("\n")
-                .filter((line) => line.trim())
-                .map((demand, index) => (
-                  <li key={index} className="job-details__requirement">
-                    <Check size={18} />
-                    {demand}
-                  </li>
-                ))}
-            </ul>
-          ) : (
-            <p className="job-info__empty-text">Inga krav har lagts till.</p>
-          )}
-        </div>
-        <div className="divider"></div>
         <div className="job-details__restaurant">
           <h2 className="job-details__section-title">Restaurang</h2>
           {job && (
