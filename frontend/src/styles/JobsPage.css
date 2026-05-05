@@ -1,3 +1,16 @@
+.jobs__heading {
+  margin-bottom: 0.5rem;
+}
+
+.job-card__bookmark-btn {
+  background: none;
+  border: none;
+}
+
+.job-card__bookmark-btn--saved svg {
+  fill: currentColor;
+}
+
 .jobs__subheading {
   color: var(--color-text-muted);
   margin-bottom: 0.5rem;

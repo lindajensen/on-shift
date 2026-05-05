@@ -17,6 +17,7 @@ import JobDetailsPage from "./pages/JobDetailsPage";
 import Dashboard from "./pages/Dashboard";
 import EmployerJobListingsPage from "./pages/EmployerJobListingsPage";
 import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
+import SavedPage from "./pages/SavedPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -42,6 +43,7 @@ const router = createBrowserRouter(
             path="/mina-annonser/:id"
             element={<EmployerJobDetailsPage />}
           />
+          <Route path="/sparade-pass" element={<SavedPage />} />
         </Route>
       </Route>
     </>,

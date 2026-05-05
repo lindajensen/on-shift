@@ -6,7 +6,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 import { getJobById } from "../api/jobs";
-import { saveJob, unsaveJob } from "../api/worker";
+import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
 import { useAuth } from "../context/useAuth";
 import { getRoleLabel, formatCompensation } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
@@ -34,6 +34,11 @@ function JobDetailsPage() {
       try {
         const data = await getJobById(jobId);
         setJob(data);
+
+        if (user?.role === "worker") {
+          const savedJobs = await getSavedJobs();
+          setIsSaved(savedJobs.some((saved) => saved.job_id === jobId));
+        }
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
         setError("Inget pass hittades");
@@ -43,7 +48,7 @@ function JobDetailsPage() {
     }
 
     fetchJobDetails();
-  }, [id]);
+  }, [id, user?.role]);
 
   async function handleSave(id: number) {
     try {

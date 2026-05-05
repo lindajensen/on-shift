@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { getInitials } from "../utils/text";
-import { LogOut, User2 } from "lucide-react";
+import { Bookmark, User2, LogOut } from "lucide-react";
 
 import "../styles/AuthHeader.css";
 
@@ -58,7 +58,12 @@ function AuthHeader() {
                     <User2 size={16} />
                     Min profil
                   </Link>
-                  <div className="auth-header__menu-divider" />
+
+                  <Link className="auth-header__menu-btn" to="/sparade-pass">
+                    <Bookmark size={16} />
+                    Sparade pass
+                  </Link>
+
                   <button
                     className="auth-header__menu-btn"
                     onClick={handleLogout}

@@ -34,6 +34,20 @@ export interface JobPreview {
   compensation: number;
 }
 
+export interface SavedJob {
+  job_id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  restaurant_name: string;
+  location: string | null;
+  is_urgent: boolean;
+  requires_experience: boolean;
+  created_at: string;
+}
+
 export interface EmployerJobListing {
   id: number;
   role: string;
@@ -74,14 +88,6 @@ export interface EmployerApplicationDetail {
   status: string;
   rating: number | null;
 }
-
-// export interface Restaurant {
-//   id: number;
-//   name: string;
-//   location: string;
-//   rating: number;
-//   jobsPosted: number;
-// }
 
 export interface LoginResponse {
   token: string;
