@@ -8,6 +8,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 import { getAllJobs } from "../api/jobs";
+import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
 import {
   getShiftType,
   formatCompensation,
@@ -16,7 +17,7 @@ import {
 import { formatDate, formatTime } from "../utils/date";
 import { PublicJobListing } from "../types";
 
-import { Search, MapPin, Clock } from "lucide-react";
+import { Search, MapPin, Clock, Wallet, Bookmark } from "lucide-react";
 
 import "../styles/JobsPage.css";
 
@@ -24,6 +25,7 @@ function JobsPage() {
   const [jobs, setJobs] = useState<PublicJobListing[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("Alla");
+  const [savedJobIds, setSavedJobIds] = useState<Set<number>>(new Set());
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -87,6 +89,11 @@ function JobsPage() {
       try {
         const data = await getAllJobs();
         setJobs(data);
+
+        if (user?.role === "worker") {
+          const saved = await getSavedJobs();
+          setSavedJobIds(new Set(saved.map((job) => job.job_id)));
+        }
       } catch (error) {
         console.error("Kunde inte hämta pass", error);
         setError(
@@ -97,7 +104,29 @@ function JobsPage() {
       }
     }
     fetchJobs();
-  }, []);
+  }, [user?.role]);
+
+  async function handleSave(id: number) {
+    try {
+      await saveJob(id);
+      setSavedJobIds((prev) => new Set(prev).add(id));
+    } catch (error) {
+      console.error("Kunde inte spara pass", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveJob(id);
+      setSavedJobIds((prev) => {
+        const updated = new Set(prev);
+        updated.delete(id);
+        return updated;
+      });
+    } catch (error) {
+      console.error("Kunde inte ta bort sparat pass", error);
+    }
+  }
 
   //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
   //TODO: Wrap /jobs in dynamic(?) layout based on if user is logged in or not
@@ -160,59 +189,85 @@ function JobsPage() {
           </div>
         ) : (
           <ul className="job-list">
-            {visibleJobs.map((job) => (
-              <li key={job.id} className="job-list__item">
-                <Link to={`/jobb/${job.id}`}>
-                  <article className="job-card">
-                    <div className="job-card__header">
-                      <h3 className="job-card__role">
-                        {getRoleLabel(job.role)}
-                      </h3>
-                      <span className="job-card__pay">
-                        {formatCompensation(job.compensation)}
-                      </span>
-                    </div>
-                    <p className="job-card__restaurant">
-                      {job.restaurant_name}
-                    </p>
+            {visibleJobs.map((job) => {
+              const jobIsSaved = savedJobIds.has(job.id);
 
-                    <div className="job-card__meta">
-                      <div className="job-card__meta-item">
-                        <Clock size={14} />
-                        <p className="job-card__meta-text">
-                          {formatDate(job.job_date)} kl.{" "}
-                          {formatTime(job.start_time)} -{" "}
-                          {formatTime(job.end_time)}
-                        </p>
-                      </div>
-                      <div className="job-card__meta-item">
-                        <MapPin size={14} />
-                        <p className="job-card__meta-text">
-                          {job.location ?? "Plats ej angiven"}
-                        </p>
+              return (
+                <li key={job.id} className="job-list__item">
+                  <Link to={`/jobb/${job.id}`}>
+                    <article className="job-card">
+                      <div className="job-card__header">
+                        <h2 className="job-card__role">
+                          {getRoleLabel(job.role)}
+                        </h2>
+                        {user?.role === "worker" && (
+                          <button
+                            className={`job-card__bookmark-btn ${jobIsSaved ? "job-card__bookmark-btn--saved" : ""}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              if (jobIsSaved) {
+                                handleUnsave(job.id);
+                              } else {
+                                handleSave(job.id);
+                              }
+                            }}
+                          >
+                            <Bookmark size={20} />
+                          </button>
+                        )}
                       </div>
 
-                      <ul className="job-card__tags">
-                        {job.is_urgent && (
-                          <li className="badge badge--accent">Akut</li>
-                        )}
-                        {job.requires_experience && (
-                          <li className="badge badge--accent">Erfarenhet</li>
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="divider"></div>
-
-                    <div className="job-card__footer-meta">
-                      <p className="job-card__published">
-                        Publicerat den {formatDate(job.created_at)}
+                      <p className="job-card__restaurant">
+                        {job.restaurant_name}
                       </p>
-                    </div>
-                  </article>
-                </Link>
-              </li>
-            ))}
+
+                      <div className="job-card__meta">
+                        <div className="job-card__meta-item">
+                          <Clock size={14} />
+                          <p className="job-card__meta-text">
+                            {formatDate(job.job_date)} kl.{" "}
+                            {formatTime(job.start_time)} -{" "}
+                            {formatTime(job.end_time)}
+                          </p>
+                        </div>
+
+                        <div className="job-card__meta-item">
+                          <MapPin size={14} />
+                          <p className="job-card__meta-text">
+                            {job.location ?? "Plats ej angiven"}
+                          </p>
+                        </div>
+
+                        <div className="job-card__meta-item">
+                          <Wallet size={14} />
+                          <p className="job-card__meta-text">
+                            {formatCompensation(job.compensation)}
+                          </p>
+                        </div>
+
+                        <ul className="job-card__tags">
+                          {job.is_urgent && (
+                            <li className="badge badge--accent">Akut</li>
+                          )}
+                          {job.requires_experience && (
+                            <li className="badge badge--accent">Erfarenhet</li>
+                          )}
+                        </ul>
+                      </div>
+
+                      <div className="divider"></div>
+
+                      <div className="job-card__footer-meta">
+                        <p className="job-card__published">
+                          Publicerat den {formatDate(job.created_at)}
+                        </p>
+                      </div>
+                    </article>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
