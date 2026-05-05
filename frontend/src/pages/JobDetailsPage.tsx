@@ -12,7 +12,7 @@ import { getRoleLabel } from "../utils/formatters";
 import { PublicJobListing } from "../types";
 import JobInfoSection from "../components/JobInfoSection";
 
-import { Check, Bookmark } from "lucide-react";
+import { Bookmark } from "lucide-react";
 
 import "../styles/JobDetailsPage.css";
 
