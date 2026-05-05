@@ -4,6 +4,7 @@ import {
   getJobDetails,
   getEmployerApplications,
   getAllWorkers,
+  getRandomWorkers,
   getSavedWorkers,
   getEmployerReviews,
   createJobListing,
@@ -19,6 +20,7 @@ router.get("/jobs", authenticateToken, getJobListings);
 router.get("/jobs/:id", authenticateToken, getJobDetails);
 router.get("/applications", authenticateToken, getEmployerApplications);
 router.get("/workers", authenticateToken, getAllWorkers);
+router.get("/workers/random", getRandomWorkers);
 router.get("/saved-workers", authenticateToken, getSavedWorkers);
 router.get("/reviews", authenticateToken, getEmployerReviews);
 router.post("/jobs", authenticateToken, createJobListing);

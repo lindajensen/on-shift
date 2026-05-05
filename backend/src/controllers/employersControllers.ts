@@ -42,6 +42,41 @@ export async function getAllWorkers(request: Request, response: Response) {
 }
 
 /**
+ * Fetches 3 random workers to show on the landingpage.
+ * @param _request - The request object (not used).
+ * @param response - The response object.
+ * @returns A JSON array of 3 random workers with their roles and average rating.
+ */
+export async function getRandomWorkers(
+  _request: Request,
+  response: Response,
+): Promise<void> {
+  try {
+    const randomWorkers = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.name,
+        wp.is_available,
+        wp.city,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      GROUP BY wp.id, wp.name, wp.is_available, wp.city
+      ORDER BY RANDOM()
+      LIMIT 3
+      `,
+    );
+
+    response.status(200).json(randomWorkers.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches the job listings of the currently logged in restaurant.
  * @param request - The request object.
  * @param response - The response object.
