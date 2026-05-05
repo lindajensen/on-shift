@@ -310,7 +310,7 @@ export async function unsaveJob(
   response: Response,
 ): Promise<void> {
   const user = request.user;
-  const { id } = request.params;
+  const { jobId } = request.body;
 
   if (!user) {
     response.status(401).json({ message: "Åtkomst nekad" });
@@ -327,12 +327,11 @@ export async function unsaveJob(
       WHERE job_id = $1
       AND worker_id = (SELECT id FROM worker_profile WHERE user_id = $2)
       `,
-      [id, userId],
+      [jobId, userId],
     );
 
     response.status(201).json({ message: "Passet har tagits bort" });
   } catch (error) {
-    console.error("Error unsaving job:", error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
