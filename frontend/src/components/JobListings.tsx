@@ -4,7 +4,7 @@ import { getAllJobs } from "../api/jobs";
 import { getRoleLabel, formatCompensation } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { PublicJobListing } from "../types";
-import { Search, MapPin, Clock, ChevronRight } from "lucide-react";
+import { Search, MapPin, Clock, ChevronRight, Wallet } from "lucide-react";
 
 import "../styles/JobListings.css";
 
@@ -61,9 +61,6 @@ function JobListings() {
                       <h3 className="job-card__role">
                         {getRoleLabel(job.role)}
                       </h3>
-                      <span className="job-card__pay">
-                        {formatCompensation(job.compensation)}
-                      </span>
                     </div>
                     <p className="job-card__restaurant">
                       {job.restaurant_name}
@@ -78,10 +75,19 @@ function JobListings() {
                           {formatTime(job.end_time)}
                         </p>
                       </div>
+
                       <div className="job-card__meta-item">
                         <MapPin size={14} />
                         <p className="job-card__meta-text">
                           {job.location ?? "Plats ej angiven"}
+                        </p>
+                      </div>
+
+                      <div className="job-card__meta-item">
+                        <Wallet size={14} />
+                        <p className="job-card__meta-text">
+                          {" "}
+                          {formatCompensation(job.compensation)}
                         </p>
                       </div>
                     </div>
