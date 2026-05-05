@@ -2,6 +2,46 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 /**
+ * Fetches all workers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of all workers.
+ */
+export async function getAllWorkers(request: Request, response: Response) {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  try {
+    const allWorkers = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.name,
+        wp.is_available,
+        wp.city AS location,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      GROUP BY wp.id, wp.name, wp.is_available, wp.city
+      ORDER BY wp.name ASC
+      `,
+    );
+
+    response.status(200).json(allWorkers.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches the job listings of the currently logged in restaurant.
  * @param request - The request object.
  * @param response - The response object.
