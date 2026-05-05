@@ -60,6 +60,52 @@ export async function getSavedWorkers(): Promise<SavedWorkerPreview[]> {
 }
 
 /**
+ * Saves a worker to the currently logged in restaurant's list of saved workers.
+ * @param id - The ID of the worker to save.
+ * @returns A promise that resolves when the worker is saved.
+ * @throws An error if the request fails.
+ */
+export async function saveWorker(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/saved-workers`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ workerId: id }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte spara personal. Försök igen senare.");
+  }
+}
+
+/**
+ * Deletes a worker from the currently logged in restaurant's list of saved workers.
+ * @param id - The ID of the worker to unsave.
+ * @returns A promise that resolves when the worker is unsaved.
+ * @throws An error if the request fails.
+ */
+export async function unsaveWorker(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/saved-workers`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ workerId: id }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort sparad personal. Försök igen senare.");
+  }
+}
+
+/**
  * Fetches all reviews for the currently logged in restaurant.
  * @returns A promise that resolves to an array of reviews.
  * @throws An error if the request fails.
