@@ -1,10 +1,16 @@
 export interface Worker {
-  role: string;
-  experience: string;
-  availability: string;
-  location: string;
+  id: number;
+  name: string;
+  roles: WorkerRole[];
+  is_available: boolean;
+  location: string | null;
+  rating: number | null;
 }
 
+interface WorkerRole {
+  role: string;
+  experience_level: string;
+}
 export interface PublicJobListing {
   id: number;
   role: string;
@@ -145,11 +151,6 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
-}
-
-interface WorkerRole {
-  role: string;
-  experience_level: string;
 }
 
 export interface SavedWorkerPreview {
