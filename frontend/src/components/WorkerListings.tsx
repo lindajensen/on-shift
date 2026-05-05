@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
+import { getRandomWorkers } from "../api/employer";
+import { Worker } from "../types";
 import WorkerCard from "./WorkerCard";
+
 import "../styles/WorkerListings.css";
 
 function WorkerListings() {
+  const [workers, setWorkers] = useState<Worker[]>([]);
+
+  useEffect(() => {
+    async function fetchRandomWorkers() {
+      try {
+        const data = await getRandomWorkers();
+        setWorkers(data);
+
+        console.log(data);
+      } catch (error) {
+        console.error("Kunde inte hämta personal", error);
+      }
+    }
+
+    fetchRandomWorkers();
+  }, []);
+
   //TODO: Fetch from database and only show 3-4 random workers
 
   return (
@@ -17,9 +38,11 @@ function WorkerListings() {
         </header>
 
         <ul className="worker-list">
-          <li className="worker-list__item">
-            <WorkerCard isAnonymous={true} />
-          </li>
+          {workers.map((worker) => (
+            <li key={worker.id} className="find-workers__item">
+              <WorkerCard worker={worker} isAnonymous={true} />
+            </li>
+          ))}
         </ul>
       </div>
     </section>

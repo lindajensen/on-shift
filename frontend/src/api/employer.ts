@@ -24,6 +24,21 @@ export async function getAllWorkers(): Promise<Worker[]> {
 }
 
 /**
+ * Fetches a random selection of workers.
+ * @returns A promise that resolves to an array of workers.
+ * @throws An error if the request fails.
+ */
+export async function getRandomWorkers() {
+  const response = await fetch(`${API_BASE_URL}/api/employers/workers/random`);
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta personal");
+  }
+
+  return response.json();
+}
+
+/**
  * Fetches saved workers for the currently logged in restaurant.
  * @returns A promise that resolves to an array of saved worker previews.
  * @throws An error if the request fails.
