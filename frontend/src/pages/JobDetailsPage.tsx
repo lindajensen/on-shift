@@ -8,11 +8,11 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { getJobById } from "../api/jobs";
 import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
 import { useAuth } from "../context/useAuth";
-import { getRoleLabel, formatCompensation } from "../utils/formatters";
-import { formatDate, formatTime } from "../utils/date";
+import { getRoleLabel } from "../utils/formatters";
 import { PublicJobListing } from "../types";
+import JobInfoSection from "../components/JobInfoSection";
 
-import { Clock, MapPin, Wallet, Users2, Check, Bookmark } from "lucide-react";
+import { Check, Bookmark } from "lucide-react";
 
 import "../styles/JobDetailsPage.css";
 
@@ -106,55 +106,17 @@ function JobDetailsPage() {
 
         <div className="divider"></div>
 
-        <ul className="job-details__info">
-          <li className="job-details__info-item">
-            <div className="job-details__icon-container">
-              <Clock className="job-details__info-icon" size={18} />
-            </div>
-            <span>
-              <span className="job-details__info-label">Datum och tid</span>
-              <span className="job-details__info-value">
-                {formatDate(job.job_date)} kl. {formatTime(job.start_time)} -{" "}
-                {formatTime(job.end_time)}
-              </span>
-            </span>
-          </li>
-          <li className="job-details__info-item">
-            <div className="job-details__icon-container">
-              <MapPin className="job-details__info-icon" size={18} />
-            </div>
-            <span>
-              <span className="job-details__info-label">Plats</span>
-              <span className="job-details__info-value">
-                {" "}
-                {job.location ?? "Plats ej angiven"}
-              </span>
-            </span>
-          </li>
-          <li className="job-details__info-item">
-            <div className="job-details__icon-container">
-              <Wallet className="job-details__info-icon" size={18} />
-            </div>
-            <span>
-              <span className="job-details__info-label">Ersättning</span>
-              <span className="job-details__info-value">
-                {formatCompensation(job.compensation)}
-              </span>
-            </span>
-          </li>
-          <li className="job-details__info-item">
-            <div className="job-details__icon-container">
-              <Users2 className="job-details__info-icon" size={18} />
-            </div>
-            <span>
-              <span className="job-details__info-label">Antal platser</span>
-              <span className="job-details__info-value">
-                {job.available_slots}{" "}
-                {job.available_slots === 1 ? "plats" : "platser"}
-              </span>
-            </span>
-          </li>
-        </ul>
+        <JobInfoSection
+          job_date={job.job_date}
+          start_time={job.start_time}
+          end_time={job.end_time}
+          compensation={job.compensation}
+          available_slots={job.available_slots}
+          description={job.description}
+          demands={job.demands}
+          is_urgent={job.is_urgent}
+          requires_experience={job.requires_experience}
+        />
 
         <div className="divider"></div>
 
