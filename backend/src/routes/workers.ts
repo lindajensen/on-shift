@@ -19,7 +19,7 @@ router.get("/recommended-jobs", authenticateToken, getRecommendedJobs);
 router.get("/reviews", authenticateToken, getWorkerReviews);
 router.get("/saved-jobs", authenticateToken, getSavedJobs);
 router.post("/saved-jobs", authenticateToken, saveJob);
-router.delete("/saved-jobs/:id", authenticateToken, unsaveJob);
+router.delete("/saved-jobs", authenticateToken, unsaveJob);
 
 router.patch("/availability", authenticateToken, toggleAvailability);
 
