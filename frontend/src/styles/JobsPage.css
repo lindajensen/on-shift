@@ -5,6 +5,9 @@
 .job-card__bookmark-btn {
   background: none;
   border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
 }
 
 .job-card__bookmark-btn--saved svg {
@@ -23,7 +26,7 @@
 .jobs__search-icon {
   position: absolute;
   left: 0.8rem;
-  top: 40%;
+  top: 43%;
   transform: translateY(-50%);
   color: var(--color-text-muted);
 }
