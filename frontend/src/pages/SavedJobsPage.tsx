@@ -11,7 +11,7 @@ import { Clock, MapPin, Wallet, Bookmark } from "lucide-react";
 
 import "../styles/SavedPage.css";
 
-function SavedPage() {
+function SavedJobsPage() {
   //! If add "saved employer" functionality, make sure to change route in App and dropdown naming in AuthHeader
 
   const [savedJobs, setSavedJobs] = useState<SavedJob[]>([]);
@@ -66,7 +66,7 @@ function SavedPage() {
             </ul>
           )}
 
-          {!isLoading && savedJobs.length === 0 ? (
+          {!isLoading && !error && savedJobs.length === 0 ? (
             <div className="empty">
               <div className="empty__icon">
                 <Bookmark size={18} />
@@ -154,4 +154,4 @@ function SavedPage() {
   );
 }
 
-export default SavedPage;
+export default SavedJobsPage;

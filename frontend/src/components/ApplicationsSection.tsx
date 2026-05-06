@@ -56,11 +56,11 @@ function ApplicationsSection({
 
       {applicationList.length == 0 ? (
         <div className="empty">
-          <div className="empty-icon">
+          <div className="empty__icon">
             <ClipboardX size={18} />
           </div>
           <div>
-            <p className="empty-text">Du har inga ansökningar än.</p>
+            <p className="empty__text">Du har inga ansökningar än.</p>
           </div>
         </div>
       ) : (

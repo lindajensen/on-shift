@@ -17,7 +17,8 @@ import JobDetailsPage from "./pages/JobDetailsPage";
 import Dashboard from "./pages/Dashboard";
 import EmployerJobListingsPage from "./pages/EmployerJobListingsPage";
 import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
-import SavedPage from "./pages/SavedPage";
+import SavedJobsPage from "./pages/SavedJobsPage";
+import SavedWorkersPage from "./pages/SavedWorkersPage";
 import FindWorkersPage from "./pages/FindWorkersPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -44,7 +45,8 @@ const router = createBrowserRouter(
             path="/mina-annonser/:id"
             element={<EmployerJobDetailsPage />}
           />
-          <Route path="/sparade-pass" element={<SavedPage />} />
+          <Route path="/sparade-pass" element={<SavedJobsPage />} />
+          <Route path="/sparad-personal" element={<SavedWorkersPage />} />
           <Route path="/personal" element={<FindWorkersPage />} />
         </Route>
       </Route>

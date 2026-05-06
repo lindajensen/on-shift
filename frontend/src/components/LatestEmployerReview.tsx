@@ -44,11 +44,11 @@ function LatestEmployerReview() {
 
       {!isLoading && reviews.length === 0 ? (
         <div className="empty">
-          <div className="empty-icon">
+          <div className="empty__icon">
             <StarOff size={18} />
           </div>
           <div>
-            <p className="empty-text">Du har inte fått några betyg än.</p>
+            <p className="empty__text">Du har inte fått några betyg än.</p>
           </div>
         </div>
       ) : (

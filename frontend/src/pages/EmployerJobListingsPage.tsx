@@ -166,15 +166,15 @@ function EmployerJobListingsPage() {
             </ul>
           )}
 
-          {!isLoading && activeTab === "aktiva" && (
+          {!isLoading && !error && activeTab === "aktiva" && (
             <>
               {activeListings.length === 0 ? (
                 <div className="empty">
-                  <div className="empty-icon">
+                  <div className="empty__icon">
                     <CalendarX2 size={18} />
                   </div>
                   <div>
-                    <p className="empty-text">
+                    <p className="empty__text">
                       Du har inga aktiva pass just nu.
                     </p>
                   </div>
@@ -275,15 +275,15 @@ function EmployerJobListingsPage() {
             </>
           )}
 
-          {!isLoading && activeTab === "avslutade" && (
+          {!isLoading && !error && activeTab === "avslutade" && (
             <>
               {closedListings.length === 0 ? (
                 <div className="empty">
-                  <div className="empty-icon">
+                  <div className="empty__icon">
                     <CalendarX2 size={18} />
                   </div>
                   <div>
-                    <p className="empty-text">Du har inga avslutade pass.</p>
+                    <p className="empty__text">Du har inga avslutade pass.</p>
                   </div>
                 </div>
               ) : (

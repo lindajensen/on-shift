@@ -44,11 +44,11 @@ function JobListings() {
 
         {jobs.length === 0 ? (
           <div className="empty">
-            <div className="empty-icon">
+            <div className="empty__icon">
               <Search size={18} />
             </div>
             <div>
-              <p className="empty-title">Inga pass hittades</p>
+              <p className="empty__title">Inga pass hittades</p>
             </div>
           </div>
         ) : (

@@ -422,7 +422,7 @@ textarea {
   border-radius: var(--radius-lg);
 }
 
-.empty-icon {
+.empty__icon {
   width: 2.5rem;
   height: 2.5rem;
   background-color: var(--color-primary-light);
@@ -434,12 +434,12 @@ textarea {
   color: var(--color-primary);
 }
 
-.empty-title {
+.empty__title {
   font-size: 0.94rem;
   font-weight: 600;
 }
 
-.empty-text {
+.empty__text {
   color: var(--color-text-muted);
 }
 

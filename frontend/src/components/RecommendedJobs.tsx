@@ -51,11 +51,11 @@ function RecommendedJobs() {
 
       {!isLoading && jobs.length === 0 ? (
         <div className="empty">
-          <div className="empty-icon">
+          <div className="empty__icon">
             <SearchX size={18} />
           </div>
           <div>
-            <p className="empty-text">Inga rekommenderade pass hittades.</p>
+            <p className="empty__text">Inga rekommenderade pass hittades.</p>
           </div>
         </div>
       ) : (

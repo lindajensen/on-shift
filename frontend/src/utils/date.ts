@@ -15,6 +15,7 @@ export function formatDateWithYear(dateString: string) {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "Europe/Stockholm",
   });
 }
 

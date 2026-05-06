@@ -6,6 +6,7 @@ export interface Worker {
   availability?: Availability[];
   location: string | null;
   rating: number | null;
+  saved_at?: string;
 }
 
 export interface WorkerRole {

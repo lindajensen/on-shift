@@ -98,3 +98,9 @@
   gap: 0.5rem;
   margin-top: 1rem;
 }
+
+.worker-card__footer--saved-at {
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-left: auto;
+}

@@ -54,11 +54,11 @@ function JobListingsPreview() {
 
       {!isLoading && jobListings.length === 0 ? (
         <div className="empty">
-          <div className="empty-icon">
+          <div className="empty__icon">
             <CalendarX2 size={18} />
           </div>
           <div>
-            <p className="empty-text">Du har inga annonser just nu.</p>
+            <p className="empty__text">Du har inga annonser just nu.</p>
           </div>
         </div>
       ) : (
