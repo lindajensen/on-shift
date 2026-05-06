@@ -1,0 +1,207 @@
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/useAuth";
+import {
+  getAllWorkers,
+  getSavedWorkers,
+  saveWorker,
+  unsaveWorker,
+} from "../api/employer";
+import { getRoleLabel } from "../utils/formatters";
+import { Worker } from "../types";
+import WorkerCard from "../components/WorkerCard";
+import ErrorMessage from "../components/ErrorMessage";
+import { Search } from "lucide-react";
+
+import "../styles/FindWorkersPage.css";
+
+function FindWorkersPage() {
+  const [workers, setWorkers] = useState<Worker[]>([]);
+  const [savedWorkerIds, setSavedWorkerIds] = useState<Set<number>>(new Set());
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("Alla");
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const { user } = useAuth();
+
+  const filters = [
+    "Alla",
+    "Tillgänglig idag",
+    "Servitör",
+    "Bartender",
+    "Diskare",
+    "Runner",
+    "Kock",
+    "Dag",
+    "Kväll",
+    "Helger",
+    "Vardagar",
+  ];
+
+  const filteredWorkers = workers.filter((worker) => {
+    const matchesQuery =
+      worker.roles.some((workerRole) =>
+        getRoleLabel(workerRole.role)
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()),
+      ) || worker.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (activeFilter === "Servitör")
+      return (
+        worker.roles.some((workerRole) => workerRole.role === "waiter") &&
+        matchesQuery
+      );
+    if (activeFilter === "Bartender")
+      return (
+        worker.roles.some((workerRole) => workerRole.role === "bartender") &&
+        matchesQuery
+      );
+    if (activeFilter === "Diskare")
+      return (
+        worker.roles.some((workerRole) => workerRole.role === "dishwasher") &&
+        matchesQuery
+      );
+    if (activeFilter === "Runner")
+      return (
+        worker.roles.some((workerRole) => workerRole.role === "runner") &&
+        matchesQuery
+      );
+    if (activeFilter === "Kock")
+      return (
+        worker.roles.some((workerRole) => workerRole.role === "chef") &&
+        matchesQuery
+      );
+
+    //! Doesn't work until availability is implemented
+    if (activeFilter === "Tillgänglig idag") return matchesQuery;
+    if (activeFilter === "Dag") return matchesQuery;
+    if (activeFilter === "Kväll") return matchesQuery;
+    if (activeFilter === "Helger") return matchesQuery;
+    if (activeFilter === "Vardagar") return matchesQuery;
+
+    return matchesQuery;
+  });
+
+  useEffect(() => {
+    async function fetchWorkers() {
+      try {
+        const data = await getAllWorkers();
+        setWorkers(data);
+
+        if (user?.role === "employer") {
+          const saved = await getSavedWorkers();
+          setSavedWorkerIds(new Set(saved.map((worker) => worker.id)));
+        }
+
+        console.log(data);
+      } catch (error) {
+        console.error("Kunde inte hämta personal", error);
+        setError("Ingen personal hittades");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchWorkers();
+  }, [user?.role]);
+
+  async function handleSaveWorker(id: number) {
+    try {
+      await saveWorker(id);
+      setSavedWorkerIds((prev) => new Set(prev).add(id));
+    } catch (error) {
+      console.error("Kunde inte spara pass", error);
+    }
+  }
+
+  async function handleUnsaveWorker(id: number) {
+    try {
+      await unsaveWorker(id);
+      setSavedWorkerIds((prev) => {
+        const updated = new Set(prev);
+        updated.delete(id);
+        return updated;
+      });
+    } catch (error) {
+      console.error("Kunde inte ta bort sparat pass", error);
+    }
+  }
+
+  if (error) return <ErrorMessage message={error} />;
+
+  // TODO: Implementera filtrering för tillgänglighet när availability är klart
+
+  return (
+    <section className="find-workers">
+      <div className="section__inner">
+        <header className="find-workers__header">
+          <h1 className="find-workers__title">Hitta personal</h1>
+        </header>
+
+        <div className="find-workers__search">
+          <Search className="find-workers__search-icon" size={16} />
+          <input
+            className="find-workers__search-input"
+            type="text"
+            value={searchQuery}
+            placeholder="Sök namn eller roll"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        <div className="jobs__filters">
+          {filters.map((filter) => (
+            <button
+              className={`jobs__filter-btn ${activeFilter === filter ? "jobs__filter-btn--active" : ""}`}
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+
+        {isLoading && (
+          <ul className="find-workers__list-skeleton">
+            {[1, 2, 3].map((i) => (
+              <li key={i} className="find-workers__item">
+                <div className="find-workers__skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!isLoading && filteredWorkers.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">
+              <Search size={18} />
+            </div>
+            <div>
+              <p className="empty-title">Ingen personal hittades</p>
+              <p className="empty-text">
+                Prova ett annat filter eller sök på något annat.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <ul className="find-workers__list">
+            {filteredWorkers.map((worker) => (
+              <li key={worker.id} className="find-workers__item">
+                <WorkerCard
+                  worker={worker}
+                  isAnonymous={false}
+                  onSave={() => handleSaveWorker(worker.id)}
+                  onUnsave={() => handleUnsaveWorker(worker.id)}
+                  isSaved={savedWorkerIds.has(worker.id)}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export default FindWorkersPage;

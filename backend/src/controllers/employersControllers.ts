@@ -2,6 +2,83 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 /**
+ * Fetches all workers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of all workers.
+ */
+export async function getAllWorkers(request: Request, response: Response) {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  try {
+    const allWorkers = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.name,
+        wp.is_available,
+        wp.city AS location,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.is_available = true
+      GROUP BY wp.id, wp.name, wp.is_available, wp.city
+      ORDER BY wp.name ASC
+      `,
+    );
+
+    response.status(200).json(allWorkers.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches 3 random workers to show on the landingpage.
+ * @param _request - The request object (not used).
+ * @param response - The response object.
+ * @returns A JSON array of 3 random workers with their roles and average rating.
+ */
+export async function getRandomWorkers(
+  _request: Request,
+  response: Response,
+): Promise<void> {
+  try {
+    const randomWorkers = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.name,
+        wp.is_available,
+        wp.city,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.is_available = true
+      GROUP BY wp.id, wp.name, wp.is_available, wp.city
+      ORDER BY RANDOM()
+      LIMIT 3
+      `,
+    );
+
+    response.status(200).json(randomWorkers.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches the job listings of the currently logged in restaurant.
  * @param request - The request object.
  * @param response - The response object.
@@ -198,6 +275,83 @@ export async function getSavedWorkers(
     );
 
     response.status(200).json(savedWorkers.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Saves a worker to the currently logged in restaurant's saved workers list.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A success message if the worker was saved, or an error message if something went wrong.
+ */
+export async function saveWorker(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { workerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+      INSERT INTO saved_worker (employer_id, worker_id)
+      VALUES (
+        (SELECT id FROM employer_profile WHERE user_id = $1),
+        $2
+      )
+      `,
+      [userId, workerId],
+    );
+
+    response.status(201).json({ message: "Arbetstagaren har sparats" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Removes a worker from the currently logged in restaurant's list of saved workers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
+ */
+export async function unsaveWorker(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { workerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    await pool.query(
+      `
+     DELETE FROM saved_worker
+      WHERE worker_id = $1
+      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      `,
+      [workerId, userId],
+    );
+
+    response.status(201).json({ message: "Arbetstagaren har tagits bort" });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }

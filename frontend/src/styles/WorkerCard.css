@@ -3,6 +3,7 @@
   border-radius: var(--radius-lg);
   padding: 1rem;
   margin-bottom: 0.5rem;
+  cursor: pointer;
 }
 
 .worker-card__header {
@@ -25,11 +26,24 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 2px;
 }
 
 .worker-card__name {
   font-weight: 600;
+  margin-bottom: 0;
+}
+
+.worker-card__bookmark-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.worker-card__bookmark-btn--saved svg {
+  fill: currentColor;
 }
 
 .worker-card__name-skeleton {
@@ -49,15 +63,22 @@
   color: var(--color-text);
 }
 
-.worker-card__rating svg {
-  fill: #f5a623;
-  color: #f5a623;
+.worker-card__rating span {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.worker-card__extra-roles {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-left: 4px;
 }
 
 .worker-card__meta {
+  display: flex;
+  flex-direction: column;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  color: var(--color-text-muted);
 }
 
 .worker-card__meta-item {
@@ -70,4 +91,10 @@
   display: flex;
   gap: 0.2rem;
   margin-bottom: 0.8rem;
+}
+
+.worker-card__footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }

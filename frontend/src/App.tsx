@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard";
 import EmployerJobListingsPage from "./pages/EmployerJobListingsPage";
 import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
 import SavedPage from "./pages/SavedPage";
+import FindWorkersPage from "./pages/FindWorkersPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
             element={<EmployerJobDetailsPage />}
           />
           <Route path="/sparade-pass" element={<SavedPage />} />
+          <Route path="/personal" element={<FindWorkersPage />} />
         </Route>
       </Route>
     </>,
