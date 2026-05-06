@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { getSavedWorkers } from "../api/employer";
 import { getRoleLabel } from "../utils/formatters";
 import { getExperienceLevel } from "../utils/formatters";
-import { SavedWorkerPreview } from "../types";
+import { Worker } from "../types";
 import { ChevronRight, Star, Bookmark } from "lucide-react";
 
 import "../styles/CardList.css";
 
 function SavedWorkersPreview() {
-  const [savedWorkers, setSavedWorkers] = useState<SavedWorkerPreview[]>([]);
+  const [savedWorkers, setSavedWorkers] = useState<Worker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   //TODO: Error handling
@@ -55,11 +55,11 @@ function SavedWorkersPreview() {
 
       {savedWorkers.length === 0 ? (
         <div className="empty">
-          <div className="empty-icon">
+          <div className="empty__icon">
             <Bookmark size={18} />
           </div>
           <div>
-            <p className="empty-text">
+            <p className="empty__text">
               Du har ingen sparad personal än. Gå till "Hitta personal" för att
               börja lägga till favoriter.
             </p>
@@ -71,7 +71,7 @@ function SavedWorkersPreview() {
             <li key={savedWorker.id} className="card-list__item">
               <article className="card-list__card">
                 <div className="card-list__card-header">
-                  <h3 className="card-list__role">{savedWorker.worker_name}</h3>
+                  <h3 className="card-list__role">{savedWorker.name}</h3>
                   <div className="card-list__meta">
                     <Star className="rating-star" size={18} />
                     <p className="card-list__meta-text">4.9</p>
