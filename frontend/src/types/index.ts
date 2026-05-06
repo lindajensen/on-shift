@@ -81,6 +81,15 @@ export interface WorkerApplicationPreview {
 // ============================================================
 // EMPLOYER
 // ============================================================
+export interface EmployerProfile {
+  user_id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  description: string;
+}
+
 export interface EmployerJobListing {
   id: number;
   role: string;
