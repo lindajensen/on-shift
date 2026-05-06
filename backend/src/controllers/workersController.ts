@@ -4,7 +4,7 @@ import pool from "../db";
 
 /**
  * Toggles the availability status of the logged in worker.
- * @param request - The request object containing the new availability status in the body.
+ * @param request - The request object.
  * @param response - The response object.
  * @returns A JSON response with a message indicating the result.
  */
@@ -29,6 +29,43 @@ export async function toggleAvailability(
   );
 
   response.status(200).json({ message: "Tillgänglighet uppdaterad" });
+}
+
+/**
+ * Fetches the availability status of the logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the worker's availability status.
+ */
+export async function getAvailability(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const availability = await pool.query(
+      `
+      SELECT day_of_week, start_time, end_time
+      FROM availability
+      WHERE worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
+      ORDER BY day_of_week`
+      ,
+      [userId],
+    );
+
+    response.status(200).json(availability.rows);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
 }
 
 /**
