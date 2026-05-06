@@ -24,11 +24,13 @@ export async function getAllWorkers(request: Request, response: Response) {
         wp.name,
         wp.is_available,
         wp.city AS location,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
         ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM worker_profile wp
       JOIN worker_role wr ON wr.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      LEFT JOIN availability a ON a.worker_id = wp.id
       WHERE wp.is_available = true
       GROUP BY wp.id, wp.name, wp.is_available, wp.city
       ORDER BY wp.name ASC
@@ -55,20 +57,22 @@ export async function getRandomWorkers(
   try {
     const randomWorkers = await pool.query(
       `
-      SELECT
-        wp.id,
-        wp.name,
-        wp.is_available,
-        wp.city,
-        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
-        ROUND(AVG(r.rating)::numeric, 1) AS rating
-      FROM worker_profile wp
-      JOIN worker_role wr ON wr.worker_id = wp.id
-      LEFT JOIN review r ON r.reviewee_id = wp.user_id
-      WHERE wp.is_available = true
-      GROUP BY wp.id, wp.name, wp.is_available, wp.city
-      ORDER BY RANDOM()
-      LIMIT 3
+     SELECT
+      wp.id,
+      wp.name,
+      wp.is_available,
+      wp.city,
+      JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+      JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+      ROUND(AVG(r.rating)::numeric, 1) AS rating
+    FROM worker_profile wp
+    JOIN worker_role wr ON wr.worker_id = wp.id
+    LEFT JOIN review r ON r.reviewee_id = wp.user_id
+    LEFT JOIN availability a ON a.worker_id = wp.id
+    WHERE wp.is_available = true
+    GROUP BY wp.id, wp.name, wp.is_available, wp.city
+    ORDER BY RANDOM()
+    LIMIT 3
       `,
     );
 
