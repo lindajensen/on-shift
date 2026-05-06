@@ -13,8 +13,6 @@ function WorkerListings() {
       try {
         const data = await getRandomWorkers();
         setWorkers(data);
-
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta personal", error);
       }

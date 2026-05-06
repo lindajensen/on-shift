@@ -23,6 +23,8 @@ function SavedWorkersPreview() {
       try {
         const data = await getSavedWorkers();
         setSavedWorkers(data);
+
+        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta sparad personal", error);
       } finally {
@@ -72,10 +74,15 @@ function SavedWorkersPreview() {
               <article className="card-list__card">
                 <div className="card-list__card-header">
                   <h3 className="card-list__role">{savedWorker.name}</h3>
-                  <div className="card-list__meta">
-                    <Star className="rating-star" size={18} />
-                    <p className="card-list__meta-text">4.9</p>
-                  </div>
+
+                  {savedWorker.rating && (
+                    <div className="card-list__meta">
+                      <Star className="rating-star" size={18} />
+                      <p className="card-list__meta-text">
+                        {Number(savedWorker.rating).toFixed(1)}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <ul className="card-list__role-list">

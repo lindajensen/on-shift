@@ -67,12 +67,12 @@ function LatestEmployerReview() {
 
                 <div className="latest-review__card-rating">
                   <Star className="latest-review__card-rating-icon" size={18} />
-                  <span className="latest-review__card-rating-score">5.0</span>
+                  <span className="latest-review__card-rating-score">
+                    {review.rating.toFixed(1)}
+                  </span>
                 </div>
 
-                <p className="latest-review__card-comment">
-                  Fantastisk arbetsplats. Välorganiserad och trevlig personal.
-                </p>
+                <p className="latest-review__card-comment">{review.comment}</p>
 
                 <div className="divider"></div>
 
