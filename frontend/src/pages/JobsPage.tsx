@@ -175,12 +175,12 @@ function JobsPage() {
 
         {visibleJobs.length === 0 ? (
           <div className="empty">
-            <div className="empty-icon">
+            <div className="empty__icon">
               <Search size={18} />
             </div>
             <div>
-              <p className="empty-title">Inga pass hittades</p>
-              <p className="empty-text">
+              <p className="empty__title">Inga pass hittades</p>
+              <p className="empty__text">
                 Prova ett annat filter eller sök på något annat.
               </p>
             </div>
