@@ -1,3 +1,5 @@
+import { Availability } from "../types";
+
 export function getStatusLabel(status: string): string {
   switch (status) {
     case "hired":
@@ -73,4 +75,48 @@ export function getShiftType(startTime: string, jobDate: string): string {
   if (day === 0 || day === 6) return "helg";
   if (hour >= 17) return "kväll";
   return "dag";
+}
+
+export function formatAvailability(availability: Availability[]): string {
+  const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
+  const weekends = ["saturday", "sunday"];
+
+  const hasWeekdays = availability.some((entry) =>
+    weekdays.includes(entry.day_of_week),
+  );
+  const hasWeekends = availability.some((entry) =>
+    weekends.includes(entry.day_of_week),
+  );
+
+  const isMorning = availability.some((entry) => entry.start_time < "12:00:00");
+  const isEvening = availability.some(
+    (entry) => entry.start_time >= "17:00:00",
+  );
+  const isDayTime = availability.some(
+    (entry) => entry.start_time >= "12:00:00" && entry.start_time < "17:00:00",
+  );
+
+  const timeOfDay =
+    isMorning && isEvening
+      ? "Dag och kväll"
+      : isMorning
+        ? "Morgon"
+        : isDayTime
+          ? "Dag"
+          : isEvening
+            ? "Kväll"
+            : "";
+
+  const daysOfWeek =
+    hasWeekdays && hasWeekends
+      ? "Vardagar och helger"
+      : hasWeekdays
+        ? "Vardagar"
+        : hasWeekends
+          ? "Helger"
+          : "";
+
+  if (!daysOfWeek && !timeOfDay) return "Inga dagar eller tider angivna";
+
+  return `${daysOfWeek} · ${timeOfDay}`;
 }
