@@ -50,9 +50,7 @@ function JobsPage() {
   const filteredJobs = jobs.filter((job) => {
     const matchesQuery =
       job.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.restaurant_name
-        .toLocaleLowerCase()
-        .includes(searchQuery.toLowerCase());
+      job.restaurant_name.toLowerCase().includes(searchQuery.toLowerCase());
 
     const today = new Date().toISOString().split("T")[0];
 
