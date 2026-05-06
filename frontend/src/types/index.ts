@@ -3,14 +3,22 @@ export interface Worker {
   name: string;
   roles: WorkerRole[];
   is_available: boolean;
+  availability?: Availability[];
   location: string | null;
   rating: number | null;
 }
 
-interface WorkerRole {
+export interface WorkerRole {
   role: string;
   experience_level: string;
 }
+
+export interface Availability {
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+}
+
 export interface PublicJobListing {
   id: number;
   role: string;
