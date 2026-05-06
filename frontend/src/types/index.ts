@@ -1,3 +1,40 @@
+// ============================================================
+// AUTH
+// ============================================================
+export interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+    role: string;
+    name: string;
+  };
+}
+
+export interface AuthUser {
+  id: number;
+  email: string;
+  role: string;
+  name: string;
+}
+
+export interface RegisterValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  restaurantName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
+export interface LoginValidationErrors {
+  email?: string;
+  password?: string;
+}
+
+// ============================================================
+// WORKER
+// ============================================================
 export interface Worker {
   id: number;
   name: string;
@@ -20,6 +57,111 @@ export interface Availability {
   end_time: string;
 }
 
+export interface WorkerProfile {
+  id: number;
+  name: string;
+  bio: string;
+  experienceLevel: string;
+  education: string;
+  email: string;
+  phone: string;
+  is_available: boolean;
+}
+
+export interface WorkerApplicationPreview {
+  id: number;
+  restaurant_name: string;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+}
+
+// ============================================================
+// EMPLOYER
+// ============================================================
+export interface EmployerJobListing {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  available_slots: number;
+  status: string;
+  application_count: string;
+  description: string | null;
+  demands: string | null;
+  is_urgent: boolean;
+  requires_experience: boolean;
+}
+
+export interface EmployerJobDetails {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  available_slots: number;
+  description: string | null;
+  demands: string | null;
+  is_urgent: boolean;
+  requires_experience: boolean;
+  status: string;
+  applications: EmployerApplicationDetail[];
+}
+
+export interface EmployerApplicationDetail {
+  id: number;
+  worker_name: string;
+  role: string;
+  experience_level: string;
+  status: string;
+  rating: number | null;
+}
+
+export interface EmployerApplicationPreview {
+  id: number;
+  worker_name: string;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  status: string;
+}
+export interface SavedWorkerPreview {
+  id: number;
+  worker_name: string;
+  roles: WorkerRole[];
+  rating: number | null;
+}
+
+export interface JobFormData {
+  role: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  compensation: string;
+  availableSlots: string;
+  description: string;
+  isUrgent: boolean;
+  requires_experience: boolean;
+}
+
+export interface JobModalErrors {
+  role?: string;
+  date?: string;
+  startTime?: string;
+  endTime?: string;
+  compensation?: string;
+  availableSlots?: string;
+}
+
+// ============================================================
+// JOBS
+// ============================================================
 export interface PublicJobListing {
   id: number;
   role: string;
@@ -63,95 +205,9 @@ export interface SavedJob {
   created_at: string;
 }
 
-export interface EmployerJobListing {
-  id: number;
-  role: string;
-  job_date: string;
-  start_time: string;
-  end_time: string;
-  compensation: number;
-  available_slots: number;
-  status: string;
-  application_count: string;
-  description: string | null;
-  demands: string | null;
-  is_urgent: boolean;
-  requires_experience: boolean;
-}
-
-export interface EmployerJobDetails {
-  id: number;
-  role: string;
-  job_date: string;
-  start_time: string;
-  end_time: string;
-  compensation: number;
-  available_slots: number;
-  description: string | null;
-  demands: string | null;
-  is_urgent: boolean;
-  requires_experience: boolean;
-  status: string;
-  applications: EmployerApplicationDetail[];
-}
-
-export interface EmployerApplicationDetail {
-  id: number;
-  worker_name: string;
-  role: string;
-  experience_level: string;
-  status: string;
-  rating: number | null;
-}
-
-export interface LoginResponse {
-  token: string;
-  user: {
-    id: number;
-    email: string;
-    role: string;
-    name: string;
-  };
-}
-
-export interface AuthUser {
-  id: number;
-  email: string;
-  role: string;
-  name: string;
-}
-
-export interface WorkerProfile {
-  id: number;
-  name: string;
-  bio: string;
-  experienceLevel: string;
-  education: string;
-  email: string;
-  phone: string;
-  is_available: boolean;
-}
-
-export interface WorkerApplicationPreview {
-  id: number;
-  restaurant_name: string;
-  role: string;
-  job_date: string;
-  start_time: string;
-  end_time: string;
-  status: string;
-}
-
-export interface EmployerApplicationPreview {
-  id: number;
-  worker_name: string;
-  role: string;
-  job_date: string;
-  start_time: string;
-  end_time: string;
-  status: string;
-}
-
+// ============================================================
+// OTHER
+// ============================================================
 export interface Review {
   id: number;
   rating: number;
@@ -160,47 +216,4 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
-}
-
-export interface SavedWorkerPreview {
-  id: number;
-  worker_name: string;
-  roles: WorkerRole[];
-  rating: number | null;
-}
-
-export interface JobFormData {
-  role: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  compensation: string;
-  availableSlots: string;
-  description: string;
-  isUrgent: boolean;
-  requires_experience: boolean;
-}
-
-// Errors
-export interface RegisterValidationErrors {
-  firstName?: string;
-  lastName?: string;
-  restaurantName?: string;
-  email?: string;
-  password?: string;
-  confirmPassword?: string;
-}
-
-export interface LoginValidationErrors {
-  email?: string;
-  password?: string;
-}
-
-export interface JobModalErrors {
-  role?: string;
-  date?: string;
-  startTime?: string;
-  endTime?: string;
-  compensation?: string;
-  availableSlots?: string;
 }
