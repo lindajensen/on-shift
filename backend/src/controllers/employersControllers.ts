@@ -264,16 +264,20 @@ export async function getSavedWorkers(
       `
       SELECT
         wp.id,
-        wp.name AS worker_name,
+        wp.name,
+        wp.is_available,
+        wp.city AS location,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
-        AVG(r.rating) AS rating
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM saved_worker sw
       JOIN worker_profile wp ON sw.worker_id = wp.id
       JOIN worker_role wr ON wr.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      LEFT JOIN availability a ON a.worker_id = wp.id
       JOIN employer_profile ep ON sw.employer_id = ep.id
       WHERE ep.user_id = $1
-      GROUP BY wp.id, wp.name;
+      GROUP BY wp.id, wp.name, wp.is_available, wp.city
       `,
       [userId],
     );
