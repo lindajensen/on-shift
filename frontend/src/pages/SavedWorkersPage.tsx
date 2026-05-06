@@ -18,7 +18,6 @@ function SavedWorkersPage() {
       try {
         const data = await getSavedWorkers();
         setSavedWorkers(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta sparad personal", error);
         setError(
