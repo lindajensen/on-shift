@@ -33,6 +33,7 @@ function FindWorkersPage() {
     "Diskare",
     "Runner",
     "Kock",
+    "Morgon",
     "Dag",
     "Kväll",
     "Helger",
@@ -73,12 +74,59 @@ function FindWorkersPage() {
         matchesQuery
       );
 
-    //! Doesn't work until availability is implemented
-    if (activeFilter === "Tillgänglig idag") return matchesQuery;
-    if (activeFilter === "Dag") return matchesQuery;
-    if (activeFilter === "Kväll") return matchesQuery;
-    if (activeFilter === "Helger") return matchesQuery;
-    if (activeFilter === "Vardagar") return matchesQuery;
+    if (activeFilter === "Tillgänglig idag") {
+      const days = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+      ];
+      const today = days[new Date().getDay()];
+      return (
+        worker.availability?.some((entry) => entry.day_of_week === today) &&
+        matchesQuery
+      );
+    }
+
+    if (activeFilter === "Morgon")
+      return (
+        worker.availability?.some((entry) => entry.start_time < "12:00:00") &&
+        matchesQuery
+      );
+
+    if (activeFilter === "Dag")
+      return (
+        worker.availability?.some(
+          (entry) =>
+            entry.start_time >= "12:00:00" && entry.start_time < "17:00:00",
+        ) && matchesQuery
+      );
+
+    if (activeFilter === "Kväll")
+      return (
+        worker.availability?.some((entry) => entry.start_time >= "17:00:00") &&
+        matchesQuery
+      );
+
+    if (activeFilter === "Helger")
+      return (
+        worker.availability?.some(
+          (entry) =>
+            entry.day_of_week === "saturday" || entry.day_of_week === "sunday",
+        ) && matchesQuery
+      );
+
+    if (activeFilter === "Vardagar")
+      return (
+        worker.availability?.some((entry) =>
+          ["monday", "tuesday", "wednesday", "thursday", "friday"].includes(
+            entry.day_of_week,
+          ),
+        ) && matchesQuery
+      );
 
     return matchesQuery;
   });
@@ -93,8 +141,6 @@ function FindWorkersPage() {
           const saved = await getSavedWorkers();
           setSavedWorkerIds(new Set(saved.map((worker) => worker.id)));
         }
-
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta personal", error);
         setError("Ingen personal hittades");
@@ -129,8 +175,6 @@ function FindWorkersPage() {
   }
 
   if (error) return <ErrorMessage message={error} />;
-
-  // TODO: Implementera filtrering för tillgänglighet när availability är klart
 
   return (
     <section className="find-workers">
