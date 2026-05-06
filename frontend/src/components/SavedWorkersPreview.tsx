@@ -88,11 +88,6 @@ function SavedWorkersPreview() {
                   ))}
                 </ul>
 
-                {/* <div className="card-list__meta">
-                <Clock size={18} />
-                <p className="card-list__meta-text">Tillgänglig helger</p>
-              </div> */}
-
                 <button className="card-list__contact-btn">Kontakta</button>
               </article>
             </li>
