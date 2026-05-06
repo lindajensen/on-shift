@@ -1,6 +1,5 @@
 /// <reference path="../types/express.d.ts" />
 import { Request, Response } from "express";
-// import client from "../db";
 import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

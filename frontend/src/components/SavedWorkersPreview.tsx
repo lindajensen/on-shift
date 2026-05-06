@@ -14,8 +14,6 @@ function SavedWorkersPreview() {
 
   //TODO: Error handling
   //TODO: Contact button not yet implemented
-  //TODO: Fallback för om inga sparade arbetare
-  //TODO: Availability not yet implemented
   //TODO: Make card clickable?
 
   useEffect(() => {
