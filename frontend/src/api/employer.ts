@@ -1,4 +1,4 @@
-import { SavedWorkerPreview, Review, Worker } from "../types";
+import { Worker, Review } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -43,7 +43,7 @@ export async function getRandomWorkers() {
  * @returns A promise that resolves to an array of saved worker previews.
  * @throws An error if the request fails.
  */
-export async function getSavedWorkers(): Promise<SavedWorkerPreview[]> {
+export async function getSavedWorkers(): Promise<Worker[]> {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${API_BASE_URL}/api/employers/saved-workers`, {
