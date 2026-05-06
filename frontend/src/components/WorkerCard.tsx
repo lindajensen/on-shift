@@ -33,7 +33,7 @@ function WorkerCard({
   return (
     <article
       className="worker-card"
-      onClick={() => navigate(`/workers/${worker.id}`)}
+      onClick={() => navigate(`/personal/${worker.id}`)}
     >
       <header className="worker-card__header">
         <div className="worker-card__avatar avatar">
