@@ -4,17 +4,28 @@ import { useAuth } from "../context/useAuth";
 import {
   getEmployerProfileByUserId,
   getEmployerProfileById,
+  updateEmployerProfile,
 } from "../api/employer";
 import { formatAddress } from "../utils/formatters";
-import { EmployerProfile } from "../types";
+import {
+  EmployerProfile,
+  EditContactFormData,
+  EditAboutFormData,
+} from "../types";
 import ProfileHeader from "../components/ProfileHeader";
 import ErrorMessage from "../components/ErrorMessage";
+import Modal from "../components/modals/Modal";
+import EditContactModal from "../components/modals/EditContactModal";
+import EditAboutModal from "../components/modals/EditAboutModal";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 import "../styles/EmployerProfilePage.css";
 
 function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
+  const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
+  const [isEditAboutModalOpen, setIsEditAboutModalOpen] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +33,7 @@ function EmployerProfilePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const isOwner = user?.id === profile?.user_id;
+  const isOwner = user?.userId === profile?.user_id;
   const profileId = id ?? user?.userId;
 
   useEffect(() => {
@@ -51,111 +62,168 @@ function EmployerProfilePage() {
     navigate("/");
   }
 
+  async function handleSaveContact(contactData: EditContactFormData) {
+    try {
+      await updateEmployerProfile(contactData);
+      setProfile((prev) => (prev ? { ...prev, ...contactData } : prev));
+
+      setIsEditContactModalOpen(false);
+    } catch (error) {
+      console.error("Kunde inte spara kontaktinformationen", error);
+    }
+  }
+
+  async function handleSaveAbout(aboutData: EditAboutFormData) {
+    try {
+      await updateEmployerProfile(aboutData);
+      setProfile((prev) => (prev ? { ...prev, ...aboutData } : prev));
+
+      setIsEditAboutModalOpen(false);
+    } catch (error) {
+      console.error("Kunde inte spara kontaktinformationen", error);
+    }
+  }
+
   if (error) return <ErrorMessage message={error} />;
 
   return (
-    <section className="employer-profile">
-      <div className="section__inner">
-        {isLoading && (
-          <>
-            <div className="employer-profile__skeleton skeleton" />
-            <div className="employer-profile__skeleton skeleton" />
-            <div className="employer-profile__skeleton skeleton" />
-          </>
-        )}
+    <>
+      <section className="employer-profile">
+        <div className="section__inner">
+          {isLoading && (
+            <>
+              <div className="employer-profile__skeleton skeleton" />
+              <div className="employer-profile__skeleton skeleton" />
+              <div className="employer-profile__skeleton skeleton" />
+            </>
+          )}
 
-        {!isLoading && !error && profile && (
-          <>
-            <ProfileHeader
-              name={profile.name}
-              city={profile.city}
-              rating={profile.rating}
-            />
+          {!isLoading && !error && profile && (
+            <>
+              <ProfileHeader
+                name={profile.name}
+                city={profile.city}
+                rating={profile.rating}
+                isOwner={isOwner}
+              />
 
-            <div className="divider"></div>
+              <div className="divider"></div>
 
-            <section className="contact-info">
-              <header className="contact-info__header">
-                <h2 className="contact-info__title">Kontaktinformation</h2>
-                {isOwner && (
-                  <button className="contact-info__edit-btn">
-                    <Edit size={16} />
-                  </button>
+              <section className="contact-info">
+                <header className="contact-info__header">
+                  <h2 className="contact-info__title">Kontaktinformation</h2>
+                  {isOwner && (
+                    <button
+                      onClick={() => setIsEditContactModalOpen(true)}
+                      className="contact-info__edit-btn"
+                    >
+                      <Edit size={16} />
+                    </button>
+                  )}
+                </header>
+
+                <ul className="contact-info__list">
+                  <li className="contact-info__item">
+                    <div className="contact-info__icon-container">
+                      <Mail size={18} />
+                    </div>
+                    <div className="contact-info__item-content">
+                      <p className="contact-info__label">E-post</p>
+                      <p className="contact-info__value">
+                        {profile.email ?? "Ingen e-post angiven"}
+                      </p>
+                    </div>
+                  </li>
+                  <li className="contact-info__item">
+                    <div className="contact-info__icon-container">
+                      <Phone size={18} />
+                    </div>
+                    <div className="contact-info__item-content">
+                      <p className="contact-info__label">Telefon</p>
+                      <p className="contact-info__value">
+                        {profile.phone ?? "Inget telefonnummer angivet"}
+                      </p>
+                    </div>
+                  </li>
+                  <li className="contact-info__item">
+                    <div className="contact-info__icon-container">
+                      <MapPin size={18} />
+                    </div>
+                    <div className="contact-info__item-content">
+                      <p className="contact-info__label">Adress</p>
+                      <p className="contact-info__value">
+                        {formatAddress(
+                          profile.street ?? null,
+                          profile.postal_code ?? null,
+                          profile.city ?? null,
+                        )}
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </section>
+
+              <div className="divider"></div>
+
+              <section className="about-restaurant">
+                <header className="about-restaurant__header">
+                  <h2 className="about-restaurant__title">Om restaurangen</h2>
+                  {isOwner && (
+                    <button
+                      className="about-restaurant__edit-btn"
+                      onClick={() => setIsEditAboutModalOpen(true)}
+                    >
+                      <Edit size={16} />
+                    </button>
+                  )}
+                </header>
+
+                {profile.description ? (
+                  <p className="about-restaurant__text">
+                    {profile.description}
+                  </p>
+                ) : (
+                  <p>Ingen beskrivning angiven</p>
                 )}
-              </header>
+              </section>
 
-              <ul className="contact-info__list">
-                <li className="contact-info__item">
-                  <div className="contact-info__icon-container">
-                    <Mail size={18} />
-                  </div>
-                  <div className="contact-info__item-content">
-                    <p className="contact-info__label">E-post</p>
-                    <p className="contact-info__value">
-                      {profile.email ?? "Ingen e-post angiven"}
-                    </p>
-                  </div>
-                </li>
-                <li className="contact-info__item">
-                  <div className="contact-info__icon-container">
-                    <Phone size={18} />
-                  </div>
-                  <div className="contact-info__item-content">
-                    <p className="contact-info__label">Telefon</p>
-                    <p className="contact-info__value">
-                      {profile.phone ?? "Inget telefonnummer angivet"}
-                    </p>
-                  </div>
-                </li>
-                <li className="contact-info__item">
-                  <div className="contact-info__icon-container">
-                    <MapPin size={18} />
-                  </div>
-                  <div className="contact-info__item-content">
-                    <p className="contact-info__label">Adress</p>
-                    <p className="contact-info__value">
-                      {formatAddress(
-                        profile.street ?? null,
-                        profile.postal_code ?? null,
-                        profile.city ?? null,
-                      )}
-                    </p>
-                  </div>
-                </li>
-              </ul>
-            </section>
-
-            <div className="divider"></div>
-
-            <section className="about-restaurant">
-              <header className="about-restaurant__header">
-                <h2 className="about-restaurant__title">Om restaurangen</h2>
-                {isOwner && (
-                  <button className="about-restaurant__edit-btn">
-                    <Edit size={16} />
-                  </button>
-                )}
-              </header>
-
-              {profile.description ? (
-                <p className="about-restaurant__text">{profile.description}</p>
-              ) : (
-                <p>Ingen beskrivning angiven</p>
+              {isOwner && (
+                <button
+                  className="btn btn--primary btn--full"
+                  onClick={handleLogout}
+                >
+                  Logga ut
+                </button>
               )}
-            </section>
+            </>
+          )}
+        </div>
+      </section>
 
-            {isOwner && (
-              <button
-                className="btn btn--primary btn--full"
-                onClick={handleLogout}
-              >
-                Logga ut
-              </button>
-            )}
-          </>
-        )}
-      </div>
-    </section>
+      <Modal
+        isOpen={isEditContactModalOpen}
+        onClose={() => setIsEditContactModalOpen(false)}
+        showCloseButton={false}
+      >
+        <EditContactModal
+          onClose={() => setIsEditContactModalOpen(false)}
+          onSave={handleSaveContact}
+          profile={profile}
+        />
+      </Modal>
+
+      <Modal
+        isOpen={isEditAboutModalOpen}
+        onClose={() => setIsEditAboutModalOpen(false)}
+        showCloseButton={false}
+      >
+        <EditAboutModal
+          onClose={() => setIsEditAboutModalOpen(false)}
+          onSave={handleSaveAbout}
+          profile={profile}
+        />
+      </Modal>
+    </>
   );
 }
 
