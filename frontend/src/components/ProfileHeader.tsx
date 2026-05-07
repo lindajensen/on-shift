@@ -1,4 +1,5 @@
-import { MapPin, Star } from "lucide-react";
+import { getInitials } from "../utils/text";
+import { MapPin, Star, Bookmark } from "lucide-react";
 
 import "../styles/ProfileHeader.css";
 
@@ -6,16 +7,25 @@ interface ProfileHeaderProps {
   name: string;
   city: string | null;
   rating: string | null;
+  isOwner: boolean;
 }
 
-function ProfileHeader({ name, city, rating }: ProfileHeaderProps) {
+//TODO: Implement bookmark employer functionality for workers
+
+function ProfileHeader({ name, city, rating, isOwner }: ProfileHeaderProps) {
+  const initials = name ? getInitials(name) : "";
+
   return (
     <div className="profile-header">
-      <div className="profile-header__avatar avatar">N</div>
+      <div className="profile-header__avatar avatar">{initials}</div>
 
       <div className="profile-header__info">
         <div className="profile-header__name-row">
-          <h1 className="profile-header__name">{name}</h1>
+          <div className="profile-header__name-group">
+            <h1 className="profile-header__name">{name}</h1>
+            {!isOwner && <Bookmark size={18} />}
+          </div>
+
           <p className="profile-header__rating">
             <Star className="rating-star" size={14} />
             {Number(rating)?.toFixed(1)}
