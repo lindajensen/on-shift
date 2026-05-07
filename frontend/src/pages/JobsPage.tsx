@@ -233,7 +233,7 @@ function JobsPage() {
                         <div className="job-card__meta-item">
                           <MapPin size={14} />
                           <p className="job-card__meta-text">
-                            {job.location ?? "Plats ej angiven"}
+                            {job.location ?? "Stad ej angiven"}
                           </p>
                         </div>
 
