@@ -1,4 +1,10 @@
-import { Worker, Review, EmployerProfile } from "../types";
+import {
+  Worker,
+  Review,
+  EmployerProfile,
+  EditContactFormData,
+  EditAboutFormData,
+} from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -36,6 +42,33 @@ export async function getEmployerProfileById(
 
   if (!response.ok) {
     throw new Error("Kunde inte hämta profilen. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Updates the profile of the currently logged in employer with the provided data.
+ * @param data - The data to update the employer profile with. Can be either contact information or about information.
+ * @returns A promise that resolves to the updated employer profile.
+ * @throws An error if the request fails.
+ */
+export async function updateEmployerProfile(
+  data: EditContactFormData | EditAboutFormData,
+): Promise<EmployerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/profile/me`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera profilen. Försök igen senare.");
   }
 
   return response.json();
