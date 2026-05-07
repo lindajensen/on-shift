@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getEmployerProfileByUserId,
   getEmployerProfileById,
+  updateEmployerProfile,
   getJobListings,
   getJobDetails,
   getEmployerApplications,
@@ -21,10 +22,13 @@ import { authenticateToken } from "../middleware/auth";
 const router = Router();
 
 router.get("/profile/me", authenticateToken, getEmployerProfileByUserId);
+router.patch("/profile/me", authenticateToken, updateEmployerProfile);
 router.get("/profile/:id", getEmployerProfileById);
+
 router.get("/jobs", authenticateToken, getJobListings);
 router.get("/jobs/:id", authenticateToken, getJobDetails);
 router.get("/applications", authenticateToken, getEmployerApplications);
+
 router.get("/workers", authenticateToken, getAllWorkers);
 router.get("/workers/random", getRandomWorkers);
 router.get("/saved-workers", authenticateToken, getSavedWorkers);

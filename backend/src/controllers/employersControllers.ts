@@ -89,6 +89,60 @@ export async function getEmployerProfileByUserId(
 }
 
 /**
+ * Updates the profile of the currently logged in employer.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated employer profile.
+ */
+export async function updateEmployerProfile(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const updatedProfile = await pool.query(
+      `
+      UPDATE employer_profile
+      SET
+        name = COALESCE($1, name),
+        email = COALESCE($2, email),
+        phone = COALESCE($3, phone),
+        street = COALESCE($4, street),
+        postal_code = COALESCE($5, postal_code),
+        city = COALESCE($6, city),
+        description = COALESCE($7, description)
+      WHERE user_id = $8
+      RETURNING *
+      `,
+      [
+        data.name ?? null,
+        data.email ?? null,
+        data.phone ?? null,
+        data.street ?? null,
+        data.postal_code ?? null,
+        data.city ?? null,
+        data.description ?? null,
+        userId,
+      ],
+    );
+
+    response.status(200).json(updatedProfile.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches all workers.
  * @param request - The request object.
  * @param response - The response object.
