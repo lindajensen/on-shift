@@ -120,3 +120,12 @@ export function formatAvailability(availability: Availability[]): string {
 
   return `${daysOfWeek} · ${timeOfDay}`;
 }
+
+export function formatAddress(
+  street: string | null,
+  postalCode: string | null,
+  city: string | null,
+): string {
+  if (!street || !postalCode || !city) return "Ingen adress angiven";
+  return `${street}, ${postalCode} ${city}`;
+}
