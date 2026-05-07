@@ -1,5 +1,7 @@
 import { Router } from "express";
 import {
+  getEmployerProfileByUserId,
+  getEmployerProfileById,
   getJobListings,
   getJobDetails,
   getEmployerApplications,
@@ -18,6 +20,8 @@ import { authenticateToken } from "../middleware/auth";
 
 const router = Router();
 
+router.get("/profile/me", authenticateToken, getEmployerProfileByUserId);
+router.get("/profile/:id", getEmployerProfileById);
 router.get("/jobs", authenticateToken, getJobListings);
 router.get("/jobs/:id", authenticateToken, getJobDetails);
 router.get("/applications", authenticateToken, getEmployerApplications);
