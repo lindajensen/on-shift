@@ -23,10 +23,12 @@ CREATE TABLE employer_profile (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL,
   name TEXT NOT NULL,
-  address TEXT,
-  description TEXT,
   email TEXT,
   phone TEXT,
+  street TEXT,
+  postal_code TEXT,
+  city TEXT,
+  description TEXT,
 
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

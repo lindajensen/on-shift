@@ -2,6 +2,147 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 /**
+ * Fetches the profile of an employer by their employer profile ID.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the employer's profile information.
+ */
+export async function getEmployerProfileById(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const { id } = request.params;
+
+  try {
+    const employerProfile = await pool.query(
+      `
+     SELECT
+        ep.user_id,
+        ep.name,
+        ep.email,
+        ep.phone,
+        ep.street,
+        ep.postal_code,
+        ep.city,
+        ep.description,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM employer_profile ep
+      LEFT JOIN review r ON r.reviewee_id = ep.user_id
+      WHERE ep.id = $1
+      GROUP BY ep.id, ep.user_id, ep.name, ep.email, ep.phone, ep.street, ep.postal_code, ep.city, ep.description
+      `,
+      [id],
+    );
+
+    response.status(200).json(employerProfile.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches the profile of the currently logged in employer.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the employer's profile information.
+ */
+export async function getEmployerProfileByUserId(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const employerProfile = await pool.query(
+      `
+      SELECT
+        ep.user_id,
+        ep.name,
+        ep.email,
+        ep.phone,
+        ep.street,
+        ep.postal_code,
+        ep.city,
+        ep.description,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM employer_profile ep
+      LEFT JOIN review r ON r.reviewee_id = ep.user_id
+      WHERE ep.user_id = $1
+      GROUP BY ep.id, ep.user_id, ep.name, ep.email, ep.phone, ep.street, ep.postal_code, ep.city, ep.description
+      `,
+      [userId],
+    );
+
+    response.status(200).json(employerProfile.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the profile of the currently logged in employer.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated employer profile.
+ */
+export async function updateEmployerProfile(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.userId;
+
+  try {
+    const updatedProfile = await pool.query(
+      `
+      UPDATE employer_profile
+      SET
+        name = COALESCE($1, name),
+        email = COALESCE($2, email),
+        phone = COALESCE($3, phone),
+        street = COALESCE($4, street),
+        postal_code = COALESCE($5, postal_code),
+        city = COALESCE($6, city),
+        description = COALESCE($7, description)
+      WHERE user_id = $8
+      RETURNING *
+      `,
+      [
+        data.name ?? null,
+        data.email ?? null,
+        data.phone ?? null,
+        data.street ?? null,
+        data.postal_code ?? null,
+        data.city ?? null,
+        data.description ?? null,
+        userId,
+      ],
+    );
+
+    response.status(200).json(updatedProfile.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Fetches all workers.
  * @param request - The request object.
  * @param response - The response object.
@@ -39,7 +180,6 @@ export async function getAllWorkers(request: Request, response: Response) {
 
     response.status(200).json(allWorkers.rows);
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -165,7 +305,12 @@ export async function getJobDetails(
         j.is_urgent,
         j.requires_experience,
         j.status,
-        ep.address AS location,
+        CASE
+          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
+          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
+          WHEN ep.city IS NOT NULL THEN ep.city
+          ELSE NULL
+        END AS location,
         JSON_AGG(
           json_build_object(
             'id', a.id,
@@ -181,7 +326,7 @@ export async function getJobDetails(
       LEFT JOIN worker_profile wp ON a.worker_id = wp.id
       JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.id = $1 AND ep.user_id = $2
-      GROUP BY j.id, ep.address
+      GROUP BY j.id, ep.street, ep.postal_code, ep.city
       `,
       [id, userId],
     );
@@ -324,7 +469,6 @@ export async function saveWorker(
 
     response.status(201).json({ message: "Arbetstagaren har sparats" });
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }

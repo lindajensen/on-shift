@@ -8,6 +8,24 @@ export function validateEmail(email: string): boolean {
 }
 
 /**
+ * Validates phone number format using a regular expression.
+ * @param phone - The phone number to validate
+ * @returns True if valid phone number format
+ */
+export function validatePhone(phone: string): boolean {
+  return /^[0-9\s\-+()]{7,15}$/.test(phone);
+}
+
+/**
+ * Validates postal code format using a regular expression.
+ * @param postalCode - The postal code to validate
+ * @returns True if valid postal code format
+ */
+export function validatePostalCode(postalCode: string): boolean {
+  return /^\d{3}\s\d{2}$/.test(postalCode);
+}
+
+/**
  * Validates password strength
  * @param password - Password to validate
  * @returns Error message if invalid, otherwise null

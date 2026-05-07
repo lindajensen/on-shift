@@ -57,8 +57,7 @@ export async function getAvailability(
       SELECT day_of_week, start_time, end_time
       FROM availability
       WHERE worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
-      ORDER BY day_of_week`
-      ,
+      ORDER BY day_of_week`,
       [userId],
     );
 
@@ -178,7 +177,12 @@ export async function getRecommendedJobs(
         j.end_time,
         j.compensation,
         ep.name AS restaurant_name,
-        ep.address AS location
+        CASE
+          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
+          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
+          WHEN ep.city IS NOT NULL THEN ep.city
+          ELSE NULL
+        END AS location,
       FROM job j
       JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.role IN (
@@ -281,7 +285,12 @@ export async function getSavedJobs(
         j.is_urgent,
         j.requires_experience,
         ep.name AS restaurant_name,
-        ep.address AS location
+        CASE
+          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
+          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
+          WHEN ep.city IS NOT NULL THEN ep.city
+          ELSE NULL
+        END AS location,
       FROM saved_job sj
       JOIN job j ON sj.job_id = j.id
       JOIN employer_profile ep ON j.employer_id = ep.id

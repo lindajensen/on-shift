@@ -69,6 +69,8 @@ function LoginForm({ onClose }: LoginFormProps) {
     }
   }
 
+  //TODO: Move serverError to above buttons?
+
   return (
     <div className="auth-form">
       <div className="auth-form__container">

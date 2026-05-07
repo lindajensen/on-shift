@@ -1,0 +1,42 @@
+.modal-form__title {
+  margin-bottom: 0.5rem;
+}
+
+.modal-form__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-form__field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+.modal-form__field--row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-form__field--row .modal-form__field:first-child {
+  flex: 1.2;
+}
+
+.modal-form__field--row .modal-form__field:last-child {
+  flex: 2;
+}
+
+.modal-form__textarea {
+  height: 8rem;
+  padding: 0.75rem;
+}
+
+.modal-form__actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-form__actions .btn--primary {
+  flex: 1;
+}

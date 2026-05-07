@@ -8,9 +8,7 @@ interface BottomNavProps {
 }
 
 function BottomNav({ role }: BottomNavProps) {
-  //TODO: Navigation needs to move to left side on desktop
   //TODO: På sidan /jobb kolla om inloggad för då visa authheader och bottom nav antar jag
-  //TODO: Check employer bottom nav
 
   return (
     <section>
@@ -97,7 +95,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <span>Annonser</span>
               </NavLink>
               <NavLink
-                to="/profil"
+                to="/min-profil"
                 className={({ isActive }) =>
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
