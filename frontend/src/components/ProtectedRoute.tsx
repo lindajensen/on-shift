@@ -1,11 +1,15 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
-function ProtectedRoute() {
+interface ProtectedRouteProps {
+  role?: "worker" | "employer";
+}
+
+function ProtectedRoute({ role }: ProtectedRouteProps) {
   const { user } = useAuth();
 
-  if (!user) {
-    return <Navigate to="/logga-in" replace />;
+  if (role && user?.role !== role) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <Outlet />;
