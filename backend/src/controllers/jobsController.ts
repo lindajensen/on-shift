@@ -28,7 +28,7 @@ export async function getAllJobs(
         j.requires_experience,
         j.created_at,
         ep.name AS restaurant_name,
-        ep.address AS location
+        ep.city AS location
       FROM job j
       JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.status = 'active'
@@ -38,6 +38,7 @@ export async function getAllJobs(
 
     response.status(200).json(jobs.rows);
   } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -71,7 +72,12 @@ export async function getJobById(
         j.requires_experience,
         j.created_at,
         ep.name AS restaurant_name,
-        ep.address AS location,
+        CASE
+          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
+          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
+          WHEN ep.city IS NOT NULL THEN ep.city
+          ELSE NULL
+        END AS location,
         (SELECT ROUND(AVG(r.rating)::numeric, 1) FROM review r WHERE r.reviewee_id = ep.user_id) AS rating
       FROM job j
       JOIN employer_profile ep ON j.employer_id = ep.id
