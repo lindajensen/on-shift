@@ -34,7 +34,7 @@ function JobInfoSection({
       <ul className="job-info__list">
         <li className="job-info__item">
           <div className="job-info__icon-container">
-            <Clock className="job-info__icon" size={18} />
+            <Clock className="job-info__icon" size={18} aria-hidden="true" />
           </div>
 
           <div>
@@ -48,7 +48,7 @@ function JobInfoSection({
 
         <li className="job-info__item">
           <div className="job-info__icon-container">
-            <MapPin className="job-info__icon" size={18} />
+            <MapPin className="job-info__icon" size={18} aria-hidden="true" />
           </div>
 
           <div>
@@ -61,7 +61,7 @@ function JobInfoSection({
 
         <li className="job-info__item">
           <div className="job-info__icon-container">
-            <Wallet className="job-info__icon" size={18} />
+            <Wallet className="job-info__icon" size={18} aria-hidden="true" />
           </div>
 
           <div>
@@ -74,7 +74,7 @@ function JobInfoSection({
 
         <li className="job-info__item">
           <div className="job-info__icon-container">
-            <Users2 className="job-info__icon" size={18} />
+            <Users2 className="job-info__icon" size={18} aria-hidden="true" />
           </div>
 
           <div>
@@ -119,8 +119,6 @@ function JobInfoSection({
           </p>
         )}
       </div>
-
-      {/* <div className="divider" /> */}
     </>
   );
 }

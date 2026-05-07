@@ -114,10 +114,11 @@ function EmployerProfilePage() {
                   <h2 className="contact-info__title">Kontaktinformation</h2>
                   {isOwner && (
                     <button
+                      aria-label="Redigera kontaktinformation"
                       onClick={() => setIsEditContactModalOpen(true)}
                       className="contact-info__edit-btn"
                     >
-                      <Edit size={16} />
+                      <Edit size={16} aria-hidden="true" />
                     </button>
                   )}
                 </header>
@@ -125,7 +126,7 @@ function EmployerProfilePage() {
                 <ul className="contact-info__list">
                   <li className="contact-info__item">
                     <div className="contact-info__icon-container">
-                      <Mail size={18} />
+                      <Mail size={18} aria-hidden="true" />
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">E-post</p>
@@ -136,7 +137,7 @@ function EmployerProfilePage() {
                   </li>
                   <li className="contact-info__item">
                     <div className="contact-info__icon-container">
-                      <Phone size={18} />
+                      <Phone size={18} aria-hidden="true" />
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">Telefon</p>
@@ -147,7 +148,7 @@ function EmployerProfilePage() {
                   </li>
                   <li className="contact-info__item">
                     <div className="contact-info__icon-container">
-                      <MapPin size={18} />
+                      <MapPin size={18} aria-hidden="true" />
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">Adress</p>
@@ -170,10 +171,11 @@ function EmployerProfilePage() {
                   <h2 className="about-restaurant__title">Om restaurangen</h2>
                   {isOwner && (
                     <button
+                      aria-label="Redigera restaurangbeskrivning"
                       className="about-restaurant__edit-btn"
                       onClick={() => setIsEditAboutModalOpen(true)}
                     >
-                      <Edit size={16} />
+                      <Edit size={16} aria-hidden="true" />
                     </button>
                   )}
                 </header>

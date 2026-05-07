@@ -55,7 +55,7 @@ function AuthHeader() {
               {isMenuOpen && (
                 <div className="auth-header__menu">
                   <Link className="auth-header__menu-btn" to="/profil">
-                    <User2 size={16} />
+                    <User2 size={16} aria-hidden="true" />
                     Min profil
                   </Link>
 
@@ -67,7 +67,7 @@ function AuthHeader() {
                         : "/sparad-personal"
                     }
                   >
-                    <Bookmark size={16} />
+                    <Bookmark size={16} aria-hidden="true" />
                     {user.role === "worker"
                       ? "Sparade pass"
                       : "Sparad personal"}
@@ -77,7 +77,7 @@ function AuthHeader() {
                     className="auth-header__menu-btn"
                     onClick={handleLogout}
                   >
-                    <LogOut size={16} />
+                    <LogOut size={16} aria-hidden="true" />
                     Logga ut
                   </button>
                 </div>

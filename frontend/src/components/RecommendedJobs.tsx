@@ -35,7 +35,7 @@ function RecommendedJobs() {
         <h2 className="card-list__title">Rekommenderade pass</h2>
         <Link className="card-list__link" to="/jobb">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 
@@ -52,7 +52,7 @@ function RecommendedJobs() {
       {!isLoading && jobs.length === 0 ? (
         <div className="empty">
           <div className="empty__icon">
-            <SearchX size={18} />
+            <SearchX size={18} aria-hidden="true" />
           </div>
           <div>
             <p className="empty__text">Inga rekommenderade pass hittades.</p>
@@ -67,7 +67,7 @@ function RecommendedJobs() {
                 <p className="card-list__employer">{job.restaurant_name}</p>
 
                 <div className="card-list__meta">
-                  <Clock size={18} />
+                  <Clock size={18} aria-hidden="true" />
                   <p className="card-list__meta-text">
                     {formatDate(job.job_date)} kl. {formatTime(job.start_time)}{" "}
                     - {formatTime(job.end_time)}
@@ -75,7 +75,7 @@ function RecommendedJobs() {
                 </div>
 
                 <div className="card-list__meta">
-                  <MapPin size={18} />
+                  <MapPin size={18} aria-hidden="true" />
                   <p className="card-list__meta-text">{job.location}</p>
                 </div>
 

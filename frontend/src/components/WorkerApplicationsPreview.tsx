@@ -42,7 +42,7 @@ function WorkerApplicationsPreview() {
         <h2 className="preview__title">Mina ansökningar</h2>
         <Link className="preview__link" to="/ansokningar">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 

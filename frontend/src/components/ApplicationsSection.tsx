@@ -57,7 +57,7 @@ function ApplicationsSection({
       {applicationList.length == 0 ? (
         <div className="empty">
           <div className="empty__icon">
-            <ClipboardX size={18} />
+            <ClipboardX size={18} aria-hidden="true" />
           </div>
           <div>
             <p className="empty__text">Du har inga ansökningar än.</p>
@@ -77,7 +77,11 @@ function ApplicationsSection({
 
                       {application.rating && (
                         <div className="application-card__rating-container">
-                          <Star className="rating-star" size={18} />
+                          <Star
+                            className="rating-star"
+                            size={18}
+                            aria-hidden="true"
+                          />
                           <span className="application-card__rating">
                             {application.rating.toFixed(1)}
                           </span>
@@ -85,6 +89,7 @@ function ApplicationsSection({
                       )}
 
                       <button
+                        aria-label="Fler alternativ"
                         className="application-card__more"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -98,7 +103,7 @@ function ApplicationsSection({
                           );
                         }}
                       >
-                        <MoreHorizontal size={20} />
+                        <MoreHorizontal size={20} aria-hidden="true" />
                       </button>
                     </div>
 
@@ -120,31 +125,31 @@ function ApplicationsSection({
                   <div className="application-card__menu">
                     <ul className="application-card__menu-list">
                       <li className="application-card__menu-item">
-                        <User2 size={16} />
+                        <User2 size={16} aria-hidden="true" />
                         <Link to="#" className="application-card__menu-btn">
                           Gå till profil
                         </Link>
                       </li>
                       <li className="application-card__menu-item">
-                        <FileText size={16} />
+                        <FileText size={16} aria-hidden="true" />
                         <button className="application-card__menu-btn">
                           Visa CV
                         </button>
                       </li>
                       <li className="application-card__menu-item">
-                        <MessageCircle size={16} />
+                        <MessageCircle size={16} aria-hidden="true" />
                         <button className="application-card__menu-btn">
                           Skicka meddelande
                         </button>
                       </li>
                       <li className="application-card__menu-item">
-                        <ChefHat size={16} />
+                        <ChefHat size={16} aria-hidden="true" />
                         <button className="application-card__menu-btn">
                           Anställ
                         </button>
                       </li>
                       <li className="application-card__menu-item application-card__menu-item--danger">
-                        <Ban size={16} />
+                        <Ban size={16} aria-hidden="true" />
                         <button className="application-card__menu-btn application-card__menu-btn--danger">
                           Tacka nej
                         </button>

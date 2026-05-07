@@ -33,8 +33,12 @@ function Modal({ isOpen, onClose, children, showCloseButton }: ModalProps) {
         <div className="modal__container">
           <header className="modal__header">
             {showCloseButton && (
-              <button className="modal__close-btn" onClick={onClose}>
-                <X size={20} />
+              <button
+                aria-label="Stäng"
+                className="modal__close-btn"
+                onClick={onClose}
+              >
+                <X size={20} aria-hidden="true" />
               </button>
             )}
           </header>

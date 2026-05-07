@@ -25,7 +25,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <Home size={22} />
+                <Home size={22} aria-hidden="true" />
                 <span>Hem</span>
               </NavLink>
 
@@ -35,7 +35,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <Search size={22} />
+                <Search size={22} aria-hidden="true" />
                 <span>Hitta pass</span>
               </NavLink>
 
@@ -45,7 +45,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <ClipboardList size={22} />
+                <ClipboardList size={22} aria-hidden="true" />
                 <span>Ansökningar</span>
               </NavLink>
 
@@ -55,7 +55,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <User2 size={22} />
+                <User2 size={22} aria-hidden="true" />
                 <span>Profil</span>
               </NavLink>
             </nav>
@@ -72,7 +72,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <Home size={22} />
+                <Home size={22} aria-hidden="true" />
                 <span>Hem</span>
               </NavLink>
 
@@ -82,7 +82,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <Search size={22} />
+                <Search size={22} aria-hidden="true" />
                 <span>Hitta personal</span>
               </NavLink>
               <NavLink
@@ -91,7 +91,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <ClipboardList size={22} />
+                <ClipboardList size={22} aria-hidden="true" />
                 <span>Annonser</span>
               </NavLink>
               <NavLink
@@ -100,7 +100,7 @@ function BottomNav({ role }: BottomNavProps) {
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
               >
-                <User2 size={22} />
+                <User2 size={22} aria-hidden="true" />
                 <span>Profil</span>
               </NavLink>
             </nav>

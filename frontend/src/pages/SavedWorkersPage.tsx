@@ -62,7 +62,7 @@ function SavedWorkersPage() {
         {!isLoading && !error && savedWorkers.length === 0 ? (
           <div className="empty">
             <div className="empty__icon">
-              <Bookmark size={18} />
+              <Bookmark size={18} aria-hidden="true" />
             </div>
             <div className="empty__content">
               <p className="empty__title">Du har inte sparat någon personal</p>

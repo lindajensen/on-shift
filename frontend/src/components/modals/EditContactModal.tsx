@@ -92,7 +92,7 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
           <label className="modal-form__label" htmlFor="name">
             Namn
             <span>
-              <Asterisk size={14} />
+              <Asterisk size={14} aria-hidden="true" />
             </span>
           </label>
           <input
@@ -112,7 +112,7 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
         <div className="modal-form__field">
           <label className="modal-form__label" htmlFor="email">
             E-post
-            <Asterisk size={14} />
+            <Asterisk size={14} aria-hidden="true" />
           </label>
           <input
             className="modal-form__input"

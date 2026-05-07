@@ -184,7 +184,11 @@ function FindWorkersPage() {
         </header>
 
         <div className="find-workers__search">
-          <Search className="find-workers__search-icon" size={16} />
+          <Search
+            className="find-workers__search-icon"
+            size={16}
+            aria-hidden="true"
+          />
           <input
             className="find-workers__search-input"
             type="text"
@@ -219,7 +223,7 @@ function FindWorkersPage() {
         {!isLoading && !error && filteredWorkers.length === 0 ? (
           <div className="empty">
             <div className="empty__icon">
-              <Search size={18} />
+              <Search size={18} aria-hidden="true" />
             </div>
             <div>
               <p className="empty__title">Ingen personal hittades</p>

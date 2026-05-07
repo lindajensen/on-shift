@@ -40,7 +40,7 @@ function JobListingsPreview() {
         <h2 className="preview__title">Mina annonser</h2>
         <Link className="preview__link" to="/mina-annonser">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 
@@ -55,7 +55,7 @@ function JobListingsPreview() {
       {!isLoading && jobListings.length === 0 ? (
         <div className="empty">
           <div className="empty__icon">
-            <CalendarX2 size={18} />
+            <CalendarX2 size={18} aria-hidden="true" />
           </div>
           <div>
             <p className="empty__text">Du har inga annonser just nu.</p>

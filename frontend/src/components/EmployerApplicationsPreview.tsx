@@ -39,7 +39,7 @@ function EmployerApplicationsPreview() {
         <h2 className="preview__title">Mina ansökningar</h2>
         <Link className="preview__link" to="/ansokningar">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 
@@ -54,7 +54,7 @@ function EmployerApplicationsPreview() {
       {!isLoading && applications.length === 0 ? (
         <div className="empty">
           <div className="empty__icon">
-            <ClipboardX size={18} />
+            <ClipboardX size={18} aria-hidden="true"/>
           </div>
           <div>
             <p className="empty__text">Du har inga ansökningar än.</p>

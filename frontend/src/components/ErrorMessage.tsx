@@ -11,7 +11,11 @@ function ErrorMessage({ message }: ErrorMessageProps) {
     <section className="error-message">
       <div className="section__inner">
         <div className="error-message__icon-container">
-          <CircleAlert className="error-message__icon" size={26} />
+          <CircleAlert
+            className="error-message__icon"
+            size={26}
+            aria-hidden="true"
+          />
         </div>
 
         <div className="error-message__content">

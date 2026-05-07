@@ -101,7 +101,6 @@ function EmployerJobDetailsPage() {
 
   const isFilled = job.status === "filled";
 
-  //TODO: Accessibility
   //TODO: Fix hover styling dropdown menu
   //? Calculate available_spots if people are hired?
 
@@ -124,6 +123,7 @@ function EmployerJobDetailsPage() {
                 {getRoleLabel(job.role)}
               </h1>
               <button
+                aria-label="Fler alternativ"
                 className="job-details-page__more-btn"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -131,7 +131,7 @@ function EmployerJobDetailsPage() {
                   setIsMenuOpen(!isMenuOpen);
                 }}
               >
-                <MoreHorizontal size={24} />
+                <MoreHorizontal size={24} aria-hidden="true" />
               </button>
 
               {/* Drop Down Menu */}
@@ -142,7 +142,7 @@ function EmployerJobDetailsPage() {
                     onClick={() => setIsJobModalOpen(true)}
                     disabled={isFilled}
                   >
-                    <Edit size={16} />
+                    <Edit size={16} aria-hidden="true" />
                     Redigera
                   </button>
                   {job.status === "closed" ? (
@@ -151,7 +151,7 @@ function EmployerJobDetailsPage() {
                       disabled={isPastDate}
                       onClick={() => handleReopen(job.id)}
                     >
-                      <RotateCcw size={16} />
+                      <RotateCcw size={16} aria-hidden="true" />
                       Återaktivera annons
                     </button>
                   ) : (
@@ -160,7 +160,7 @@ function EmployerJobDetailsPage() {
                       disabled={isFilled}
                       onClick={() => setJobToClose(job.id)}
                     >
-                      <XCircle size={16} />
+                      <XCircle size={16} aria-hidden="true" />
                       Avsluta annons
                     </button>
                   )}

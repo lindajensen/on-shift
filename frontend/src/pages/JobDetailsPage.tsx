@@ -85,12 +85,13 @@ function JobDetailsPage() {
 
               {user?.role === "worker" && (
                 <button
+                  aria-label={isSaved ? "Ta bort från sparade" : "Spara pass"}
                   className={`job-details__bookmark-btn ${isSaved ? "job-details__bookmark-btn--saved" : ""}`}
                   onClick={() =>
                     isSaved ? handleUnsave(job.id) : handleSave(job.id)
                   }
                 >
-                  <Bookmark size={20} />
+                  <Bookmark size={18} aria-hidden="true" />
                 </button>
               )}
             </div>

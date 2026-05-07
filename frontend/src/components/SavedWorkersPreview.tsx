@@ -37,7 +37,7 @@ function SavedWorkersPreview() {
         <h2 className="">Sparad personal</h2>
         <Link className="card-list__link" to="/sparad-personal">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 
@@ -54,7 +54,7 @@ function SavedWorkersPreview() {
       {savedWorkers.length === 0 ? (
         <div className="empty">
           <div className="empty__icon">
-            <Bookmark size={18} />
+            <Bookmark size={18} aria-hidden="true" />
           </div>
           <div>
             <p className="empty__text">
@@ -73,7 +73,11 @@ function SavedWorkersPreview() {
 
                   {savedWorker.rating && (
                     <div className="card-list__meta">
-                      <Star className="rating-star" size={18} />
+                      <Star
+                        className="rating-star"
+                        size={18}
+                        aria-hidden="true"
+                      />
                       <p className="card-list__meta-text">
                         {Number(savedWorker.rating).toFixed(1)}
                       </p>
