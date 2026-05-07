@@ -141,7 +141,7 @@ export async function closeJobListing(id: number): Promise<void> {
     },
   );
 
-  if (!response) {
+  if (!response.ok) {
     throw new Error("Kunde inte avsluta annonsen");
   }
 }
@@ -165,7 +165,7 @@ export async function reopenJobListing(id: number): Promise<void> {
     },
   );
 
-  if (!response) {
+  if (!response.ok) {
     throw new Error("Kunde inte avsluta annonsen");
   }
 }
