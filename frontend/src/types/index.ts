@@ -219,7 +219,7 @@ export interface SavedJob {
 }
 
 // ============================================================
-// OTHER
+// SHARED
 // ============================================================
 export interface Review {
   id: number;
@@ -229,4 +229,16 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
+}
+
+export interface EditContactFormData {
+  email: string;
+  phone: string;
+  street: string;
+  postal_code: string;
+  city: string;
+}
+
+export interface EditAboutFormData {
+  description: string;
 }
