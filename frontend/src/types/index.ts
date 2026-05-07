@@ -13,6 +13,7 @@ export interface LoginResponse {
 
 export interface AuthUser {
   id: number;
+  userId: number;
   email: string;
   role: string;
   name: string;
@@ -86,8 +87,11 @@ export interface EmployerProfile {
   name: string;
   email: string;
   phone: string;
-  address: string;
+  street: string | null;
+  postal_code: string | null;
+  city: string | null;
   description: string;
+  rating: string;
 }
 
 export interface EmployerJobListing {
