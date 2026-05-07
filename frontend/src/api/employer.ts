@@ -1,6 +1,45 @@
-import { Worker, Review } from "../types";
+import { Worker, Review, EmployerProfile } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+/**
+ * Fetches the profile of the currently logged in employer.
+ * @returns A promise that resolves to the employer's profile.
+ * @throws An error if the request fails.
+ */
+export async function getEmployerProfileByUserId(): Promise<EmployerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/employers/profile/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta profilen. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetches the profile of an employer by their ID.
+ * @param id - The ID of the employer profile to fetch.
+ * @returns A promise that resolves to the employer's profile.
+ * @throws An error if the request fails.
+ */
+export async function getEmployerProfileById(
+  id: number,
+): Promise<EmployerProfile> {
+  const response = await fetch(`${API_BASE_URL}/api/employers/profile/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta profilen. Försök igen senare.");
+  }
+
+  return response.json();
+}
 
 /**
  * Fetches all workers.
@@ -16,7 +55,7 @@ export async function getAllWorkers(): Promise<Worker[]> {
     },
   });
 
-  if (!response) {
+  if (!response.ok) {
     throw new Error("Kunde inte hämta sparad personal. Försök igen senare.");
   }
 
