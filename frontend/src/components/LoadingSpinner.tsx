@@ -12,9 +12,9 @@ function LoadingSpinner({
   return (
     <section className="loading-spinner">
       <div className="section__inner">
-        <h1 className="loading-spinner__logo">
+        {/* <h1 className="loading-spinner__logo">
           <span className="loading-spinner__logo-accent">on</span>Shift
-        </h1>
+        </h1> */}
 
         <span className="loading-spinner__loader"></span>
 
