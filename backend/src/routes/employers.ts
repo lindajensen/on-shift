@@ -26,18 +26,21 @@ router.patch("/profile/me", authenticateToken, updateEmployerProfile);
 router.get("/profile/:id", getEmployerProfileById);
 
 router.get("/jobs", authenticateToken, getJobListings);
+router.post("/jobs", authenticateToken, createJobListing);
 router.get("/jobs/:id", authenticateToken, getJobDetails);
+router.put("/jobs/:id", authenticateToken, updateJobListing);
+router.patch("/jobs/:id/close", authenticateToken, closeJobListing);
+router.patch("/jobs/:id/reopen", authenticateToken, reopenJobListing);
+
 router.get("/applications", authenticateToken, getEmployerApplications);
 
 router.get("/workers", authenticateToken, getAllWorkers);
 router.get("/workers/random", getRandomWorkers);
+
 router.get("/saved-workers", authenticateToken, getSavedWorkers);
 router.post("/saved-workers", authenticateToken, saveWorker);
 router.delete("/saved-workers", authenticateToken, unsaveWorker);
+
 router.get("/reviews", authenticateToken, getEmployerReviews);
-router.post("/jobs", authenticateToken, createJobListing);
-router.put("/jobs/:id", authenticateToken, updateJobListing);
-router.patch("/jobs/:id/close", authenticateToken, closeJobListing);
-router.patch("/jobs/:id/reopen", authenticateToken, reopenJobListing);
 
 export default router;
