@@ -52,7 +52,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
     setRequiresExperience((previous) => !previous);
   }
 
-  function validateJobForm() {
+  function validateJobForm(): boolean {
     const newErrors: { [key: string]: string } = {};
 
     const today = new Date();
