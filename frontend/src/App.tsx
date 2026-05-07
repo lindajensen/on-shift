@@ -20,10 +20,13 @@ import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import SavedWorkersPage from "./pages/SavedWorkersPage";
 import FindWorkersPage from "./pages/FindWorkersPage";
+import EmployerProfilePage from "./pages/EmployerProfilePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
+
+//TODO: Need to add role prop to protected routes. I think.
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +37,7 @@ const router = createBrowserRouter(
         <Route path="/logga-in" element={<LoginPage />} />
         <Route path="/jobb" element={<JobsPage />} />
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
+        <Route path="/restaurang/:id" element={<EmployerProfilePage />} />
       </Route>
 
       {/* WorkerLayout and EmployerLayout */}
@@ -48,6 +52,8 @@ const router = createBrowserRouter(
           <Route path="/sparade-pass" element={<SavedJobsPage />} />
           <Route path="/sparad-personal" element={<SavedWorkersPage />} />
           <Route path="/personal" element={<FindWorkersPage />} />
+
+          <Route path="/min-profil" element={<EmployerProfilePage />} />
         </Route>
       </Route>
     </>,
