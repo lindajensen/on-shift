@@ -13,7 +13,7 @@ export interface LoginResponse {
 
 export interface AuthUser {
   id: number;
-  userId: number;
+  userId?: number;
   email: string;
   role: string;
   name: string;
@@ -170,6 +170,13 @@ export interface JobModalErrors {
   endTime?: string;
   compensation?: string;
   availableSlots?: string;
+}
+
+export interface EditContactValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  postalCode?: string;
 }
 
 // ============================================================
