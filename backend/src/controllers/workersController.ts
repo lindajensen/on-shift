@@ -182,7 +182,7 @@ export async function getRecommendedJobs(
           THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
           WHEN ep.city IS NOT NULL THEN ep.city
           ELSE NULL
-        END AS location,
+        END AS location
       FROM job j
       JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.role IN (
@@ -290,7 +290,7 @@ export async function getSavedJobs(
           THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
           WHEN ep.city IS NOT NULL THEN ep.city
           ELSE NULL
-        END AS location,
+        END AS location
       FROM saved_job sj
       JOIN job j ON sj.job_id = j.id
       JOIN employer_profile ep ON j.employer_id = ep.id
@@ -302,6 +302,7 @@ export async function getSavedJobs(
 
     response.status(200).json(savedJobs.rows);
   } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
