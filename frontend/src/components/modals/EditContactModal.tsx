@@ -1,5 +1,15 @@
 import { useState } from "react";
-import { EditContactFormData, EmployerProfile } from "../../types";
+import {
+  validateEmail,
+  validatePhone,
+  validatePostalCode,
+} from "../../utils/validation";
+import {
+  EditContactFormData,
+  EmployerProfile,
+  EditContactValidationErrors,
+} from "../../types";
+import { Asterisk } from "lucide-react";
 
 import "../../styles/modals/ModalForm.css";
 
@@ -17,9 +27,41 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
   const [postalCode, setPostalCode] = useState(profile?.postal_code || "");
   const [city, setCity] = useState(profile?.city || "");
 
-  //TODO: Validate input
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [errors, setErrors] = useState<EditContactValidationErrors>({});
+  const [serverError, setServerError] = useState("");
+
+  function validateInput(): boolean {
+    const newErrors: EditContactValidationErrors = {};
+
+    if (!name || name.trim() === "") {
+      newErrors.name = "Ange restaurangnamnet";
+    }
+
+    if (!email || email.trim() === "") {
+      newErrors.email = "Ange en e-postadress";
+    } else if (!validateEmail(email)) {
+      newErrors.email = "Ange en giltig e-postadress";
+    }
+
+    if (!validatePhone(phone)) {
+      newErrors.phone = "Ange ett giltigt telefonnummer";
+    }
+
+    if (!validatePostalCode(postalCode)) {
+      newErrors.postalCode = "Ange ett giltigt postnummer";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   async function handleSubmit() {
+    if (!validateInput()) return;
+
+    setIsSubmitting(true);
+
     const contactData = {
       name,
       email,
@@ -33,6 +75,9 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
       await onSave(contactData);
     } catch (error) {
       console.error("Kunde inte spara kontaktinformation", error);
+      setServerError("Något gick fel. Försök igen senare.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -46,6 +91,9 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
         <div className="modal-form__field">
           <label className="modal-form__label" htmlFor="name">
             Namn
+            <span>
+              <Asterisk size={14} />
+            </span>
           </label>
           <input
             className="modal-form__input"
@@ -53,13 +101,18 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
             type="text"
             autoComplete="organization"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setErrors((prev) => ({ ...prev, name: "" }));
+            }}
           />
+          {errors.name && <span className="form-error">{errors.name}</span>}
         </div>
 
         <div className="modal-form__field">
           <label className="modal-form__label" htmlFor="email">
             E-post
+            <Asterisk size={14} />
           </label>
           <input
             className="modal-form__input"
@@ -67,8 +120,12 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
             type="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prev) => ({ ...prev, email: "" }));
+            }}
           />
+          {errors.email && <span className="form-error">{errors.email}</span>}
         </div>
 
         <div className="modal-form__field">
@@ -82,8 +139,12 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
             id="phone"
             autoComplete="tel"
             value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            onChange={(e) => {
+              setPhone(e.target.value);
+              setErrors((prev) => ({ ...prev, phone: "" }));
+            }}
           />
+          {errors.phone && <span className="form-error">{errors.phone}</span>}
         </div>
 
         <div className="modal-form__field">
@@ -111,8 +172,14 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
               type="text"
               autoComplete="postal-code"
               value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
+              onChange={(e) => {
+                setPostalCode(e.target.value);
+                setErrors((prev) => ({ ...prev, postalCode: "" }));
+              }}
             />
+            {errors.postalCode && (
+              <span className="form-error">{errors.postalCode}</span>
+            )}
           </div>
 
           <div className="modal-form__field">
@@ -130,16 +197,23 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
           </div>
         </div>
 
+        {serverError && <span className="server-error">{serverError}</span>}
+
         <div className="modal-form__actions">
           <button className="btn btn--outline" type="button" onClick={onClose}>
             Avbryt
           </button>
           <button
             className="btn btn--primary"
+            disabled={isSubmitting}
             type="button"
             onClick={() => handleSubmit()}
           >
-            Spara
+            {isSubmitting ? (
+              <span className="submitting-spinner"></span>
+            ) : (
+              "Spara"
+            )}
           </button>
         </div>
       </form>
