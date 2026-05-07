@@ -17,6 +17,12 @@
   justify-content: space-between;
 }
 
+.profile-header__name-group {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .profile-header__rating {
   display: flex;
   align-items: center;
