@@ -21,7 +21,7 @@ export async function toggleAvailability(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   await pool.query(
     "UPDATE worker_profile SET is_available = $1 WHERE user_id = $2",
@@ -49,7 +49,7 @@ export async function getAvailability(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const availability = await pool.query(
@@ -85,7 +85,7 @@ export async function getWorkerProfile(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const profile = await pool.query(
@@ -117,7 +117,7 @@ export async function getWorkerApplications(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const applications = await pool.query(
@@ -164,7 +164,7 @@ export async function getRecommendedJobs(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const recommendedJobs = await pool.query(
@@ -223,7 +223,7 @@ export async function getWorkerReviews(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const reviews = await pool.query(
@@ -268,7 +268,7 @@ export async function getSavedJobs(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const savedJobs = await pool.query(
@@ -326,7 +326,7 @@ export async function saveJob(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -365,7 +365,7 @@ export async function unsaveJob(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(

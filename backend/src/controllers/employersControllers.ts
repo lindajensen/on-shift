@@ -58,7 +58,7 @@ export async function getEmployerProfileByUserId(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const employerProfile = await pool.query(
@@ -107,7 +107,7 @@ export async function updateEmployerProfile(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const updatedProfile = await pool.query(
@@ -240,7 +240,7 @@ export async function getJobListings(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const listings = await pool.query(
@@ -287,7 +287,7 @@ export async function getJobDetails(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const jobDetails = await pool.query(
@@ -355,7 +355,7 @@ export async function getEmployerApplications(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const applications = await pool.query(
@@ -402,7 +402,7 @@ export async function getSavedWorkers(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const savedWorkers = await pool.query(
@@ -453,7 +453,7 @@ export async function saveWorker(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -492,7 +492,7 @@ export async function unsaveWorker(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -528,7 +528,7 @@ export async function getEmployerReviews(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const reviews = await pool.query(
@@ -575,7 +575,7 @@ export async function createJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   const {
     role,
@@ -640,7 +640,7 @@ export async function updateJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   const {
     role,
@@ -715,7 +715,7 @@ export async function closeJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -750,7 +750,7 @@ export async function reopenJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
