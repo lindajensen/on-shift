@@ -146,7 +146,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
             }}
             className={`auth-form__role-btn ${role === "worker" ? "auth-form__role-btn--active" : ""}`}
           >
-            <User2 size={24} />
+            <User2 size={24} aria-hidden="true" />
             <span className="auth-form__role-btn-title">Arbetstagare</span>
             <span className="auth-form__role-btn-subtitle">Jag söker jobb</span>
           </button>
@@ -158,7 +158,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
             }}
             className={`auth-form__role-btn ${role === "employer" ? "auth-form__role-btn--active" : ""}`}
           >
-            <Utensils size={24} />
+            <Utensils size={24} aria-hidden="true" />
             <span className="auth-form__role-btn-title">Arbetsgivare</span>
             <span className="auth-form__role-btn-subtitle">
               Jag söker personal
@@ -177,7 +177,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   >
                     Förnamn
                     <span>
-                      <Asterisk size={14} />
+                      <Asterisk size={14} aria-hidden="true" />
                     </span>
                   </label>
                   <input
@@ -200,7 +200,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                   <label className="auth-form__label" htmlFor="worker-lastName">
                     Efternamn
                     <span>
-                      <Asterisk size={14} />
+                      <Asterisk size={14} aria-hidden="true" />
                     </span>
                   </label>
                   <input
@@ -224,7 +224,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 <label className="auth-form__label" htmlFor="worker-email">
                   E-post
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -247,7 +247,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 <label className="auth-form__label" htmlFor="worker-password">
                   Lösenord
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -273,7 +273,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 >
                   Upprepa lösenord
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -298,7 +298,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 <label className="auth-form__label" htmlFor="employer-name">
                   Restaurangens namn
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -320,7 +320,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 <label className="auth-form__label" htmlFor="employer-email">
                   E-post
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -343,7 +343,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 <label className="auth-form__label" htmlFor="employer-password">
                   Lösenord
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input
@@ -369,7 +369,7 @@ function RegisterForm({ role, onRoleChange }: RegisterFormProps) {
                 >
                   Upprepa lösenord
                   <span>
-                    <Asterisk size={14} />
+                    <Asterisk size={14} aria-hidden="true" />
                   </span>
                 </label>
                 <input

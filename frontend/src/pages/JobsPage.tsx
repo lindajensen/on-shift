@@ -149,7 +149,7 @@ function JobsPage() {
         </header>
 
         <div className="jobs__search">
-          <Search className="jobs__search-icon" size={16} />
+          <Search className="jobs__search-icon" size={16} aria-hidden="true" />
           <input
             className="jobs__search-input"
             type="text"
@@ -200,6 +200,9 @@ function JobsPage() {
                         </h2>
                         {user?.role === "worker" && (
                           <button
+                            aria-label={
+                              jobIsSaved ? "Ta bort från sparade" : "Spara pass"
+                            }
                             className={`job-card__bookmark-btn ${jobIsSaved ? "job-card__bookmark-btn--saved" : ""}`}
                             onClick={(e) => {
                               e.preventDefault();
@@ -211,7 +214,7 @@ function JobsPage() {
                               }
                             }}
                           >
-                            <Bookmark size={20} />
+                            <Bookmark size={18} aria-hidden="true" />
                           </button>
                         )}
                       </div>
@@ -222,7 +225,7 @@ function JobsPage() {
 
                       <div className="job-card__meta">
                         <div className="job-card__meta-item">
-                          <Clock size={14} />
+                          <Clock size={14} aria-hidden="true" />
                           <p className="job-card__meta-text">
                             {formatDate(job.job_date)} kl.{" "}
                             {formatTime(job.start_time)} -{" "}
@@ -231,14 +234,14 @@ function JobsPage() {
                         </div>
 
                         <div className="job-card__meta-item">
-                          <MapPin size={14} />
+                          <MapPin size={14} aria-hidden="true" />
                           <p className="job-card__meta-text">
                             {job.location ?? "Stad ej angiven"}
                           </p>
                         </div>
 
                         <div className="job-card__meta-item">
-                          <Wallet size={14} />
+                          <Wallet size={14} aria-hidden="true" />
                           <p className="job-card__meta-text">
                             {formatCompensation(job.compensation)}
                           </p>

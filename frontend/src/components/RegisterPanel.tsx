@@ -24,7 +24,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
           <ul className="auth-panel-features">
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <Search size={18} />
+                <Search size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">Hitta pass snabbt</h3>
@@ -36,7 +36,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
 
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <CalendarClock size={18} />
+                <CalendarClock size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">
@@ -51,7 +51,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
 
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <Star size={18} />
+                <Star size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">Bygg ditt rykte</h3>
@@ -70,7 +70,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
           <ul className="auth-panel-features">
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <Plus size={18} />
+                <Plus size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">
@@ -84,7 +84,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
 
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <Users2 size={18} />
+                <Users2 size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">
@@ -98,7 +98,7 @@ function RegisterPanel({ role }: RegisterPanelProps) {
 
             <li className="auth-panel-feature">
               <div className="auth-panel-icon">
-                <Bookmark size={18} />
+                <Bookmark size={18} aria-hidden="true" />
               </div>
               <div className="auth-panel-body">
                 <h3 className="auth-panel-feature--title">

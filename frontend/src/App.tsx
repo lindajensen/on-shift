@@ -26,8 +26,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
-//TODO: Need to add role prop to protected routes. I think.
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -44,16 +42,23 @@ const router = createBrowserRouter(
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
+        {/* Employer Routes  */}
+        <Route element={<ProtectedRoute role="employer" />}>
           <Route path="/mina-annonser" element={<EmployerJobListingsPage />} />
           <Route
             path="/mina-annonser/:id"
             element={<EmployerJobDetailsPage />}
           />
-          <Route path="/sparade-pass" element={<SavedJobsPage />} />
           <Route path="/sparad-personal" element={<SavedWorkersPage />} />
           <Route path="/personal" element={<FindWorkersPage />} />
-
           <Route path="/min-profil" element={<EmployerProfilePage />} />
+        </Route>
+
+        {/* Worker Routes  */}
+        <Route element={<ProtectedRoute role="worker" />}>
+          <Route path="/sparade-pass" element={<SavedJobsPage />} />
         </Route>
       </Route>
     </>,

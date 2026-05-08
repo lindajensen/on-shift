@@ -37,7 +37,7 @@ function LatestWorkerReview() {
         <h2 className="latest-review__title">Senaste betyget</h2>
         <Link className="latest-review__link" to="/betyg">
           Visa alla
-          <ChevronRight />
+          <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
 
@@ -58,7 +58,11 @@ function LatestWorkerReview() {
                 </div>
 
                 <div className="latest-review__card-rating">
-                  <Star className="latest-review__card-rating-icon" size={18} />
+                  <Star
+                    className="latest-review__card-rating-icon"
+                    size={18}
+                    aria-hidden="true"
+                  />
                   <span className="latest-review__card-rating-score">
                     {review.rating.toFixed(1)}
                   </span>

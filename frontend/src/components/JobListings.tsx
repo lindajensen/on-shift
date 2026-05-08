@@ -38,14 +38,14 @@ function JobListings() {
           </div>
           <Link className="job-listings__see-all" to="/jobb">
             Se alla pass
-            <ChevronRight size={16} />
+            <ChevronRight size={16} aria-hidden="true" />
           </Link>
         </header>
 
         {jobs.length === 0 ? (
           <div className="empty">
             <div className="empty__icon">
-              <Search size={18} />
+              <Search size={18} aria-hidden="true" />
             </div>
             <div>
               <p className="empty__title">Inga pass hittades</p>
@@ -68,7 +68,7 @@ function JobListings() {
 
                     <div className="job-card__meta">
                       <div className="job-card__meta-item">
-                        <Clock size={14} />
+                        <Clock size={14} aria-hidden="true" />
                         <p className="job-card__meta-text">
                           {formatDate(job.job_date)} kl.{" "}
                           {formatTime(job.start_time)} -{" "}
@@ -77,14 +77,14 @@ function JobListings() {
                       </div>
 
                       <div className="job-card__meta-item">
-                        <MapPin size={14} />
+                        <MapPin size={14} aria-hidden="true" />
                         <p className="job-card__meta-text">
                           {job.location ?? "Ingen stad angiven"}
                         </p>
                       </div>
 
                       <div className="job-card__meta-item">
-                        <Wallet size={14} />
+                        <Wallet size={14} aria-hidden="true" />
                         <p className="job-card__meta-text">
                           {" "}
                           {formatCompensation(job.compensation)}

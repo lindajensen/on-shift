@@ -37,7 +37,11 @@ function WorkerCard({
     >
       <header className="worker-card__header">
         <div className="worker-card__avatar avatar">
-          {isAnonymous ? <User2 size={20} /> : <span>{initials}</span>}
+          {isAnonymous ? (
+            <User2 size={20} aria-hidden="true" />
+          ) : (
+            <span>{initials}</span>
+          )}
         </div>
         <div className="worker-card__info">
           <div className="worker-card__name-row">
@@ -48,6 +52,7 @@ function WorkerCard({
             )}
             {!isAnonymous && (
               <button
+                aria-label={isSaved ? "Ta bort från sparade" : "Spara"}
                 className={`worker-card__bookmark-btn ${isSaved ? "worker-card__bookmark-btn--saved" : ""}`}
                 onClick={(e) => {
                   e.preventDefault();
@@ -59,13 +64,13 @@ function WorkerCard({
                   }
                 }}
               >
-                <Bookmark size={20} />
+                <Bookmark size={18} aria-hidden="true" />
               </button>
             )}
             <div className="worker-card__rating">
               {worker.rating && (
                 <span>
-                  <Star className="rating-star" size={14} />{" "}
+                  <Star className="rating-star" size={14} aria-hidden="true" />{" "}
                   {Number(worker.rating).toFixed(1)}
                 </span>
               )}
@@ -85,13 +90,13 @@ function WorkerCard({
 
       <div className="worker-card__meta">
         <div className="worker-card__meta-item">
-          <Clock size={14} />
+          <Clock size={14} aria-hidden="true" />
           <p className="worker-card__meta-text">
             {formatAvailability(worker.availability ?? [])}
           </p>
         </div>
         <div className="worker-card__meta-item">
-          <MapPin size={14} />
+          <MapPin size={14} aria-hidden="true" />
           <p className="worker-card__meta-text">
             {worker.location ?? "Ingen stad angiven"}
           </p>

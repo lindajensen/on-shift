@@ -22,7 +22,8 @@ function RestaurantCard({ name, location, rating }: RestaurantCardProps) {
           {location}{" "}
           {rating && (
             <span>
-              | <Star size={14} /> {Number(rating).toFixed(1)}
+              | <Star size={14} aria-hidden="true" />{" "}
+              {Number(rating).toFixed(1)}
             </span>
           )}
         </p>

@@ -40,7 +40,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <UserPlus2 size={20} />
+                <UserPlus2 size={20} aria-hidden="true" />
               </div>
               <div className="how-it-works__step-content">
                 <h3 className="how-it-works__step-title">
@@ -55,7 +55,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <CalendarClock size={20} />
+                <CalendarClock size={20} aria-hidden="true" />
               </div>
               <div className="how-it-works__step-content">
                 <h3 className="how-it-works__step-title">
@@ -70,7 +70,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <Zap size={20} />
+                <Zap size={20} aria-hidden="true" />
               </div>
               <div className="how-it-works__step-content">
                 <h3 className="how-it-works__step-title">Få jobb direkt</h3>
@@ -87,7 +87,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <House size={20} />
+                <House size={20} aria-hidden="true" />
               </div>
               <div className="how-it-works__step-content">
                 <h3 className="how-it-works__step-title">
@@ -102,7 +102,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <Plus size={20} />
+                <Plus size={20} aria-hidden="true" />
               </div>
 
               <div className="how-it-works__step-content">
@@ -116,7 +116,7 @@ function HowItWorks() {
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
                 {" "}
-                <Users2 size={20} />
+                <Users2 size={20} aria-hidden="true" />
               </div>
               <div className="how-it-works__step-content">
                 <h3 className="how-it-works__step-title">Hitta rätt person</h3>

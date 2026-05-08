@@ -69,7 +69,7 @@ function SavedJobsPage() {
           {!isLoading && !error && savedJobs.length === 0 ? (
             <div className="empty">
               <div className="empty__icon">
-                <Bookmark size={18} />
+                <Bookmark size={18} aria-hidden="true" />
               </div>
               <div className="empty__content">
                 <p className="empty__title">Du har inte sparat några pass än</p>
@@ -90,10 +90,11 @@ function SavedJobsPage() {
                             {getRoleLabel(job.role)}
                           </h2>
                           <button
+                            aria-label="Ta bort från sparade"
                             className="saved-card__btn"
                             onClick={() => handleUnsave(job.job_id)}
                           >
-                            <Bookmark size={20} />
+                            <Bookmark size={18} aria-label="hidden" />
                           </button>
                         </div>
                         <p className="saved-card__restaurant">
@@ -103,7 +104,7 @@ function SavedJobsPage() {
 
                       <div className="saved-card__meta">
                         <div className="saved-card__meta-item">
-                          <Clock size={14} />
+                          <Clock size={14} aria-hidden="true" />
                           <p className="saved-card__meta-text">
                             {formatDate(job.job_date)} kl.{" "}
                             {formatTime(job.start_time)} -{" "}
@@ -112,14 +113,14 @@ function SavedJobsPage() {
                         </div>
 
                         <div className="saved-card__meta-item">
-                          <MapPin size={14} />
+                          <MapPin size={14} aria-hidden="true" />
                           <p className="saved-card__meta-text">
                             {job.location ?? "Ingen plats angiven"}
                           </p>
                         </div>
 
                         <div className="saved-card__meta-item">
-                          <Wallet size={14} />
+                          <Wallet size={14} aria-hidden="true" />
                           <p className="saved-card__meta-text">
                             {formatCompensation(job.compensation)}
                           </p>

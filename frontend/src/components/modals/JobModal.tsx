@@ -125,7 +125,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
           <label className="job-modal__label" htmlFor="role">
             Roll
             <span>
-              <Asterisk size={14} />
+              <Asterisk size={14} aria-hidden="true" />
             </span>
           </label>
           <select
@@ -154,7 +154,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
           <label className="job-modal__label" htmlFor="date">
             Datum
             <span>
-              <Asterisk size={14} />
+              <Asterisk size={14} aria-hidden="true" />
             </span>
           </label>
           <input
@@ -176,7 +176,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             <label className="job-modal__label" htmlFor="start-time">
               Starttid
               <span>
-                <Asterisk size={14} />
+                <Asterisk size={14} aria-hidden="true" />
               </span>
             </label>
             <input
@@ -198,7 +198,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             <label className="job-modal__label" htmlFor="end-time">
               Sluttid
               <span>
-                <Asterisk size={14} />
+                <Asterisk size={14} aria-hidden="true" />
               </span>
             </label>
             <input
@@ -223,7 +223,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             <label className="job-modal__label" htmlFor="compensation">
               Ersättning (kr/h)
               <span>
-                <Asterisk size={14} />
+                <Asterisk size={14} aria-hidden="true" />
               </span>
             </label>
             <input
@@ -245,7 +245,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
             <label className="job-modal__label" htmlFor="slots">
               Antal platser
               <span>
-                <Asterisk size={14} />
+                <Asterisk size={14} aria-hidden="true" />
               </span>
             </label>
             <input

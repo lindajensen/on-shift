@@ -136,7 +136,7 @@ function EmployerJobListingsPage() {
                 setSelectedJob(null);
               }}
             >
-              <Plus size={18} />
+              <Plus size={18} aria-hidden="true" />
               Ny annons
             </button>
           </header>
@@ -171,7 +171,7 @@ function EmployerJobListingsPage() {
               {activeListings.length === 0 ? (
                 <div className="empty">
                   <div className="empty__icon">
-                    <CalendarX2 size={18} />
+                    <CalendarX2 size={18} aria-hidden="true" />
                   </div>
                   <div>
                     <p className="empty__text">
@@ -210,7 +210,7 @@ function EmployerJobListingsPage() {
                             </div>
 
                             <div className="job-listings-page__card-meta">
-                              <Clock size={14} />
+                              <Clock size={14} aria-hidden="true" />
                               <p className="job-listings-page__card-meta-text">
                                 {formatDate(job.job_date)} kl.{" "}
                                 {formatTime(job.start_time)} -{" "}
@@ -230,6 +230,7 @@ function EmployerJobListingsPage() {
 
                               <div className="job-listings-page__card-actions">
                                 <button
+                                  aria-label="Redigera annons"
                                   className="job-listings-page__card-edit-btn"
                                   disabled={isFilled}
                                   onClick={(e) => {
@@ -238,21 +239,23 @@ function EmployerJobListingsPage() {
                                     setIsJobModalOpen(true);
                                   }}
                                 >
-                                  <Edit size={20} />
+                                  <Edit size={20} aria-hidden="true" />
                                 </button>
 
                                 {job.status === "closed" ? (
                                   <button
+                                    aria-label="Återaktivera annons"
                                     className="job-listings-page__card-reopen-btn"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       handleReopen(job.id);
                                     }}
                                   >
-                                    <RotateCcw size={20} />
+                                    <RotateCcw size={20} aria-hidden="true" />
                                   </button>
                                 ) : (
                                   <button
+                                    aria-label="Avsluta annons"
                                     className="job-listings-page__card-close-btn"
                                     disabled={isFilled}
                                     onClick={(e) => {
@@ -260,7 +263,7 @@ function EmployerJobListingsPage() {
                                       setJobToClose(job.id);
                                     }}
                                   >
-                                    <XCircle size={20} />
+                                    <XCircle size={20} aria-hidden="true" />
                                   </button>
                                 )}
                               </div>

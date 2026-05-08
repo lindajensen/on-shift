@@ -13,7 +13,7 @@ function LoginPanel() {
         <ul className="auth-panel-features">
           <li className="auth-panel-feature">
             <div className="auth-panel-icon">
-              <Zap size={18} />
+              <Zap size={18} aria-hidden="true" />
             </div>
             <div className="auth-panel-body">
               <h3 className="auth-panel-feature--title">Snabbt och enkelt</h3>
@@ -25,7 +25,7 @@ function LoginPanel() {
 
           <li className="auth-panel-feature">
             <div className="auth-panel-icon">
-              <CalendarClock size={18} />
+              <CalendarClock size={18} aria-hidden="true" />
             </div>
             <div className="auth-panel-body">
               <h3 className="auth-panel-feature--title">Alltid tillgängligt</h3>
@@ -38,7 +38,7 @@ function LoginPanel() {
 
           <li className="auth-panel-feature">
             <div className="auth-panel-icon">
-              <Users2 size={18} />
+              <Users2 size={18} aria-hidden="true" />
             </div>
             <div className="auth-panel-body">
               <h3 className="auth-panel-feature--title">Bygg ditt nätverk</h3>
