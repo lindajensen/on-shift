@@ -58,8 +58,8 @@ function EmployerProfilePage() {
   }, [profileId, id, user]);
 
   function handleLogout() {
-    logout();
     navigate("/");
+    logout();
   }
 
   async function handleSaveContact(contactData: EditContactFormData) {
