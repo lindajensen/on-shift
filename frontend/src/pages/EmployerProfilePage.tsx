@@ -19,7 +19,7 @@ import EditContactModal from "../components/modals/EditContactModal";
 import EditAboutModal from "../components/modals/EditAboutModal";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
-import "../styles/EmployerProfilePage.css";
+import "../styles/ProfilePage.css";
 
 function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
@@ -33,8 +33,8 @@ function EmployerProfilePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const isOwner = user?.userId === profile?.user_id;
-  const profileId = id ?? user?.userId;
+  const isOwner = user?.id === profile?.user_id;
+  const profileId = id ?? user?.id;
 
   useEffect(() => {
     if (!profileId) return;
@@ -88,13 +88,13 @@ function EmployerProfilePage() {
 
   return (
     <>
-      <section className="employer-profile">
+      <section className="profile">
         <div className="section__inner">
           {isLoading && (
             <>
-              <div className="employer-profile__skeleton skeleton" />
-              <div className="employer-profile__skeleton skeleton" />
-              <div className="employer-profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
             </>
           )}
 
@@ -166,13 +166,13 @@ function EmployerProfilePage() {
 
               <div className="divider"></div>
 
-              <section className="about-restaurant">
-                <header className="about-restaurant__header">
-                  <h2 className="about-restaurant__title">Om restaurangen</h2>
+              <section className="about">
+                <header className="about__header">
+                  <h2 className="about__title">Om restaurangen</h2>
                   {isOwner && (
                     <button
                       aria-label="Redigera restaurangbeskrivning"
-                      className="about-restaurant__edit-btn"
+                      className="about__edit-btn"
                       onClick={() => setIsEditAboutModalOpen(true)}
                     >
                       <Edit size={16} aria-hidden="true" />
@@ -181,9 +181,7 @@ function EmployerProfilePage() {
                 </header>
 
                 {profile.description ? (
-                  <p className="about-restaurant__text">
-                    {profile.description}
-                  </p>
+                  <p className="about__text">{profile.description}</p>
                 ) : (
                   <p>Ingen beskrivning angiven</p>
                 )}
