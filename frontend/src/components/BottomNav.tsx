@@ -8,8 +8,6 @@ interface BottomNavProps {
 }
 
 function BottomNav({ role }: BottomNavProps) {
-  //TODO: På sidan /jobb kolla om inloggad för då visa authheader och bottom nav antar jag
-
   return (
     <section>
       <div className="section__inner">
