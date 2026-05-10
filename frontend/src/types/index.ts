@@ -59,13 +59,48 @@ export interface Availability {
 
 export interface WorkerProfile {
   id: number;
+  user_id: number;
   name: string;
-  bio: string;
-  experienceLevel: string;
-  education: string;
+  bio: string | null;
+  email: string | null;
+  phone: string | null;
+  city: string | null;
+  cv_url: string | null;
+  is_available: boolean;
+  roles: WorkerRole[];
+  availability: Availability[];
+  rating: number | null;
+}
+
+export interface EditWorkerContactFormData {
   email: string;
   phone: string;
-  is_available: boolean;
+  city: string;
+}
+
+export interface EditWorkerAboutFormData {
+  bio: string;
+}
+
+export interface EditWorkerEducationFormData {
+  school: string;
+  program: string;
+  graduation_year: string;
+}
+
+export interface EditWorkerExperienceFormData {
+  role: string;
+  employer: string;
+  start_date: string;
+  end_date?: string;
+}
+
+export interface EditWorkerRolesFormData {
+  roles: WorkerRole[];
+}
+
+export interface EditWorkerAvailabilityFormData {
+  availability: Availability[];
 }
 
 export interface WorkerApplicationPreview {
@@ -82,6 +117,7 @@ export interface WorkerApplicationPreview {
 // EMPLOYER
 // ============================================================
 export interface EmployerProfile {
+  id: number;
   user_id: number;
   name: string;
   email: string;
@@ -91,6 +127,25 @@ export interface EmployerProfile {
   city: string | null;
   description: string;
   rating: string;
+}
+
+export interface EditContactFormData {
+  email: string;
+  phone: string;
+  street: string;
+  postal_code: string;
+  city: string;
+}
+
+export interface EditAboutFormData {
+  description: string;
+}
+
+export interface EditContactValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  postalCode?: string;
 }
 
 export interface EmployerJobListing {
@@ -171,13 +226,6 @@ export interface JobModalErrors {
   availableSlots?: string;
 }
 
-export interface EditContactValidationErrors {
-  name?: string;
-  email?: string;
-  phone?: string;
-  postalCode?: string;
-}
-
 // ============================================================
 // JOBS
 // ============================================================
@@ -235,16 +283,4 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
-}
-
-export interface EditContactFormData {
-  email: string;
-  phone: string;
-  street: string;
-  postal_code: string;
-  city: string;
-}
-
-export interface EditAboutFormData {
-  description: string;
 }
