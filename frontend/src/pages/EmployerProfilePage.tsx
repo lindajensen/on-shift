@@ -15,8 +15,8 @@ import {
 import ProfileHeader from "../components/ProfileHeader";
 import ErrorMessage from "../components/ErrorMessage";
 import Modal from "../components/modals/Modal";
-import EditContactModal from "../components/modals/EditContactModal";
-import EditAboutModal from "../components/modals/EditAboutModal";
+import EditEmployerContactModal from "../components/modals/EditEmployerContactModal";
+import EditEmployerAboutModal from "../components/modals/EditEmployerAboutModal";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 import "../styles/ProfilePage.css";
@@ -205,7 +205,7 @@ function EmployerProfilePage() {
         onClose={() => setIsEditContactModalOpen(false)}
         showCloseButton={false}
       >
-        <EditContactModal
+        <EditEmployerContactModal
           onClose={() => setIsEditContactModalOpen(false)}
           onSave={handleSaveContact}
           profile={profile}
@@ -217,7 +217,7 @@ function EmployerProfilePage() {
         onClose={() => setIsEditAboutModalOpen(false)}
         showCloseButton={false}
       >
-        <EditAboutModal
+        <EditEmployerAboutModal
           onClose={() => setIsEditAboutModalOpen(false)}
           onSave={handleSaveAbout}
           profile={profile}
