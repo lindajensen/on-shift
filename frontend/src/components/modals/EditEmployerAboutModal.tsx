@@ -3,13 +3,17 @@ import { EmployerProfile, EditAboutFormData } from "../../types";
 
 import "../../styles/modals/ModalForm.css";
 
-interface EditAboutModalProps {
+interface EditEmployerAboutModalProps {
   profile: EmployerProfile | null;
   onClose: () => void;
   onSave: (aboutData: EditAboutFormData) => Promise<void>;
 }
 
-function EditAboutModal({ profile, onClose, onSave }: EditAboutModalProps) {
+function EditEmployerAboutModal({
+  profile,
+  onClose,
+  onSave,
+}: EditEmployerAboutModalProps) {
   const [description, setDescription] = useState(profile?.description || "");
 
   async function handleSubmit() {
@@ -60,4 +64,4 @@ function EditAboutModal({ profile, onClose, onSave }: EditAboutModalProps) {
   );
 }
 
-export default EditAboutModal;
+export default EditEmployerAboutModal;

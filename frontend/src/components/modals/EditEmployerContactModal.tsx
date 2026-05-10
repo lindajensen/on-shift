@@ -13,13 +13,17 @@ import { Asterisk } from "lucide-react";
 
 import "../../styles/modals/ModalForm.css";
 
-interface EditContactModalProps {
+interface EditEmployerContactModalProps {
   profile: EmployerProfile | null;
   onClose: () => void;
   onSave: (contactData: EditContactFormData) => Promise<void>;
 }
 
-function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
+function EditEmployerContactModal({
+  profile,
+  onClose,
+  onSave,
+}: EditEmployerContactModalProps) {
   const [name, setName] = useState(profile?.name);
   const [email, setEmail] = useState(profile?.email || "");
   const [phone, setPhone] = useState(profile?.phone || "");
@@ -221,4 +225,4 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
   );
 }
 
-export default EditContactModal;
+export default EditEmployerContactModal;
