@@ -3,6 +3,149 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 /**
+ * Fetches the profile of an worker by their worker profile ID.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the employer's profile information.
+ */
+export async function getWorkerProfileById(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const { id } = request.params;
+
+  try {
+    const workerProfile = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.user_id,
+        wp.name,
+        wp.bio,
+        wp.email,
+        wp.phone,
+        wp.city,
+        wp.cv_url,
+        wp.is_available,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      LEFT JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN availability a ON a.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.id = $1
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      `,
+      [id],
+    );
+
+    response.status(200).json(workerProfile.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches the profile of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the worker's profile information.
+ */
+export async function getWorkerProfileByUserId(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const workerProfile = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.user_id,
+        wp.name,
+        wp.bio,
+        wp.email,
+        wp.phone,
+        wp.city,
+        wp.cv_url,
+        wp.is_available,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      LEFT JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN availability a ON a.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.user_id = $1
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      `,
+      [userId],
+    );
+
+    response.status(200).json(workerProfile.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the profile of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated worker profile.
+ */
+export async function updateWorkerProfile(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedProfile = await pool.query(
+      `
+      UPDATE worker_profile
+      SET
+        email = COALESCE($1, email),
+        phone = COALESCE($2, phone),
+        city = COALESCE($3, city),
+        bio = COALESCE($4, bio)
+      WHERE user_id = $5
+      RETURNING *
+      `,
+      [
+        data.email ?? null,
+        data.phone ?? null,
+        data.city ?? null,
+        data.bio ?? null,
+        userId,
+      ],
+    );
+
+    response.status(200).json(updatedProfile.rows[0]);
+  } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Toggles the availability status of the logged in worker.
  * @param request - The request object.
  * @param response - The response object.
@@ -67,6 +210,7 @@ export async function getAvailability(
   }
 }
 
+// TODO: Refactor: remove getWorkerProfile (check where it's used)
 /**
  * Fetches the profile information of the currently logged in worker.
  * @param request - The request object.
