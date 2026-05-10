@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS employer_profile CASCADE;
 DROP TABLE IF EXISTS worker_profile CASCADE;
 DROP TABLE IF EXISTS worker_role CASCADE;
+DROP TABLE IF EXISTS worker_experience CASCADE;
+DROP TABLE IF EXISTS worker_education CASCADE;
 DROP TABLE IF EXISTS job CASCADE;
 DROP TABLE IF EXISTS availability CASCADE;
 DROP TABLE IF EXISTS availability CASCADE;
@@ -38,7 +40,6 @@ CREATE TABLE worker_profile (
   user_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   bio TEXT,
-  education TEXT,
   email TEXT,
   phone TEXT,
   city TEXT,
@@ -52,6 +53,25 @@ CREATE TABLE worker_role (
   worker_id INTEGER NOT NULL,
   role TEXT NOT NULL CHECK (role IN ('waiter', 'chef', 'bartender', 'dishwasher', 'runner', 'extra_service')),
   experience_level TEXT CHECK (experience_level IN ('beginner', 'junior', 'experienced', 'senior')),
+  FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
+);
+
+CREATE TABLE worker_experience (
+  id SERIAL PRIMARY KEY,
+  worker_id INTEGER NOT NULL,
+  job_title TEXT NOT NULL,
+  workplace TEXT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE,
+  FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
+);
+
+CREATE TABLE worker_education (
+  id SERIAL PRIMARY KEY,
+  worker_id INTEGER NOT NULL,
+  school TEXT NOT NULL,
+  program TEXT NOT NULL,
+  graduation_year INTEGER NOT NULL,
   FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
 );
 
