@@ -42,6 +42,7 @@ export async function getWorkerProfileById(
 
     response.status(200).json(workerProfile.rows[0]);
   } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -93,6 +94,7 @@ export async function getWorkerProfileByUserId(
 
     response.status(200).json(workerProfile.rows[0]);
   } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -141,6 +143,133 @@ export async function updateWorkerProfile(
 
     response.status(200).json(updatedProfile.rows[0]);
   } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all experience entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerExperience(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_experience WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_experience (worker_id, job_title, workplace, start_date, end_date)
+         VALUES ($1, $2, $3, $4, $5)
+         `,
+        [
+          workerId,
+          entry.job_title,
+          entry.workplace,
+          entry.start_date,
+          entry.end_date ?? null,
+        ],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Erfarenhet uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all education entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerEducation(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_education WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_education (worker_id, school, program, graduation_year)
+         VALUES ($1, $2, $3, $4)
+         `,
+        [workerId, entry.school, entry.program, entry.graduation_year],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Utbildning uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
