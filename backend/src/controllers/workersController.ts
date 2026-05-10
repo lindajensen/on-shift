@@ -275,6 +275,126 @@ export async function updateWorkerEducation(
 }
 
 /**
+ * Replaces all role entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerRoles(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_role WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_role (worker_id, role, experience_level)
+         VALUES ($1, $2, $3)
+         `,
+        [workerId, entry.role, entry.experience_level],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Roller uppdaterade" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all availability entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerAvailability(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM availability WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO availability (worker_id, day_of_week, start_time, end_time)
+         VALUES ($1, $2, $3, $4)
+         `,
+        [workerId, entry.day_of_week, entry.start_time, entry.end_time],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Tillgänglighet uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Toggles the availability status of the logged in worker.
  * @param request - The request object.
  * @param response - The response object.
