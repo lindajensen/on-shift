@@ -133,10 +133,10 @@ export async function updateWorkerProfile(
       `
       UPDATE worker_profile
       SET
-        email = COALESCE($1, email),
-        phone = COALESCE($2, phone),
-        city = COALESCE($3, city),
-        bio = COALESCE($4, bio)
+        email = $1,
+        phone = $2,
+        city = $3,
+        bio = $4
       WHERE user_id = $5
       RETURNING *
       `,
