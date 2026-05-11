@@ -65,7 +65,19 @@ function EmployerProfilePage() {
   async function handleSaveContact(contactData: EditContactFormData) {
     try {
       await updateEmployerProfile(contactData);
-      setProfile((prev) => (prev ? { ...prev, ...contactData } : prev));
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              ...contactData,
+              email: contactData.email || null,
+              phone: contactData.phone || null,
+              street: contactData.street || null,
+              postal_code: contactData.postal_code || null,
+              city: contactData.city || null,
+            }
+          : prev,
+      );
 
       setIsEditContactModalOpen(false);
     } catch (error) {
@@ -76,7 +88,16 @@ function EmployerProfilePage() {
   async function handleSaveAbout(aboutData: EditAboutFormData) {
     try {
       await updateEmployerProfile(aboutData);
-      setProfile((prev) => (prev ? { ...prev, ...aboutData } : prev));
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              ...aboutData,
+              bio: aboutData.description || null,
+            }
+          : prev,
+      );
 
       setIsEditAboutModalOpen(false);
     } catch (error) {
@@ -130,7 +151,9 @@ function EmployerProfilePage() {
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">E-post</p>
-                      <p className="contact-info__value">
+                      <p
+                        className={`contact-info__value ${!profile.email ? "contact-info__value--empty" : ""}`}
+                      >
                         {profile.email ?? "Ingen e-post angiven"}
                       </p>
                     </div>
@@ -141,7 +164,9 @@ function EmployerProfilePage() {
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">Telefon</p>
-                      <p className="contact-info__value">
+                      <p
+                        className={`contact-info__value ${!profile.phone ? "empty-text" : ""}`}
+                      >
                         {profile.phone ?? "Inget telefonnummer angivet"}
                       </p>
                     </div>
@@ -180,11 +205,11 @@ function EmployerProfilePage() {
                   )}
                 </header>
 
-                {profile.description ? (
-                  <p className="about__text">{profile.description}</p>
-                ) : (
-                  <p>Ingen beskrivning angiven</p>
-                )}
+                <p
+                  className={`about__text ${!profile.description ? "empty-text" : ""}`}
+                >
+                  {profile.description ?? "Ingen beskrivning angiven"}
+                </p>
               </section>
 
               {isOwner && (
