@@ -36,7 +36,6 @@ export async function getEmployerProfileById(
 
     response.status(200).json(employerProfile.rows[0]);
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -83,7 +82,6 @@ export async function getEmployerProfileByUserId(
 
     response.status(200).json(employerProfile.rows[0]);
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -125,13 +123,13 @@ export async function updateEmployerProfile(
       RETURNING *
       `,
       [
-        data.name ?? null,
-        data.email ?? null,
-        data.phone ?? null,
-        data.street ?? null,
-        data.postal_code ?? null,
-        data.city ?? null,
-        data.description ?? null,
+        data.name || null,
+        data.email || null,
+        data.phone || null,
+        data.street || null,
+        data.postal_code || null,
+        data.city || null,
+        data.description || null,
         userId,
       ],
     );

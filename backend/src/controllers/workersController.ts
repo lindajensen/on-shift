@@ -141,10 +141,10 @@ export async function updateWorkerProfile(
       RETURNING *
       `,
       [
-        data.email ?? null,
-        data.phone ?? null,
-        data.city ?? null,
-        data.bio ?? null,
+        data.email || null,
+        data.phone || null,
+        data.city || null,
+        data.bio || null,
         userId,
       ],
     );
@@ -207,7 +207,7 @@ export async function updateWorkerExperience(
           entry.job_title,
           entry.workplace,
           entry.start_date,
-          entry.end_date ?? null,
+          entry.end_date || null,
         ],
       );
     }
