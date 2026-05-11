@@ -49,7 +49,7 @@ function EditEmployerContactModal({
       newErrors.email = "Ange en giltig e-postadress";
     }
 
-    if (!validatePhone(phone)) {
+    if (phone && !validatePhone(phone)) {
       newErrors.phone = "Ange ett giltigt telefonnummer";
     }
 

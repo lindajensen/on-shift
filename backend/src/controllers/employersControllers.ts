@@ -112,13 +112,13 @@ export async function updateEmployerProfile(
       `
       UPDATE employer_profile
       SET
-        name = COALESCE($1, name),
-        email = COALESCE($2, email),
-        phone = COALESCE($3, phone),
-        street = COALESCE($4, street),
-        postal_code = COALESCE($5, postal_code),
-        city = COALESCE($6, city),
-        description = COALESCE($7, description)
+        name = $1,
+        email = $2,
+        phone = $3,
+        street = $4,
+        postal_code = $5,
+        city = $6,
+        description = $7
       WHERE user_id = $8
       RETURNING *
       `,
