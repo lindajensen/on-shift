@@ -43,6 +43,7 @@ CREATE TABLE worker_profile (
   email TEXT,
   phone TEXT,
   city TEXT,
+  cv_url TEXT,
   is_available BOOLEAN DEFAULT FALSE,
 
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
