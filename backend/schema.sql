@@ -72,7 +72,7 @@ CREATE TABLE worker_education (
   worker_id INTEGER NOT NULL,
   school TEXT NOT NULL,
   program TEXT NOT NULL,
-  graduation_year INTEGER NOT NULL,
+  graduation_year INTEGER,
   FOREIGN KEY (worker_id) REFERENCES worker_profile(id) ON DELETE CASCADE
 );
 
