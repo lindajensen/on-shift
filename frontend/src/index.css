@@ -209,7 +209,7 @@ textarea {
   box-sizing: border-box;
 }
 
-input,
+input:not([type="checkbox"]),
 select {
   height: 2.75rem;
   padding: 0 0.875rem;
@@ -241,9 +241,10 @@ textarea {
 .badge {
   display: inline-flex;
   align-items: center;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  padding: 0.4rem 0.625rem;
+  /* padding: 0.4rem 0.625rem; */
+  padding: 0.4rem 0.875rem;
   border-radius: var(--radius-full);
   white-space: nowrap;
 }
@@ -278,6 +279,7 @@ textarea {
 .server-error {
   font-size: 0.8rem;
   color: var(--color-error);
+  margin-top: 0.3rem;
 }
 
 .server-error {
