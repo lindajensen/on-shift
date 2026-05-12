@@ -225,6 +225,7 @@ export interface EmployerJobDetails {
 
 export interface EmployerApplicationDetail {
   id: number;
+  worker_id: number;
   worker_name: string;
   role: string;
   experience_level: string;
@@ -234,6 +235,7 @@ export interface EmployerApplicationDetail {
 
 export interface EmployerApplicationPreview {
   id: number;
+  worker_id: number;
   worker_name: string;
   role: string;
   job_date: string;
