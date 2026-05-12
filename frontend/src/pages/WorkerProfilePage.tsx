@@ -11,6 +11,7 @@ import {
   updateWorkerRoles,
   updateWorkerAvailability,
 } from "../api/worker";
+import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
 import {
   getRoleLabel,
   getExperienceLevel,
@@ -62,6 +63,8 @@ function WorkerProfilePage() {
   const [isEditAvailabilityModalOpen, setIsEditAvailabilityModalOpen] =
     useState(false);
 
+  const [isSaved, setIsSaved] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,6 +91,11 @@ function WorkerProfilePage() {
           roles: data.roles ?? [],
           availability: data.availability ?? [],
         });
+
+        if (user?.role === "employer") {
+          const savedWorkers = await getSavedWorkers();
+          setIsSaved(savedWorkers.some((worker) => worker.id === data.id));
+        }
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -98,6 +106,24 @@ function WorkerProfilePage() {
 
     fetchWorkerProfile();
   }, [profileId, id, user]);
+
+  async function handleSave(id: number) {
+    try {
+      await saveWorker(id);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Kunde inte spara personal", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveWorker(id);
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Kunde inte ta bort sparad personal", error);
+    }
+  }
 
   function handleLogout() {
     navigate("/");
@@ -220,9 +246,11 @@ function WorkerProfilePage() {
             <>
               <ProfileHeader
                 name={profile.name}
-                city={profile.city}
                 rating={profile.rating}
                 isOwner={isOwner}
+                isSaved={isSaved}
+                onSave={() => handleSave(profile.id)}
+                onUnsave={() => handleUnsave(profile.id)}
               />
 
               <div className="divider"></div>
