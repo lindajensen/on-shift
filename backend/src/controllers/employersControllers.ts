@@ -351,6 +351,7 @@ export async function getJobDetails(
         JSON_AGG(
           json_build_object(
             'id', a.id,
+            'worker_id', wp.id,
             'worker_name', wp.name,
             'role', (SELECT role FROM worker_role WHERE worker_id = wp.id LIMIT 1),
             'experience_level', (SELECT experience_level FROM worker_role WHERE worker_id = wp.id LIMIT 1),
@@ -404,6 +405,7 @@ export async function getEmployerApplications(
         j.job_date,
         j.start_time,
         j.end_time,
+        wp.id AS worker_id,
         wp.name AS worker_name
       FROM application a
       JOIN job j ON a.job_id = j.id
