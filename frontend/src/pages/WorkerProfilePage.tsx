@@ -82,7 +82,6 @@ function WorkerProfilePage() {
           : await getWorkerProfileByUserId();
 
         setProfile(data);
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -197,7 +196,6 @@ function WorkerProfilePage() {
   if (error) return <ErrorMessage message={error} />;
 
   //TODO: CV section
-  //? Funkar availabilitytoggle automatiskt
   //? Var lägga sparade employers och jobb?
 
   return (
