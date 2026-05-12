@@ -81,7 +81,13 @@ function WorkerProfilePage() {
           ? await getWorkerProfileById(Number(id))
           : await getWorkerProfileByUserId();
 
-        setProfile(data);
+        setProfile({
+          ...data,
+          experience: data.experience ?? [],
+          education: data.education ?? [],
+          roles: data.roles ?? [],
+          availability: data.availability ?? [],
+        });
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
