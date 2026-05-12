@@ -221,9 +221,9 @@ function WorkerProfilePage() {
 
               <div className="divider"></div>
 
-              <AvailabilityToggle />
+              {isOwner && <AvailabilityToggle />}
 
-              <div className="divider"></div>
+              {/* <div className="divider"></div> */}
 
               <section className="contact-info">
                 <header className="contact-info__header">
