@@ -415,7 +415,7 @@ export async function updateWorkerAvailability(
       [workerId],
     );
 
-    for (const entry of data) {
+    for (const entry of data.availability) {
       await pool.query(
         `
         INSERT INTO availability (worker_id, day_of_week, start_time, end_time)
