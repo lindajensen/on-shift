@@ -70,6 +70,7 @@
 .roles-info__list {
   display: flex;
   gap: 0.3rem;
+  flex-wrap: wrap;
 }
 
 .timeline {
@@ -241,4 +242,9 @@
   height: 6rem;
   border-radius: var(--radius-md);
   margin-bottom: 1rem;
+}
+
+.empty-text {
+  color: var(--color-text-muted);
+  font-style: italic;
 }

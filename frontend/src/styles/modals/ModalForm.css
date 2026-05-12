@@ -2,13 +2,14 @@
   margin-bottom: 0.5rem;
 }
 
+.modal-form__subtitle {
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
 .modal-form__form {
   display: flex;
   flex-direction: column;
-}
-
-.modal-form__list {
-  padding-bottom: 80px;
 }
 
 .modal-form__field {
@@ -36,17 +37,9 @@
 }
 
 .modal-form__actions {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   gap: 0.5rem;
-  padding: 1rem;
-  background: #fff;
-  border-top: 1px solid var(--color-border);
-  border-bottom-left-radius: var(--radius-lg);
-  border-bottom-right-radius: var(--radius-lg);
+  margin-top: 0.75rem;
 }
 
 .modal-form__actions .btn--primary {
@@ -123,4 +116,35 @@ input[type="checkbox"] {
 .modal-form__add-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-accent);
+}
+
+/* Roles */
+.modal-form__roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal-form__role-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.75rem;
+}
+
+.modal-form__role-name {
+  flex: 1;
+}
+
+.modal-form__role-select {
+  width: auto;
+  height: auto;
+  padding: 0.2rem 0.4rem;
+}
+
+.modal-form__role-entry .modal-form__remove-btn {
+  position: static;
 }
