@@ -276,6 +276,7 @@ export interface JobModalErrors {
 // ============================================================
 export interface PublicJobListing {
   id: number;
+  employer_id: number;
   role: string;
   job_date: string;
   start_time: string;
@@ -289,6 +290,7 @@ export interface PublicJobListing {
   created_at: string;
   restaurant_name: string;
   location: string | null;
+  city: string | null;
   rating: number | null;
 }
 

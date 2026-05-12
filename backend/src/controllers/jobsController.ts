@@ -58,30 +58,32 @@ export async function getJobById(
   try {
     const job = await pool.query(
       `
-      SELECT
-        j.id,
-        j.role,
-        j.job_date,
-        j.start_time,
-        j.end_time,
-        j.compensation,
-        j.available_slots,
-        j.description,
-        j.demands,
-        j.is_urgent,
-        j.requires_experience,
-        j.created_at,
-        ep.name AS restaurant_name,
-        CASE
-          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
-          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
-          WHEN ep.city IS NOT NULL THEN ep.city
-          ELSE NULL
-        END AS location,
-        (SELECT ROUND(AVG(r.rating)::numeric, 1) FROM review r WHERE r.reviewee_id = ep.user_id) AS rating
-      FROM job j
-      JOIN employer_profile ep ON j.employer_id = ep.id
-      WHERE j.id = $1
+     SELECT
+      j.id,
+      j.role,
+      j.job_date,
+      j.start_time,
+      j.end_time,
+      j.compensation,
+      j.available_slots,
+      j.description,
+      j.demands,
+      j.is_urgent,
+      j.requires_experience,
+      j.created_at,
+      ep.id AS employer_id,
+      ep.name AS restaurant_name,
+      ep.city,
+      CASE
+        WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
+        THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
+        WHEN ep.city IS NOT NULL THEN ep.city
+        ELSE NULL
+      END AS location,
+      (SELECT ROUND(AVG(r.rating)::numeric, 1) FROM review r WHERE r.reviewee_id = ep.user_id) AS rating
+    FROM job j
+    JOIN employer_profile ep ON j.employer_id = ep.id
+    WHERE j.id = $1
       `,
       [id],
     );
