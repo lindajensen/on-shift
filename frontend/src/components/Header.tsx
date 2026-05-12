@@ -9,7 +9,7 @@ import "../styles/Header.css";
 function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <>
@@ -19,12 +19,12 @@ function Header() {
             <span className="header__logo-accent">on</span>Shift
           </Link>
           {user ? (
-            <button
+            <Link
+              to="/dashboard"
               className="header__login-btn btn btn--primary"
-              onClick={logout}
             >
-              Logga ut
-            </button>
+              Till dashboarden
+            </Link>
           ) : (
             <button
               className="header__login-btn btn btn--primary"

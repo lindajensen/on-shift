@@ -27,10 +27,10 @@ export async function getWorkerProfileById(
         wp.city,
         wp.cv_url,
         wp.is_available,
-        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
-        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
-        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) AS experience,
-        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) AS education,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
+        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) FILTER (WHERE we.id IS NOT NULL) AS experience,
+        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) FILTER (WHERE wed.id IS NOT NULL) AS education,
         ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM worker_profile wp
       LEFT JOIN worker_role wr ON wr.worker_id = wp.id
@@ -83,10 +83,10 @@ export async function getWorkerProfileByUserId(
         wp.city,
         wp.cv_url,
         wp.is_available,
-        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
-        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
-        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) AS experience,
-        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) AS education,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
+        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) FILTER (WHERE we.id IS NOT NULL) AS experience,
+        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) FILTER (WHERE wed.id IS NOT NULL) AS education,
         ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM worker_profile wp
       LEFT JOIN worker_role wr ON wr.worker_id = wp.id

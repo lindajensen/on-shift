@@ -225,6 +225,7 @@ export interface EmployerJobDetails {
 
 export interface EmployerApplicationDetail {
   id: number;
+  worker_id: number;
   worker_name: string;
   role: string;
   experience_level: string;
@@ -234,6 +235,7 @@ export interface EmployerApplicationDetail {
 
 export interface EmployerApplicationPreview {
   id: number;
+  worker_id: number;
   worker_name: string;
   role: string;
   job_date: string;
@@ -274,6 +276,7 @@ export interface JobModalErrors {
 // ============================================================
 export interface PublicJobListing {
   id: number;
+  employer_id: number;
   role: string;
   job_date: string;
   start_time: string;
@@ -287,6 +290,7 @@ export interface PublicJobListing {
   created_at: string;
   restaurant_name: string;
   location: string | null;
+  city: string | null;
   rating: number | null;
 }
 

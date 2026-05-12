@@ -149,7 +149,7 @@ function JobsPage() {
         </header>
 
         <div className="jobs__search">
-          <Search className="jobs__search-icon" size={16} aria-hidden="true" />
+          {/* <Search className="jobs__search-icon" size={16} aria-hidden="true" /> */}
           <input
             className="jobs__search-input"
             type="text"

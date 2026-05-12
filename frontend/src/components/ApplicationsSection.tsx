@@ -126,7 +126,10 @@ function ApplicationsSection({
                     <ul className="application-card__menu-list">
                       <li className="application-card__menu-item">
                         <User2 size={16} aria-hidden="true" />
-                        <Link to="#" className="application-card__menu-btn">
+                        <Link
+                          to={`/personal/${application.worker_id}`}
+                          className="application-card__menu-btn"
+                        >
                           Gå till profil
                         </Link>
                       </li>

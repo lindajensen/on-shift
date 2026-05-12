@@ -64,24 +64,26 @@ function EmployerApplicationsPreview() {
         <ul className="preview__list">
           {applications.slice(0, 3).map((application) => (
             <li key={application.id} className="preview__item">
-              <article className="preview__card">
-                <div className="preview__info">
-                  <h3 className="preview__name">{application.worker_name}</h3>
-                  <p className="preview__meta">
-                    {formatDate(application.job_date)} kl.{" "}
-                    {formatTime(application.start_time)} -{" "}
-                    {formatTime(application.end_time)}
-                  </p>
-                </div>
+              <Link to={`/personal/${application.worker_id}`}>
+                <article className="preview__card">
+                  <div className="preview__info">
+                    <h3 className="preview__name">{application.worker_name}</h3>
+                    <p className="preview__meta">
+                      {formatDate(application.job_date)} kl.{" "}
+                      {formatTime(application.start_time)} -{" "}
+                      {formatTime(application.end_time)}
+                    </p>
+                  </div>
 
-                <div className="preview__status">
-                  <span
-                    className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
-                  >
-                    {getStatusLabel(application.status)}
-                  </span>
-                </div>
-              </article>
+                  <div className="preview__status">
+                    <span
+                      className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
+                    >
+                      {getStatusLabel(application.status)}
+                    </span>
+                  </div>
+                </article>
+              </Link>
             </li>
           ))}
         </ul>

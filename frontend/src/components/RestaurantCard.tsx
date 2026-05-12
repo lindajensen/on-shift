@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { getInitials } from "../utils/text";
 import { Star } from "lucide-react";
 
@@ -7,28 +8,36 @@ interface RestaurantCardProps {
   name: string;
   location: string | null;
   rating: number | null;
+  employerId?: number;
 }
 
-function RestaurantCard({ name, location, rating }: RestaurantCardProps) {
+function RestaurantCard({
+  name,
+  location,
+  rating,
+  employerId,
+}: RestaurantCardProps) {
   const initials = name ? getInitials(name) : "";
 
   return (
-    <article className="restaurant-card">
-      <div className="restaurant-card__avatar avatar">{initials}</div>
+    <Link to={`/restaurang/${employerId}`}>
+      <article className="restaurant-card">
+        <div className="restaurant-card__avatar avatar">{initials}</div>
 
-      <div className="restaurant-card__info">
-        <h3 className="restaurant-card__name">{name}</h3>
-        <p className="restaurant-card__meta">
-          {location}{" "}
-          {rating && (
-            <span>
-              | <Star size={14} aria-hidden="true" />{" "}
-              {Number(rating).toFixed(1)}
-            </span>
-          )}
-        </p>
-      </div>
-    </article>
+        <div className="restaurant-card__info">
+          <h3 className="restaurant-card__name">{name}</h3>
+          <p className="restaurant-card__meta">
+            {location}{" "}
+            {rating && (
+              <span>
+                | <Star size={14} aria-hidden="true" />{" "}
+                {Number(rating).toFixed(1)}
+              </span>
+            )}
+          </p>
+        </div>
+      </article>
+    </Link>
   );
 }
 

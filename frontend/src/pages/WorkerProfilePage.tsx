@@ -11,6 +11,7 @@ import {
   updateWorkerRoles,
   updateWorkerAvailability,
 } from "../api/worker";
+import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
 import {
   getRoleLabel,
   getExperienceLevel,
@@ -62,6 +63,8 @@ function WorkerProfilePage() {
   const [isEditAvailabilityModalOpen, setIsEditAvailabilityModalOpen] =
     useState(false);
 
+  const [isSaved, setIsSaved] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -81,7 +84,18 @@ function WorkerProfilePage() {
           ? await getWorkerProfileById(Number(id))
           : await getWorkerProfileByUserId();
 
-        setProfile(data);
+        setProfile({
+          ...data,
+          experience: data.experience ?? [],
+          education: data.education ?? [],
+          roles: data.roles ?? [],
+          availability: data.availability ?? [],
+        });
+
+        if (user?.role === "employer") {
+          const savedWorkers = await getSavedWorkers();
+          setIsSaved(savedWorkers.some((worker) => worker.id === data.id));
+        }
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -92,6 +106,24 @@ function WorkerProfilePage() {
 
     fetchWorkerProfile();
   }, [profileId, id, user]);
+
+  async function handleSave(id: number) {
+    try {
+      await saveWorker(id);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Kunde inte spara personal", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveWorker(id);
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Kunde inte ta bort sparad personal", error);
+    }
+  }
 
   function handleLogout() {
     navigate("/");
@@ -195,7 +227,7 @@ function WorkerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
 
-  //TODO: CV section
+  //TODO: CV section (upload only is isOwner)
   //? Var lägga sparade employers och jobb?
 
   return (
@@ -214,16 +246,18 @@ function WorkerProfilePage() {
             <>
               <ProfileHeader
                 name={profile.name}
-                city={profile.city}
                 rating={profile.rating}
                 isOwner={isOwner}
+                isSaved={isSaved}
+                onSave={() => handleSave(profile.id)}
+                onUnsave={() => handleUnsave(profile.id)}
               />
 
               <div className="divider"></div>
 
-              <AvailabilityToggle />
+              {isOwner && <AvailabilityToggle />}
 
-              <div className="divider"></div>
+              {/* <div className="divider"></div> */}
 
               <section className="contact-info">
                 <header className="contact-info__header">
@@ -289,13 +323,15 @@ function WorkerProfilePage() {
               <section className="about">
                 <header className="about__header">
                   <h2 className="about__title">Om mig</h2>
-                  <button
-                    aria-label="Redigera restaurangbeskrivning"
-                    className="about__edit-btn"
-                    onClick={() => setIsEditAboutModalOpen(true)}
-                  >
-                    <Edit size={16} aria-hidden="true" />
-                  </button>
+                  {isOwner && (
+                    <button
+                      aria-label="Redigera restaurangbeskrivning"
+                      className="about__edit-btn"
+                      onClick={() => setIsEditAboutModalOpen(true)}
+                    >
+                      <Edit size={16} aria-hidden="true" />
+                    </button>
+                  )}
                 </header>
 
                 <p
@@ -310,13 +346,15 @@ function WorkerProfilePage() {
               <section className="experience">
                 <header className="experience__header">
                   <h2 className="experience__title">Erfarenhet</h2>
-                  <button
-                    aria-label="Redigera erfarenhet"
-                    className="experience__edit-btn"
-                    onClick={() => setIsEditExperienceModalOpen(true)}
-                  >
-                    <Edit size={16} aria-hidden="true" />
-                  </button>
+                  {isOwner && (
+                    <button
+                      aria-label="Redigera erfarenhet"
+                      className="experience__edit-btn"
+                      onClick={() => setIsEditExperienceModalOpen(true)}
+                    >
+                      <Edit size={16} aria-hidden="true" />
+                    </button>
+                  )}
                 </header>
 
                 {profile.experience.length === 0 ? (
@@ -353,13 +391,15 @@ function WorkerProfilePage() {
               <section className="education">
                 <header className="education__header">
                   <h2 className="education__title">Utbildning</h2>
-                  <button
-                    aria-label="Redigera utbildning"
-                    className="education__edit-btn"
-                    onClick={() => setIsEditEducationModalOpen(true)}
-                  >
-                    <Edit size={16} aria-hidden="true" />
-                  </button>
+                  {isOwner && (
+                    <button
+                      aria-label="Redigera utbildning"
+                      className="education__edit-btn"
+                      onClick={() => setIsEditEducationModalOpen(true)}
+                    >
+                      <Edit size={16} aria-hidden="true" />
+                    </button>
+                  )}
                 </header>
 
                 {profile.education.length === 0 ? (
@@ -395,13 +435,15 @@ function WorkerProfilePage() {
               <section className="roles">
                 <header className="roles__header">
                   <h2 className="roles__title">Roller</h2>
-                  <button
-                    aria-label="Redigera roller"
-                    className="education__edit-btn"
-                    onClick={() => setIsEditRolesModalOpen(true)}
-                  >
-                    <Edit size={16} aria-hidden="true" />
-                  </button>
+                  {isOwner && (
+                    <button
+                      aria-label="Redigera roller"
+                      className="education__edit-btn"
+                      onClick={() => setIsEditRolesModalOpen(true)}
+                    >
+                      <Edit size={16} aria-hidden="true" />
+                    </button>
+                  )}
                 </header>
 
                 {profile.roles.length === 0 ? (
@@ -427,13 +469,15 @@ function WorkerProfilePage() {
                 <header className="availability__header">
                   <h2 className="availability__title">Tillgänglighet</h2>
 
-                  <button
-                    aria-label="Redigera tillgänglighet"
-                    className="availability__edit-btn"
-                    onClick={() => setIsEditAvailabilityModalOpen(true)}
-                  >
-                    <Edit size={16} aria-hidden="true" />
-                  </button>
+                  {isOwner && (
+                    <button
+                      aria-label="Redigera tillgänglighet"
+                      className="availability__edit-btn"
+                      onClick={() => setIsEditAvailabilityModalOpen(true)}
+                    >
+                      <Edit size={16} aria-hidden="true" />
+                    </button>
+                  )}
                 </header>
 
                 <ul className="availability__list">

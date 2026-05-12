@@ -126,8 +126,9 @@ function JobDetailsPage() {
           {job && (
             <RestaurantCard
               name={job.restaurant_name}
-              location={job.location ?? "Plats ej angiven"}
+              location={job.city ?? "Plats ej angiven"}
               rating={job.rating}
+              employerId={job.employer_id}
             />
           )}
         </div>
