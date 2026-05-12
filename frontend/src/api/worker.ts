@@ -3,12 +3,12 @@ import {
   JobPreview,
   Review,
   SavedJob,
-  EditWorkerContactFormData,
-  EditWorkerAboutFormData,
-  EditWorkerEducationFormData,
-  EditWorkerRolesFormData,
+  WorkerContactFormData,
+  WorkerAboutFormData,
+  WorkerRole,
   EditWorkerAvailabilityFormData,
   WorkerExperience,
+  WorkerEducation,
 } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -79,7 +79,7 @@ export async function getWorkerProfileById(id: number): Promise<WorkerProfile> {
  * @throws An error if the request fails.
  */
 export async function updateWorkerContact(
-  data: EditWorkerContactFormData,
+  data: WorkerContactFormData,
 ): Promise<WorkerProfile> {
   const token = localStorage.getItem("token");
 
@@ -108,7 +108,7 @@ export async function updateWorkerContact(
  * @throws An error if the request fails.
  */
 export async function updateWorkerBio(
-  data: EditWorkerAboutFormData,
+  data: WorkerAboutFormData,
 ): Promise<WorkerProfile> {
   const token = localStorage.getItem("token");
 
@@ -163,7 +163,7 @@ export async function updateWorkerExperience(
  * @throws An error if the request fails.
  */
 export async function updateWorkerEducation(
-  data: EditWorkerEducationFormData,
+  data: WorkerEducation[],
 ): Promise<void> {
   const token = localStorage.getItem("token");
 
@@ -190,9 +190,7 @@ export async function updateWorkerEducation(
  * @returns A promise that resolves when the roles have been updated.
  * @throws An error if the request fails.
  */
-export async function updateWorkerRoles(
-  data: EditWorkerRolesFormData,
-): Promise<void> {
+export async function updateWorkerRoles(data: WorkerRole[]): Promise<void> {
   const token = localStorage.getItem("token");
 
   const response = await fetch(`${API_BASE_URL}/api/workers/profile/roles`, {
