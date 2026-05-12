@@ -3,6 +3,439 @@ import { Request, Response } from "express";
 import pool from "../db";
 
 /**
+ * Fetches the profile of an worker by their worker profile ID.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the employer's profile information.
+ */
+export async function getWorkerProfileById(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const { id } = request.params;
+
+  try {
+    const workerProfile = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.user_id,
+        wp.name,
+        wp.bio,
+        wp.email,
+        wp.phone,
+        wp.city,
+        wp.cv_url,
+        wp.is_available,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) AS experience,
+        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) AS education,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      LEFT JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN availability a ON a.worker_id = wp.id
+      LEFT JOIN worker_experience we ON we.worker_id = wp.id
+      LEFT JOIN worker_education wed ON wed.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.id = $1
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      `,
+      [id],
+    );
+
+    response.status(200).json(workerProfile.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches the profile of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the worker's profile information.
+ */
+export async function getWorkerProfileByUserId(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const workerProfile = await pool.query(
+      `
+      SELECT
+        wp.id,
+        wp.user_id,
+        wp.name,
+        wp.bio,
+        wp.email,
+        wp.phone,
+        wp.city,
+        wp.cv_url,
+        wp.is_available,
+        JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) AS roles,
+        JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) AS availability,
+        JSON_AGG(DISTINCT jsonb_build_object('id', we.id, 'job_title', we.job_title, 'workplace', we.workplace, 'start_date', we.start_date, 'end_date', we.end_date)) AS experience,
+        JSON_AGG(DISTINCT jsonb_build_object('id', wed.id, 'school', wed.school, 'program', wed.program, 'graduation_year', wed.graduation_year)) AS education,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM worker_profile wp
+      LEFT JOIN worker_role wr ON wr.worker_id = wp.id
+      LEFT JOIN availability a ON a.worker_id = wp.id
+      LEFT JOIN worker_experience we ON we.worker_id = wp.id
+      LEFT JOIN worker_education wed ON wed.worker_id = wp.id
+      LEFT JOIN review r ON r.reviewee_id = wp.user_id
+      WHERE wp.user_id = $1
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      `,
+      [userId],
+    );
+
+    response.status(200).json(workerProfile.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the contact information of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated worker contact information.
+ */
+export async function updateWorkerContact(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedContact = await pool.query(
+      `
+      UPDATE worker_profile
+      SET
+        email = $1,
+        phone = $2,
+        city = $3
+      WHERE user_id = $4
+      RETURNING *
+      `,
+      [data.email || null, data.phone || null, data.city || null, userId],
+    );
+
+    response.status(200).json(updatedContact.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the bio of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated worker's bio.
+ */
+export async function updateWorkerBio(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedBio = await pool.query(
+      `
+      UPDATE worker_profile
+      SET
+        bio = $1
+      WHERE user_id = $2
+      RETURNING *
+      `,
+      [data.bio || null, userId],
+    );
+
+    response.status(200).json(updatedBio.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all experience entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerExperience(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_experience WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_experience (worker_id, job_title, workplace, start_date, end_date)
+         VALUES ($1, $2, $3, $4, $5)
+         `,
+        [
+          workerId,
+          entry.job_title,
+          entry.workplace,
+          entry.start_date,
+          entry.end_date || null,
+        ],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Erfarenhet uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all education entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerEducation(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_education WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_education (worker_id, school, program, graduation_year)
+         VALUES ($1, $2, $3, $4)
+         `,
+        [workerId, entry.school, entry.program, entry.graduation_year],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Utbildning uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all role entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerRoles(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM worker_role WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data) {
+      await pool.query(
+        `
+        INSERT INTO worker_role (worker_id, role, experience_level)
+         VALUES ($1, $2, $3)
+         `,
+        [workerId, entry.role, entry.experience_level],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Roller uppdaterade" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Replaces all availability entries for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON message indicating the result of the update operation.
+ */
+export async function updateWorkerAvailability(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query("BEGIN");
+
+    const workerResult = await pool.query(
+      `
+      SELECT id FROM worker_profile WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    const workerId = workerResult.rows[0].id;
+
+    await pool.query(
+      `
+      DELETE FROM availability WHERE worker_id = $1
+      `,
+      [workerId],
+    );
+
+    for (const entry of data.availability) {
+      await pool.query(
+        `
+        INSERT INTO availability (worker_id, day_of_week, start_time, end_time)
+         VALUES ($1, $2, $3, $4)
+         `,
+        [workerId, entry.day_of_week, entry.start_time, entry.end_time],
+      );
+    }
+
+    await pool.query("COMMIT");
+
+    response.status(200).json({ message: "Tillgänglighet uppdaterad" });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Toggles the availability status of the logged in worker.
  * @param request - The request object.
  * @param response - The response object.
@@ -21,7 +454,7 @@ export async function toggleAvailability(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   await pool.query(
     "UPDATE worker_profile SET is_available = $1 WHERE user_id = $2",
@@ -49,7 +482,7 @@ export async function getAvailability(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const availability = await pool.query(
@@ -67,6 +500,7 @@ export async function getAvailability(
   }
 }
 
+// TODO: Refactor: remove getWorkerProfile (check where it's used)
 /**
  * Fetches the profile information of the currently logged in worker.
  * @param request - The request object.
@@ -85,7 +519,7 @@ export async function getWorkerProfile(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const profile = await pool.query(
@@ -117,7 +551,7 @@ export async function getWorkerApplications(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const applications = await pool.query(
@@ -164,7 +598,7 @@ export async function getRecommendedJobs(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const recommendedJobs = await pool.query(
@@ -223,7 +657,7 @@ export async function getWorkerReviews(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const reviews = await pool.query(
@@ -268,7 +702,7 @@ export async function getSavedJobs(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const savedJobs = await pool.query(
@@ -326,7 +760,7 @@ export async function saveJob(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -365,7 +799,7 @@ export async function unsaveJob(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(

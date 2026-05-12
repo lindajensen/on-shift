@@ -1,4 +1,15 @@
-import { WorkerProfile, JobPreview, Review, SavedJob } from "../types";
+import {
+  WorkerProfile,
+  JobPreview,
+  Review,
+  SavedJob,
+  WorkerContactFormData,
+  WorkerAboutFormData,
+  WorkerRole,
+  EditWorkerAvailabilityFormData,
+  WorkerExperience,
+  WorkerEducation,
+} from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -7,6 +18,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @returns A promise that resolves to the worker's profile.
  * @throws An error if the request fails.
  */
+//TODO: Refactor and delete (old getWorkerProfile)
 export async function getWorkerProfile(): Promise<WorkerProfile> {
   const token = localStorage.getItem("token");
 
@@ -21,6 +33,206 @@ export async function getWorkerProfile(): Promise<WorkerProfile> {
   }
 
   return response.json();
+}
+
+/**
+ * Fetches the profile of the currently logged in worker.
+ * @returns A promise that resolves to the worker's profile.
+ * @throws An error if the request fails.
+ */
+export async function getWorkerProfileByUserId(): Promise<WorkerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/profile/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta profilen. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetches the profile of a worker by their ID.
+ * @param id - The ID of the worker profile to fetch.
+ * @returns A promise that resolves to the worker's profile.
+ * @throws An error if the request fails.
+ */
+export async function getWorkerProfileById(id: number): Promise<WorkerProfile> {
+  const response = await fetch(`${API_BASE_URL}/api/workers/profile/${id}`);
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta profilen. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Updates the contact information of the currently logged in worker with the provided data.
+ * @param data - The data to update the contact information with.
+ * @returns A promise that resolves to the updated worker contact information.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerContact(
+  data: WorkerContactFormData,
+): Promise<WorkerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/profile/contact`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Kunde inte uppdatera kontaktuppgifter. Försök igen senare.",
+    );
+  }
+
+  return response.json();
+}
+
+/**
+ * Updates the bio of the currently logged in worker with the provided data.
+ * @param data - The data to update the bio with.
+ * @returns A promise that resolves to the updated worker bio.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerBio(
+  data: WorkerAboutFormData,
+): Promise<WorkerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/profile/bio`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera beskrivning. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Replaces all experience entries for the currently logged in worker.
+ * @param data - The experience data to save.
+ * @returns A promise that resolves when the experience has been updated.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerExperience(
+  data: WorkerExperience[],
+): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/workers/profile/experience`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera erfarenhet. Försök igen senare.");
+  }
+}
+
+/**
+ * Replaces all education entries for the currently logged in worker.
+ * @param data - The education data to save.
+ * @returns A promise that resolves when the education has been updated.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerEducation(
+  data: WorkerEducation[],
+): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/workers/profile/education`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera utbildning. Försök igen senare.");
+  }
+}
+
+/**
+ * Replaces all roles entries for the currently logged in worker.
+ * @param data - The roles data to save.
+ * @returns A promise that resolves when the roles have been updated.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerRoles(data: WorkerRole[]): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/profile/roles`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera roller. Försök igen senare.");
+  }
+}
+
+/**
+ * Replaces all availability entries for the currently logged in worker.
+ * @param data - The availability data to save.
+ * @returns A promise that resolves when availability has been updated.
+ * @throws An error if the request fails.
+ */
+export async function updateWorkerAvailability(
+  data: EditWorkerAvailabilityFormData,
+): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/workers/profile/availability`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera tillgänglighet. Försök igen senare.");
+  }
 }
 
 /**

@@ -20,7 +20,10 @@ import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
 import SavedJobsPage from "./pages/SavedJobsPage";
 import SavedWorkersPage from "./pages/SavedWorkersPage";
 import FindWorkersPage from "./pages/FindWorkersPage";
+import ProfilePage from "./pages/ProfilePage";
+
 import EmployerProfilePage from "./pages/EmployerProfilePage";
+import WorkerProfilePage from "./pages/WorkerProfilePage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -36,12 +39,14 @@ const router = createBrowserRouter(
         <Route path="/jobb" element={<JobsPage />} />
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
         <Route path="/restaurang/:id" element={<EmployerProfilePage />} />
+        <Route path="/personal/:id" element={<WorkerProfilePage />} />
       </Route>
 
       {/* WorkerLayout and EmployerLayout */}
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/min-profil" element={<ProfilePage />} />
         </Route>
 
         {/* Employer Routes  */}
@@ -53,7 +58,6 @@ const router = createBrowserRouter(
           />
           <Route path="/sparad-personal" element={<SavedWorkersPage />} />
           <Route path="/personal" element={<FindWorkersPage />} />
-          <Route path="/min-profil" element={<EmployerProfilePage />} />
         </Route>
 
         {/* Worker Routes  */}

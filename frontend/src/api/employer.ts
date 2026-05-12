@@ -48,27 +48,62 @@ export async function getEmployerProfileById(
 }
 
 /**
- * Updates the profile of the currently logged in employer with the provided data.
- * @param data - The data to update the employer profile with. Can be either contact information or about information.
- * @returns A promise that resolves to the updated employer profile.
+ * Updates the contact information of the currently logged in employer with the provided data.
+ * @param data - The data to update the employer contact information with. Can be either contact information or about information.
+ * @returns A promise that resolves to the updated employer contact information.
  * @throws An error if the request fails.
  */
-export async function updateEmployerProfile(
-  data: EditContactFormData | EditAboutFormData,
+export async function updateEmployerContact(
+  data: EditContactFormData,
 ): Promise<EmployerProfile> {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`${API_BASE_URL}/api/employers/profile/me`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/profile/contact`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
     },
-    body: JSON.stringify(data),
-  });
+  );
 
   if (!response.ok) {
-    throw new Error("Kunde inte uppdatera profilen. Försök igen senare.");
+    throw new Error(
+      "Kunde inte uppdatera kontaktuppgifter. Försök igen senare.",
+    );
+  }
+
+  return response.json();
+}
+
+/**
+ * Updates the description of the currently logged in employer with the provided data.
+ * @param data - The data to update the employer description with. Can be either contact information or about information.
+ * @returns A promise that resolves to the updated employer description.
+ * @throws An error if the request fails.
+ */
+export async function updateEmployerDescription(
+  data: EditAboutFormData,
+): Promise<EmployerProfile> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/profile/description`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte uppdatera beskrivningen. Försök igen senare.");
   }
 
   return response.json();

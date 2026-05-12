@@ -36,7 +36,6 @@ export async function getEmployerProfileById(
 
     response.status(200).json(employerProfile.rows[0]);
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -58,7 +57,7 @@ export async function getEmployerProfileByUserId(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const employerProfile = await pool.query(
@@ -83,18 +82,17 @@ export async function getEmployerProfileByUserId(
 
     response.status(200).json(employerProfile.rows[0]);
   } catch (error) {
-    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
 
 /**
- * Updates the profile of the currently logged in employer.
+ * Updates the contact information of the currently logged in employer.
  * @param request - The request object.
  * @param response - The response object.
- * @returns A JSON object containing the updated employer profile.
+ * @returns A JSON object containing the updated employer contact information.
  */
-export async function updateEmployerProfile(
+export async function updateEmployerContact(
   request: Request,
   response: Response,
 ): Promise<void> {
@@ -107,37 +105,76 @@ export async function updateEmployerProfile(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
-    const updatedProfile = await pool.query(
+    const updatedContact = await pool.query(
       `
       UPDATE employer_profile
       SET
-        name = COALESCE($1, name),
-        email = COALESCE($2, email),
-        phone = COALESCE($3, phone),
-        street = COALESCE($4, street),
-        postal_code = COALESCE($5, postal_code),
-        city = COALESCE($6, city),
-        description = COALESCE($7, description)
-      WHERE user_id = $8
+        name = $1,
+        email = $2,
+        phone = $3,
+        street = $4,
+        postal_code = $5,
+        city = $6
+      WHERE user_id = $7
       RETURNING *
       `,
       [
-        data.name ?? null,
-        data.email ?? null,
-        data.phone ?? null,
-        data.street ?? null,
-        data.postal_code ?? null,
-        data.city ?? null,
-        data.description ?? null,
+        data.name || null,
+        data.email || null,
+        data.phone || null,
+        data.street || null,
+        data.postal_code || null,
+        data.city || null,
         userId,
       ],
     );
 
-    response.status(200).json(updatedProfile.rows[0]);
+    response.status(200).json(updatedContact.rows[0]);
   } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the description of the currently logged in employer.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated employer's description.
+ */
+export async function updateEmployerDescription(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedDescription = await pool.query(
+      `
+      UPDATE employer_profile
+      SET
+        description = $1
+      WHERE user_id = $2
+      RETURNING *
+      `,
+      [data.description || null, userId],
+    );
+
+    response.status(200).json(updatedDescription.rows[0]);
+  } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
@@ -240,7 +277,7 @@ export async function getJobListings(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const listings = await pool.query(
@@ -287,7 +324,7 @@ export async function getJobDetails(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const jobDetails = await pool.query(
@@ -355,7 +392,7 @@ export async function getEmployerApplications(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const applications = await pool.query(
@@ -402,7 +439,7 @@ export async function getSavedWorkers(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const savedWorkers = await pool.query(
@@ -453,7 +490,7 @@ export async function saveWorker(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -492,7 +529,7 @@ export async function unsaveWorker(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -528,7 +565,7 @@ export async function getEmployerReviews(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     const reviews = await pool.query(
@@ -575,7 +612,7 @@ export async function createJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   const {
     role,
@@ -640,7 +677,7 @@ export async function updateJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   const {
     role,
@@ -715,7 +752,7 @@ export async function closeJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(
@@ -750,7 +787,7 @@ export async function reopenJobListing(
     return;
   }
 
-  const userId = user.userId;
+  const userId = user.id;
 
   try {
     await pool.query(

@@ -48,7 +48,7 @@ function BottomNav({ role }: BottomNavProps) {
               </NavLink>
 
               <NavLink
-                to="/profil"
+                to="/min-profil"
                 className={({ isActive }) =>
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }

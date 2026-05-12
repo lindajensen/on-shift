@@ -17,14 +17,20 @@ dialog[open] {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1001;
+  z-index: 9999;
   border: none;
   padding: 0;
   width: 22rem;
   max-width: 90vw;
   max-height: 90vh;
+  overflow-y: auto;
   background: transparent;
-  z-index: 9999;
+  border-radius: var(--radius-lg);
+  scrollbar-width: none;
+}
+
+dialog[open]::-webkit-scrollbar {
+  display: none;
 }
 
 .modal__container {
@@ -35,7 +41,6 @@ dialog[open] {
   min-width: 18.75rem;
   max-width: 22rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  overflow-y: auto;
 }
 
 .form-group__label {

@@ -1,42 +1,40 @@
 import { useState } from "react";
+import { validateEmail, validatePhone } from "../../utils/validation";
 import {
-  validateEmail,
-  validatePhone,
-  validatePostalCode,
-} from "../../utils/validation";
-import {
-  EditContactFormData,
-  EmployerProfile,
-  EditContactValidationErrors,
+  WorkerProfile,
+  EditWorkerContactFormData,
+  WorkerContactValidationErrors,
 } from "../../types";
 import { Asterisk } from "lucide-react";
 
 import "../../styles/modals/ModalForm.css";
 
-interface EditContactModalProps {
-  profile: EmployerProfile | null;
+interface EditWorkerContactModalProps {
+  profile: WorkerProfile | null;
   onClose: () => void;
-  onSave: (contactData: EditContactFormData) => Promise<void>;
+  onSave: (contactData: EditWorkerContactFormData) => Promise<void>;
 }
 
-function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
+function EditWorkerContactModal({
+  profile,
+  onClose,
+  onSave,
+}: EditWorkerContactModalProps) {
   const [name, setName] = useState(profile?.name);
   const [email, setEmail] = useState(profile?.email || "");
   const [phone, setPhone] = useState(profile?.phone || "");
-  const [street, setStreet] = useState(profile?.street || "");
-  const [postalCode, setPostalCode] = useState(profile?.postal_code || "");
   const [city, setCity] = useState(profile?.city || "");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [errors, setErrors] = useState<EditContactValidationErrors>({});
+  const [errors, setErrors] = useState<WorkerContactValidationErrors>({});
   const [serverError, setServerError] = useState("");
 
   function validateInput(): boolean {
-    const newErrors: EditContactValidationErrors = {};
+    const newErrors: WorkerContactValidationErrors = {};
 
     if (!name || name.trim() === "") {
-      newErrors.name = "Ange restaurangnamnet";
+      newErrors.name = "Ange ditt namn";
     }
 
     if (!email || email.trim() === "") {
@@ -45,12 +43,8 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
       newErrors.email = "Ange en giltig e-postadress";
     }
 
-    if (!validatePhone(phone)) {
+    if (phone && !validatePhone(phone)) {
       newErrors.phone = "Ange ett giltigt telefonnummer";
-    }
-
-    if (!validatePostalCode(postalCode)) {
-      newErrors.postalCode = "Ange ett giltigt postnummer";
     }
 
     setErrors(newErrors);
@@ -66,8 +60,6 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
       name,
       email,
       phone,
-      street,
-      postal_code: postalCode,
       city,
     };
 
@@ -148,53 +140,17 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
         </div>
 
         <div className="modal-form__field">
-          <label className="modal-form__label" htmlFor="street">
-            Gatuadress
+          <label className="modal-form__label" htmlFor="city">
+            Stad
           </label>
           <input
             className="modal-form__input"
-            id="street"
+            id="city"
             type="text"
-            autoComplete="street-address"
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
+            autoComplete="address-level2"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           />
-        </div>
-
-        <div className="modal-form__field--row">
-          <div className="modal-form__field">
-            <label className="modal-form__label" htmlFor="postal-code">
-              Postnummer
-            </label>
-            <input
-              className="modal-form__input"
-              id="postal-code"
-              type="text"
-              autoComplete="postal-code"
-              value={postalCode}
-              onChange={(e) => {
-                setPostalCode(e.target.value);
-                setErrors((prev) => ({ ...prev, postalCode: "" }));
-              }}
-            />
-            {errors.postalCode && (
-              <span className="form-error">{errors.postalCode}</span>
-            )}
-          </div>
-
-          <div className="modal-form__field">
-            <label className="modal-form__label" htmlFor="city">
-              Stad
-            </label>
-            <input
-              className="modal-form__input"
-              id="city"
-              type="text"
-              autoComplete="address-level2"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-          </div>
         </div>
 
         {serverError && <span className="server-error">{serverError}</span>}
@@ -221,4 +177,4 @@ function EditContactModal({ profile, onClose, onSave }: EditContactModalProps) {
   );
 }
 
-export default EditContactModal;
+export default EditWorkerContactModal;

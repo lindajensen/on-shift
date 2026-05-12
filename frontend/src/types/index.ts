@@ -13,7 +13,6 @@ export interface LoginResponse {
 
 export interface AuthUser {
   id: number;
-  userId?: number;
   email: string;
   role: string;
   name: string;
@@ -60,13 +59,73 @@ export interface Availability {
 
 export interface WorkerProfile {
   id: number;
+  user_id: number;
   name: string;
-  bio: string;
-  experienceLevel: string;
-  education: string;
-  email: string;
-  phone: string;
+  bio: string | null;
+  email: string | null;
+  phone: string | null;
+  city: string | null;
+  experience: WorkerExperience[];
+  education: WorkerEducation[];
+  cv_url: string | null;
   is_available: boolean;
+  roles: WorkerRole[];
+  availability: Availability[];
+  rating: string;
+}
+
+export interface WorkerExperience {
+  id: number;
+  job_title: string;
+  workplace: string;
+  start_date: string;
+  end_date: string | null;
+}
+
+export interface WorkerEducation {
+  id: number;
+  program: string;
+  school: string;
+  graduation_year: string | null;
+}
+
+export interface WorkerContactFormData {
+  name?: string;
+  email: string | null;
+  phone: string | null;
+  city: string | null;
+}
+
+export interface WorkerAboutFormData {
+  bio: string;
+}
+
+// export interface EditWorkerEducationFormData {
+//   school: string;
+//   program: string;
+//   graduation_year: string | null;
+// }
+
+// export interface EditWorkerExperienceFormData {
+//   job_title: string;
+//   workplace: string;
+//   start_date: string;
+//   end_date: string | null;
+// }
+
+// export interface EditWorkerRolesFormData {
+//   roles: WorkerRole[];
+// }
+
+export interface DayAvailability {
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+  enabled: boolean;
+}
+
+export interface WorkerAvailabilityFormData {
+  availability: Availability[];
 }
 
 export interface WorkerApplicationPreview {
@@ -79,19 +138,57 @@ export interface WorkerApplicationPreview {
   status: string;
 }
 
+export interface WorkerContactValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  city?: string;
+}
+
+export interface WorkerExperienceValidationErrors {
+  job_title?: string;
+  workplace?: string;
+  start_date?: string;
+}
+
+export interface WorkerEducationValidationErrors {
+  school?: string;
+  program?: string;
+}
+
 // ============================================================
 // EMPLOYER
 // ============================================================
 export interface EmployerProfile {
+  id: number;
   user_id: number;
   name: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   street: string | null;
   postal_code: string | null;
   city: string | null;
+  description: string | null;
+  rating: string | null;
+}
+
+export interface EditContactFormData {
+  email: string;
+  phone: string;
+  street: string;
+  postal_code: string;
+  city: string;
+}
+
+export interface EditAboutFormData {
   description: string;
-  rating: string;
+}
+
+export interface EditContactValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  postalCode?: string;
 }
 
 export interface EmployerJobListing {
@@ -172,13 +269,6 @@ export interface JobModalErrors {
   availableSlots?: string;
 }
 
-export interface EditContactValidationErrors {
-  name?: string;
-  email?: string;
-  phone?: string;
-  postalCode?: string;
-}
-
 // ============================================================
 // JOBS
 // ============================================================
@@ -236,16 +326,4 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
-}
-
-export interface EditContactFormData {
-  email: string;
-  phone: string;
-  street: string;
-  postal_code: string;
-  city: string;
-}
-
-export interface EditAboutFormData {
-  description: string;
 }

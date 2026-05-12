@@ -129,3 +129,24 @@ export function formatAddress(
   if (!street || !postalCode || !city) return "Ingen adress angiven";
   return `${street}, ${postalCode} ${city}`;
 }
+
+export function getDayLabel(day: string): string {
+  switch (day) {
+    case "monday":
+      return "Mån";
+    case "tuesday":
+      return "Tis";
+    case "wednesday":
+      return "Ons";
+    case "thursday":
+      return "Tors";
+    case "friday":
+      return "Fre";
+    case "saturday":
+      return "Lör";
+    case "sunday":
+      return "Sön";
+    default:
+      return day;
+  }
+}

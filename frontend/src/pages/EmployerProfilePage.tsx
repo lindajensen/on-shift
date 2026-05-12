@@ -4,7 +4,8 @@ import { useAuth } from "../context/useAuth";
 import {
   getEmployerProfileByUserId,
   getEmployerProfileById,
-  updateEmployerProfile,
+  updateEmployerContact,
+  updateEmployerDescription,
 } from "../api/employer";
 import { formatAddress } from "../utils/formatters";
 import {
@@ -15,11 +16,11 @@ import {
 import ProfileHeader from "../components/ProfileHeader";
 import ErrorMessage from "../components/ErrorMessage";
 import Modal from "../components/modals/Modal";
-import EditContactModal from "../components/modals/EditContactModal";
-import EditAboutModal from "../components/modals/EditAboutModal";
+import EditEmployerContactModal from "../components/modals/EditEmployerContactModal";
+import EditEmployerAboutModal from "../components/modals/EditEmployerAboutModal";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
-import "../styles/EmployerProfilePage.css";
+import "../styles/ProfilePage.css";
 
 function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
@@ -33,8 +34,8 @@ function EmployerProfilePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const isOwner = user?.userId === profile?.user_id;
-  const profileId = id ?? user?.userId;
+  const isOwner = user?.id === profile?.user_id;
+  const profileId = id ?? user?.id;
 
   useEffect(() => {
     if (!profileId) return;
@@ -58,14 +59,26 @@ function EmployerProfilePage() {
   }, [profileId, id, user]);
 
   function handleLogout() {
-    logout();
     navigate("/");
+    logout();
   }
 
   async function handleSaveContact(contactData: EditContactFormData) {
     try {
-      await updateEmployerProfile(contactData);
-      setProfile((prev) => (prev ? { ...prev, ...contactData } : prev));
+      await updateEmployerContact(contactData);
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              ...contactData,
+              email: contactData.email || null,
+              phone: contactData.phone || null,
+              street: contactData.street || null,
+              postal_code: contactData.postal_code || null,
+              city: contactData.city || null,
+            }
+          : prev,
+      );
 
       setIsEditContactModalOpen(false);
     } catch (error) {
@@ -75,8 +88,17 @@ function EmployerProfilePage() {
 
   async function handleSaveAbout(aboutData: EditAboutFormData) {
     try {
-      await updateEmployerProfile(aboutData);
-      setProfile((prev) => (prev ? { ...prev, ...aboutData } : prev));
+      await updateEmployerDescription(aboutData);
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              ...aboutData,
+              bio: aboutData.description || null,
+            }
+          : prev,
+      );
 
       setIsEditAboutModalOpen(false);
     } catch (error) {
@@ -88,13 +110,13 @@ function EmployerProfilePage() {
 
   return (
     <>
-      <section className="employer-profile">
+      <section className="profile">
         <div className="section__inner">
           {isLoading && (
             <>
-              <div className="employer-profile__skeleton skeleton" />
-              <div className="employer-profile__skeleton skeleton" />
-              <div className="employer-profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
+              <div className="profile__skeleton skeleton" />
             </>
           )}
 
@@ -130,7 +152,9 @@ function EmployerProfilePage() {
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">E-post</p>
-                      <p className="contact-info__value">
+                      <p
+                        className={`contact-info__value ${!profile.email ? "contact-info__value--empty" : ""}`}
+                      >
                         {profile.email ?? "Ingen e-post angiven"}
                       </p>
                     </div>
@@ -141,7 +165,9 @@ function EmployerProfilePage() {
                     </div>
                     <div className="contact-info__item-content">
                       <p className="contact-info__label">Telefon</p>
-                      <p className="contact-info__value">
+                      <p
+                        className={`contact-info__value ${!profile.phone ? "empty-text" : ""}`}
+                      >
                         {profile.phone ?? "Inget telefonnummer angivet"}
                       </p>
                     </div>
@@ -166,13 +192,13 @@ function EmployerProfilePage() {
 
               <div className="divider"></div>
 
-              <section className="about-restaurant">
-                <header className="about-restaurant__header">
-                  <h2 className="about-restaurant__title">Om restaurangen</h2>
+              <section className="about">
+                <header className="about__header">
+                  <h2 className="about__title">Om restaurangen</h2>
                   {isOwner && (
                     <button
                       aria-label="Redigera restaurangbeskrivning"
-                      className="about-restaurant__edit-btn"
+                      className="about__edit-btn"
                       onClick={() => setIsEditAboutModalOpen(true)}
                     >
                       <Edit size={16} aria-hidden="true" />
@@ -180,13 +206,11 @@ function EmployerProfilePage() {
                   )}
                 </header>
 
-                {profile.description ? (
-                  <p className="about-restaurant__text">
-                    {profile.description}
-                  </p>
-                ) : (
-                  <p>Ingen beskrivning angiven</p>
-                )}
+                <p
+                  className={`about__text ${!profile.description ? "empty-text" : ""}`}
+                >
+                  {profile.description ?? "Ingen beskrivning angiven"}
+                </p>
               </section>
 
               {isOwner && (
@@ -207,7 +231,7 @@ function EmployerProfilePage() {
         onClose={() => setIsEditContactModalOpen(false)}
         showCloseButton={false}
       >
-        <EditContactModal
+        <EditEmployerContactModal
           onClose={() => setIsEditContactModalOpen(false)}
           onSave={handleSaveContact}
           profile={profile}
@@ -219,7 +243,7 @@ function EmployerProfilePage() {
         onClose={() => setIsEditAboutModalOpen(false)}
         showCloseButton={false}
       >
-        <EditAboutModal
+        <EditEmployerAboutModal
           onClose={() => setIsEditAboutModalOpen(false)}
           onSave={handleSaveAbout}
           profile={profile}
