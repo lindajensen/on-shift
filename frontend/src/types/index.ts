@@ -65,39 +65,57 @@ export interface WorkerProfile {
   email: string | null;
   phone: string | null;
   city: string | null;
+  experience: WorkerExperience[];
+  education: WorkerEducation[];
   cv_url: string | null;
   is_available: boolean;
   roles: WorkerRole[];
   availability: Availability[];
-  rating: number | null;
+  rating: string;
 }
 
-export interface EditWorkerContactFormData {
-  email: string;
-  phone: string;
-  city: string;
+export interface WorkerExperience {
+  id: number;
+  job_title: string;
+  workplace: string;
+  start_date: string;
+  end_date: string | null;
 }
 
-export interface EditWorkerAboutFormData {
+export interface WorkerEducation {
+  id: number;
+  program: string;
+  school: string;
+  graduation_year: string | null;
+}
+
+export interface WorkerContactFormData {
+  name?: string;
+  email: string | null;
+  phone: string | null;
+  city: string | null;
+}
+
+export interface WorkerAboutFormData {
   bio: string;
 }
 
-export interface EditWorkerEducationFormData {
-  school: string;
-  program: string;
-  graduation_year: string;
-}
+// export interface EditWorkerEducationFormData {
+//   school: string;
+//   program: string;
+//   graduation_year: string | null;
+// }
 
-export interface EditWorkerExperienceFormData {
-  role: string;
-  employer: string;
-  start_date: string;
-  end_date?: string;
-}
+// export interface EditWorkerExperienceFormData {
+//   job_title: string;
+//   workplace: string;
+//   start_date: string;
+//   end_date: string | null;
+// }
 
-export interface EditWorkerRolesFormData {
-  roles: WorkerRole[];
-}
+// export interface EditWorkerRolesFormData {
+//   roles: WorkerRole[];
+// }
 
 export interface EditWorkerAvailabilityFormData {
   availability: Availability[];
@@ -113,6 +131,24 @@ export interface WorkerApplicationPreview {
   status: string;
 }
 
+export interface WorkerContactValidationErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  city?: string;
+}
+
+export interface WorkerExperienceValidationErrors {
+  job_title?: string;
+  workplace?: string;
+  start_date?: string;
+}
+
+export interface WorkerEducationValidationErrors {
+  school?: string;
+  program?: string;
+}
+
 // ============================================================
 // EMPLOYER
 // ============================================================
@@ -120,13 +156,13 @@ export interface EmployerProfile {
   id: number;
   user_id: number;
   name: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   street: string | null;
   postal_code: string | null;
   city: string | null;
-  description: string;
-  rating: string;
+  description: string | null;
+  rating: string | null;
 }
 
 export interface EditContactFormData {
