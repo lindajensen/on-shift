@@ -108,6 +108,8 @@ function EmployerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
 
+  //TODO: Implement save employer functionality
+
   return (
     <>
       <section className="profile">
@@ -124,7 +126,6 @@ function EmployerProfilePage() {
             <>
               <ProfileHeader
                 name={profile.name}
-                city={profile.city}
                 rating={profile.rating}
                 isOwner={isOwner}
               />
