@@ -14,7 +14,7 @@ function MainLayout() {
   const isLandingPage = location.pathname === "/";
 
   return (
-    <div className="layout">
+    <div className={`layout ${user && !isLandingPage ? "auth-layout" : ""}`}>
       {isLandingPage || !user ? <Header /> : <AuthHeader />}
       <main className="layout__content">
         <Outlet />
