@@ -117,7 +117,14 @@ export interface WorkerAboutFormData {
 //   roles: WorkerRole[];
 // }
 
-export interface EditWorkerAvailabilityFormData {
+export interface DayAvailability {
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+  enabled: boolean;
+}
+
+export interface WorkerAvailabilityFormData {
   availability: Availability[];
 }
 
