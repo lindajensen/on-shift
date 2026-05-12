@@ -87,12 +87,12 @@ export async function getEmployerProfileByUserId(
 }
 
 /**
- * Updates the profile of the currently logged in employer.
+ * Updates the contact information of the currently logged in employer.
  * @param request - The request object.
  * @param response - The response object.
- * @returns A JSON object containing the updated employer profile.
+ * @returns A JSON object containing the updated employer contact information.
  */
-export async function updateEmployerProfile(
+export async function updateEmployerContact(
   request: Request,
   response: Response,
 ): Promise<void> {
@@ -108,7 +108,7 @@ export async function updateEmployerProfile(
   const userId = user.id;
 
   try {
-    const updatedProfile = await pool.query(
+    const updatedContact = await pool.query(
       `
       UPDATE employer_profile
       SET
@@ -117,9 +117,8 @@ export async function updateEmployerProfile(
         phone = $3,
         street = $4,
         postal_code = $5,
-        city = $6,
-        description = $7
-      WHERE user_id = $8
+        city = $6
+      WHERE user_id = $7
       RETURNING *
       `,
       [
@@ -129,13 +128,53 @@ export async function updateEmployerProfile(
         data.street || null,
         data.postal_code || null,
         data.city || null,
-        data.description || null,
         userId,
       ],
     );
 
-    response.status(200).json(updatedProfile.rows[0]);
+    response.status(200).json(updatedContact.rows[0]);
   } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the description of the currently logged in employer.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated employer's description.
+ */
+export async function updateEmployerDescription(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedDescription = await pool.query(
+      `
+      UPDATE employer_profile
+      SET
+        description = $1
+      WHERE user_id = $2
+      RETURNING *
+      `,
+      [data.description || null, userId],
+    );
+
+    response.status(200).json(updatedDescription.rows[0]);
+  } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }

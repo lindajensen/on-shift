@@ -108,12 +108,12 @@ export async function getWorkerProfileByUserId(
 }
 
 /**
- * Updates the profile of the currently logged in worker.
+ * Updates the contact information of the currently logged in worker.
  * @param request - The request object.
  * @param response - The response object.
- * @returns A JSON object containing the updated worker profile.
+ * @returns A JSON object containing the updated worker contact information.
  */
-export async function updateWorkerProfile(
+export async function updateWorkerContact(
   request: Request,
   response: Response,
 ): Promise<void> {
@@ -129,27 +129,60 @@ export async function updateWorkerProfile(
   const userId = user.id;
 
   try {
-    const updatedProfile = await pool.query(
+    const updatedContact = await pool.query(
       `
       UPDATE worker_profile
       SET
         email = $1,
         phone = $2,
-        city = $3,
-        bio = $4
-      WHERE user_id = $5
+        city = $3
+      WHERE user_id = $4
       RETURNING *
       `,
-      [
-        data.email || null,
-        data.phone || null,
-        data.city || null,
-        data.bio || null,
-        userId,
-      ],
+      [data.email || null, data.phone || null, data.city || null, userId],
     );
 
-    response.status(200).json(updatedProfile.rows[0]);
+    response.status(200).json(updatedContact.rows[0]);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Updates the bio of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON object containing the updated worker's bio.
+ */
+export async function updateWorkerBio(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const updatedBio = await pool.query(
+      `
+      UPDATE worker_profile
+      SET
+        bio = $1
+      WHERE user_id = $2
+      RETURNING *
+      `,
+      [data.bio || null, userId],
+    );
+
+    response.status(200).json(updatedBio.rows[0]);
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });

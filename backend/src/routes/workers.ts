@@ -2,7 +2,8 @@ import { Router } from "express";
 import {
   getWorkerProfileByUserId,
   getWorkerProfileById,
-  updateWorkerProfile,
+  updateWorkerContact,
+  updateWorkerBio,
   updateWorkerExperience,
   updateWorkerEducation,
   updateWorkerRoles,
@@ -24,8 +25,10 @@ const router = Router();
 router.get("/me", authenticateToken, getWorkerProfile);
 
 router.get("/profile/me", authenticateToken, getWorkerProfileByUserId);
-router.patch("/profile/me", authenticateToken, updateWorkerProfile);
 router.get("/profile/:id", getWorkerProfileById);
+
+router.patch("/profile/contact", authenticateToken, updateWorkerContact);
+router.patch("/profile/bio", authenticateToken, updateWorkerBio);
 router.patch("/profile/experience", authenticateToken, updateWorkerExperience);
 router.patch("/profile/education", authenticateToken, updateWorkerEducation);
 router.patch("/profile/roles", authenticateToken, updateWorkerRoles);
