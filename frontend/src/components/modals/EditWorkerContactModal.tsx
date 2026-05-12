@@ -3,7 +3,7 @@ import { validateEmail, validatePhone } from "../../utils/validation";
 import {
   WorkerProfile,
   EditWorkerContactFormData,
-  EditWorkerContactValidationErrors,
+  WorkerContactValidationErrors,
 } from "../../types";
 import { Asterisk } from "lucide-react";
 
@@ -27,11 +27,11 @@ function EditWorkerContactModal({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [errors, setErrors] = useState<EditWorkerContactValidationErrors>({});
+  const [errors, setErrors] = useState<WorkerContactValidationErrors>({});
   const [serverError, setServerError] = useState("");
 
   function validateInput(): boolean {
-    const newErrors: EditWorkerContactValidationErrors = {};
+    const newErrors: WorkerContactValidationErrors = {};
 
     if (!name || name.trim() === "") {
       newErrors.name = "Ange ditt namn";
