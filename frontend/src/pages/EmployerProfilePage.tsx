@@ -4,7 +4,8 @@ import { useAuth } from "../context/useAuth";
 import {
   getEmployerProfileByUserId,
   getEmployerProfileById,
-  updateEmployerProfile,
+  updateEmployerContact,
+  updateEmployerDescription,
 } from "../api/employer";
 import { formatAddress } from "../utils/formatters";
 import {
@@ -64,7 +65,7 @@ function EmployerProfilePage() {
 
   async function handleSaveContact(contactData: EditContactFormData) {
     try {
-      await updateEmployerProfile(contactData);
+      await updateEmployerContact(contactData);
       setProfile((prev) =>
         prev
           ? {
@@ -87,7 +88,7 @@ function EmployerProfilePage() {
 
   async function handleSaveAbout(aboutData: EditAboutFormData) {
     try {
-      await updateEmployerProfile(aboutData);
+      await updateEmployerDescription(aboutData);
 
       setProfile((prev) =>
         prev
