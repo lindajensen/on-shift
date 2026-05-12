@@ -35,9 +35,11 @@ function EditWorkerExperienceModal({
         if (!experience.job_title || experience.job_title.trim() === "") {
           entryErrors.job_title = "Ange jobbtitel";
         }
+
         if (!experience.workplace || experience.workplace.trim() === "") {
           entryErrors.workplace = "Ange arbetsplats";
         }
+
         if (!experience.start_date || experience.start_date.trim() === "") {
           entryErrors.start_date = "Ange startdatum";
         }
@@ -64,6 +66,7 @@ function EditWorkerExperienceModal({
     value: string | null,
   ) {
     const updated = [...experiences];
+
     updated[index] = { ...updated[index], [field]: value };
 
     setExperiences(updated);
@@ -111,7 +114,16 @@ function EditWorkerExperienceModal({
         <h2 className="modal-form__title">Erfarenhet</h2>
       </header>
 
-      <form>
+      <form className="modal-form__form">
+        <div className="modal-form__add">
+          <button
+            className="btn btn--full modal-form__add-btn"
+            type="button"
+            onClick={handleAdd}
+          >
+            Lägg till erfarenhet
+          </button>
+        </div>
         <ul className="modal-form__list">
           {experiences.map((experience, index) => (
             <li key={experience.id} className="modal-form__list-item">
@@ -224,16 +236,6 @@ function EditWorkerExperienceModal({
             </li>
           ))}
         </ul>
-
-        <div className="modal-form__add">
-          <button
-            className="btn btn--full modal-form__add-btn"
-            type="button"
-            onClick={handleAdd}
-          >
-            Lägg till erfarenhet
-          </button>
-        </div>
 
         {serverError && <span className="server-error">{serverError}</span>}
 
