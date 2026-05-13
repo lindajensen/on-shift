@@ -16,16 +16,17 @@ export async function getEmployerProfileById(
   try {
     const employerProfile = await pool.query(
       `
-     SELECT
-        ep.user_id,
-        ep.name,
-        ep.email,
-        ep.phone,
-        ep.street,
-        ep.postal_code,
-        ep.city,
-        ep.description,
-        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      SELECT
+       ep.id,
+       ep.user_id,
+       ep.name,
+       ep.email,
+       ep.phone,
+       ep.street,
+       ep.postal_code,
+       ep.city,
+       ep.description,
+      ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM employer_profile ep
       LEFT JOIN review r ON r.reviewee_id = ep.user_id
       WHERE ep.id = $1
@@ -63,6 +64,7 @@ export async function getEmployerProfileByUserId(
     const employerProfile = await pool.query(
       `
       SELECT
+        ep.id,
         ep.user_id,
         ep.name,
         ep.email,
