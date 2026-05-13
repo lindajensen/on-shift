@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { getInitials } from "../utils/text";
-import { Star } from "lucide-react";
+import { Star, Bookmark } from "lucide-react";
 
 import "../styles/RestaurantCard.css";
 
@@ -9,6 +9,7 @@ interface RestaurantCardProps {
   location: string | null;
   rating: number | null;
   employerId?: number;
+  onUnsave?: () => void;
 }
 
 function RestaurantCard({
@@ -16,6 +17,7 @@ function RestaurantCard({
   location,
   rating,
   employerId,
+  onUnsave,
 }: RestaurantCardProps) {
   const initials = name ? getInitials(name) : "";
 
@@ -25,7 +27,25 @@ function RestaurantCard({
         <div className="restaurant-card__avatar avatar">{initials}</div>
 
         <div className="restaurant-card__info">
-          <h3 className="restaurant-card__name">{name}</h3>
+          <header className="restaurant-card__header">
+            <h3 className="restaurant-card__name">{name}</h3>
+            {onUnsave && (
+              <button
+                aria-label="Ta bort från favoriter"
+                className="restaurant-card__unsave-btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onUnsave();
+                }}
+              >
+                <Bookmark
+                  size={18}
+                  aria-hidden="true"
+                  className="restaurant-card__bookmark--saved"
+                />
+              </button>
+            )}
+          </header>
           <p className="restaurant-card__meta">
             {location}{" "}
             {rating && (
