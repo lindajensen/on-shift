@@ -6,9 +6,10 @@ import {
   WorkerContactFormData,
   WorkerAboutFormData,
   WorkerRole,
-  EditWorkerAvailabilityFormData,
+  WorkerAvailabilityFormData,
   WorkerExperience,
   WorkerEducation,
+  SavedEmployer,
 } from "../types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -214,7 +215,7 @@ export async function updateWorkerRoles(data: WorkerRole[]): Promise<void> {
  * @throws An error if the request fails.
  */
 export async function updateWorkerAvailability(
-  data: EditWorkerAvailabilityFormData,
+  data: WorkerAvailabilityFormData,
 ): Promise<void> {
   const token = localStorage.getItem("token");
 
@@ -367,5 +368,76 @@ export async function unsaveJob(id: number): Promise<void> {
 
   if (!response.ok) {
     throw new Error("Kunde inte ta bort sparat pass. Försök igen senare.");
+  }
+}
+
+/**
+ * Fetches saved employers for the currently logged in worker.
+ * @returns A promise that resolves to an array of saved employer previews.
+ * @throws An error if the request fails.
+ */
+export async function getSavedEmployers(): Promise<SavedEmployer[]> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-employers`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Kunde inte hämta sparade restauranger. Försök igen senare.",
+    );
+  }
+
+  return response.json();
+}
+
+/**
+ * Saves an employer to the currently logged in worker's list of saved employers.
+ * @param id - The ID of the employer to save.
+ * @returns A promise that resolves when the employer is saved.
+ * @throws An error if the request fails.
+ */
+export async function saveEmployer(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-employers`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ employerId: id }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte spara restaurang. Försök igen senare.");
+  }
+}
+
+/**
+ * Deletes an employer from the currently logged in worker's list of saved employers.
+ * @param id - The ID of the employer to unsave.
+ * @returns A promise that resolves when the employer is unsaved.
+ * @throws An error if the request fails.
+ */
+export async function unsaveEmployer(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/saved-employers`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ employerId: id }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Kunde inte ta bort sparad restaurang. Försök igen senare.",
+    );
   }
 }
