@@ -7,6 +7,7 @@ import {
   updateEmployerContact,
   updateEmployerDescription,
 } from "../api/employer";
+import { getSavedEmployers, saveEmployer, unsaveEmployer } from "../api/worker";
 import { formatAddress } from "../utils/formatters";
 import {
   EmployerProfile,
@@ -26,6 +27,8 @@ function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
   const [isEditAboutModalOpen, setIsEditAboutModalOpen] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +50,14 @@ function EmployerProfilePage() {
           : await getEmployerProfileByUserId();
 
         setProfile(data);
+
+        if (user?.role === "worker") {
+          const savedEmployers = await getSavedEmployers();
+
+          setIsSaved(
+            savedEmployers.some((employer) => employer.id === data.id),
+          );
+        }
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -57,6 +68,24 @@ function EmployerProfilePage() {
 
     fetchEmployerProfile();
   }, [profileId, id, user]);
+
+  async function handleSave(id: number) {
+    try {
+      await saveEmployer(id);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Kunde inte spara restaurangen", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveEmployer(id);
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Kunde inte ta bort sparad restaurang", error);
+    }
+  }
 
   function handleLogout() {
     navigate("/");
@@ -108,8 +137,6 @@ function EmployerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
 
-  //TODO: Implement save employer functionality
-
   return (
     <>
       <section className="profile">
@@ -128,6 +155,9 @@ function EmployerProfilePage() {
                 name={profile.name}
                 rating={profile.rating}
                 isOwner={isOwner}
+                isSaved={isSaved}
+                onSave={() => handleSave(profile.id)}
+                onUnsave={() => handleUnsave(profile.id)}
               />
 
               <div className="divider"></div>
