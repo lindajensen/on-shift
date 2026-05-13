@@ -59,18 +59,9 @@ function AuthHeader() {
                     Min profil
                   </Link>
 
-                  <Link
-                    className="auth-header__menu-btn"
-                    to={
-                      user.role === "worker"
-                        ? "/sparade-pass"
-                        : "/sparad-personal"
-                    }
-                  >
+                  <Link className="auth-header__menu-btn" to="/favoriter">
                     <Bookmark size={16} aria-hidden="true" />
-                    {user.role === "worker"
-                      ? "Sparade pass"
-                      : "Sparad personal"}
+                    Favoriter
                   </Link>
 
                   <button
