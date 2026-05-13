@@ -3,9 +3,7 @@ import { getRoleLabel, formatCompensation } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { SavedJob } from "../types";
 import ErrorMessage from "../components/ErrorMessage";
-
 import { Clock, MapPin, Wallet, Bookmark } from "lucide-react";
-
 import "../styles/SavedPage.css";
 
 interface SavedJobsListProps {
@@ -21,35 +19,42 @@ function SavedJobsList({
   error,
   onUnsave,
 }: SavedJobsListProps) {
+  if (isLoading) {
+    return (
+      <section className="saved-page__inner">
+        <ul className="preview__list">
+          {[1, 2, 3].map((i) => (
+            <li key={i} className="saved-page__item">
+              <div className="saved-page__skeleton skeleton" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
   if (error) return <ErrorMessage message={error} />;
 
-return (
-  <div className="saved-page__inner">
-    {isLoading && (
-      <ul className="preview__list">
-        {[1, 2, 3].map((i) => (
-          <li key={i} className="saved-page__item">
-            <div className="saved-page__skeleton skeleton" />
-          </li>
-        ))}
-      </ul>
-    )}
-
-    {!isLoading && savedJobs.length === 0 && (
-      <div className="empty">
-        <div className="empty__icon">
-          <Bookmark size={18} aria-hidden="true" />
+  if (savedJobs.length === 0) {
+    return (
+      <section className="saved-page__inner">
+        <div className="empty">
+          <div className="empty__icon">
+            <Bookmark size={18} aria-hidden="true" />
+          </div>
+          <div className="empty__content">
+            <p className="empty__title">Du har inte sparat några pass än</p>
+            <p className="empty__text">
+              Bläddra bland lediga pass och spara de som intresserar dig.
+            </p>
+          </div>
         </div>
-        <div className="empty__content">
-          <p className="empty__title">Du har inte sparat några pass än</p>
-          <p className="empty__text">
-            Bläddra bland lediga pass och spara de som intresserar dig.
-          </p>
-        </div>
-      </div>
-    )}
+      </section>
+    );
+  }
 
-    {!isLoading && savedJobs.length > 0 && (
+  return (
+    <section className="saved-page__inner">
       <ul className="saved-page__list">
         {savedJobs.map((job) => (
           <li key={job.job_id} className="saved-page__item">
@@ -121,9 +126,8 @@ return (
           </li>
         ))}
       </ul>
-    )}
-  </div>
-);
+    </section>
+  );
 }
 
 export default SavedJobsList;
