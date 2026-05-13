@@ -12,6 +12,22 @@
   height: 2.5rem;
 }
 
+.restaurant-card__header {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.restaurant-card__unsave-btn {
+  background: none;
+  border: none;
+}
+
+.restaurant-card__bookmark--saved {
+  fill: var(--color-primary);
+  stroke: var(--color-primary);
+}
+
 .restaurant-card__meta {
   display: flex;
   align-items: center;
