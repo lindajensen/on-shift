@@ -1,12 +1,12 @@
 import { useAuth } from "../context/useAuth";
 import SavedWorkersPage from "./SavedWorkersPage";
-import SavedJobsPage from "./SavedJobsPage";
+import WorkerFavouritesPage from "./WorkerFavouritesPage";
 
 function FavouritesPage() {
   const { user } = useAuth();
 
   if (user?.role === "employer") return <SavedWorkersPage />;
-  if (user?.role === "worker") return <SavedJobsPage />;
+  if (user?.role === "worker") return <WorkerFavouritesPage />;
 
   return null;
 }

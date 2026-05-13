@@ -1,42 +1,64 @@
 import { useEffect, useState } from "react";
-import { getSavedJobs, unsaveJob } from "../api/worker";
+import {
+  getSavedEmployers,
+  unsaveEmployer,
+  getSavedJobs,
+  unsaveJob,
+} from "../api/worker";
 import { SavedJob } from "../types";
 import SavedJobsList from "../components/SavedJobsList";
 import SavedEmployersList from "../components/SavedEmployersList";
+import { SavedEmployer } from "../types";
 
 import "../styles/WorkerFavouritesPage.css";
 
 function WorkerFavouritesPage() {
   const [activeTab, setActiveTab] = useState<"jobs" | "employers">("jobs");
   const [savedJobs, setSavedJobs] = useState<SavedJob[]>([]);
+  const [savedEmployers, setSavedEmployers] = useState<SavedEmployer[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchSavedJobs() {
+    async function fetchFavourites() {
       try {
-        const data = await getSavedJobs();
-        setSavedJobs(data);
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+        
+        const [jobs, employers] = await Promise.all([
+          getSavedJobs(),
+          getSavedEmployers(),
+        ]);
+        setSavedJobs(jobs);
+        setSavedEmployers(employers);
       } catch (error) {
-        console.error("Kunde inte hämta sparade pass", error);
-        setError(
-          "Vi kunde inte hämta dina sparade pass. Kontrollera din anslutning och försök igen.",
-        );
+        console.error("Kunde inte hämta favoriter", error);
+        setError("Vi kunde inte hämta dina favoriter. Försök igen senare.");
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchSavedJobs();
+    fetchFavourites();
   }, []);
 
-  async function handleUnsave(id: number) {
+  async function handleUnsaveJob(id: number) {
     try {
       await unsaveJob(id);
       setSavedJobs((prev) => prev.filter((job) => job.job_id !== id));
     } catch (error) {
       console.error("Kunde inte ta bort sparat pass", error);
+    }
+  }
+
+  async function handleUnsaveEmployer(id: number) {
+    try {
+      await unsaveEmployer(id);
+      setSavedEmployers((prev) =>
+        prev.filter((employer) => employer.id !== id),
+      );
+    } catch (error) {
+      console.error("Kunde inte ta bort sparad restaurang", error);
     }
   }
 
@@ -67,10 +89,15 @@ function WorkerFavouritesPage() {
             savedJobs={savedJobs}
             isLoading={isLoading}
             error={error}
-            onUnsave={handleUnsave}
+            onUnsave={handleUnsaveJob}
           />
         ) : (
-          <SavedEmployersList />
+          <SavedEmployersList
+            savedEmployers={savedEmployers}
+            isLoading={isLoading}
+            error={error}
+            onUnsave={handleUnsaveEmployer}
+          />
         )}
       </div>
     </section>
