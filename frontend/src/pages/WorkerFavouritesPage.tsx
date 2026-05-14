@@ -23,8 +23,6 @@ function WorkerFavouritesPage() {
   useEffect(() => {
     async function fetchFavourites() {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 10000));
-        
         const [jobs, employers] = await Promise.all([
           getSavedJobs(),
           getSavedEmployers(),
