@@ -1,0 +1,8 @@
+.employer-jobs-page__header {
+  margin-bottom: 0.5rem;
+}
+
+.employer-jobs-page__subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
