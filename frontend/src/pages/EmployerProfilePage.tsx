@@ -162,124 +162,125 @@ function EmployerProfilePage() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <section className="profile">
+        <div className="section__inner">
+          <div className="profile__skeleton skeleton" />
+          <div className="profile__skeleton skeleton" />
+          <div className="profile__skeleton skeleton" />
+        </div>
+      </section>
+    );
+  }
+
   if (error) return <ErrorMessage message={error} />;
+  if (!profile) return;
 
   return (
     <>
       <section className="profile">
         <div className="section__inner">
-          {isLoading && (
-            <>
-              <div className="profile__skeleton skeleton" />
-              <div className="profile__skeleton skeleton" />
-              <div className="profile__skeleton skeleton" />
-            </>
-          )}
+          <ProfileHeader
+            name={profile.name}
+            rating={profile.rating}
+            isOwner={isOwner}
+            isSaved={isSaved}
+            onSave={() => handleSave(profile.id)}
+            onUnsave={() => handleUnsave(profile.id)}
+          />
 
-          {!isLoading && !error && profile && (
-            <>
-              <ProfileHeader
-                name={profile.name}
-                rating={profile.rating}
-                isOwner={isOwner}
-                isSaved={isSaved}
-                onSave={() => handleSave(profile.id)}
-                onUnsave={() => handleUnsave(profile.id)}
-              />
+          <div className="divider"></div>
 
-              <div className="divider"></div>
-
-              <section className="contact-info">
-                <header className="contact-info__header">
-                  <h2 className="contact-info__title">Kontaktinformation</h2>
-                  {isOwner && (
-                    <button
-                      aria-label="Redigera kontaktinformation"
-                      onClick={() => setIsEditContactModalOpen(true)}
-                      className="contact-info__edit-btn"
-                    >
-                      <Edit size={16} aria-hidden="true" />
-                    </button>
-                  )}
-                </header>
-
-                <ul className="contact-info__list">
-                  <li className="contact-info__item">
-                    <div className="contact-info__icon-container">
-                      <Mail size={18} aria-hidden="true" />
-                    </div>
-                    <div className="contact-info__item-content">
-                      <p className="contact-info__label">E-post</p>
-                      <p
-                        className={`contact-info__value ${!profile.email ? "contact-info__value--empty" : ""}`}
-                      >
-                        {profile.email ?? "Ingen e-post angiven"}
-                      </p>
-                    </div>
-                  </li>
-                  <li className="contact-info__item">
-                    <div className="contact-info__icon-container">
-                      <Phone size={18} aria-hidden="true" />
-                    </div>
-                    <div className="contact-info__item-content">
-                      <p className="contact-info__label">Telefon</p>
-                      <p
-                        className={`contact-info__value ${!profile.phone ? "empty-text" : ""}`}
-                      >
-                        {profile.phone ?? "Inget telefonnummer angivet"}
-                      </p>
-                    </div>
-                  </li>
-                  <li className="contact-info__item">
-                    <div className="contact-info__icon-container">
-                      <MapPin size={18} aria-hidden="true" />
-                    </div>
-                    <div className="contact-info__item-content">
-                      <p className="contact-info__label">Adress</p>
-                      <p className="contact-info__value">
-                        {formatAddress(
-                          profile.street ?? null,
-                          profile.postal_code ?? null,
-                          profile.city ?? null,
-                        )}
-                      </p>
-                    </div>
-                  </li>
-                </ul>
-              </section>
-
-              <div className="divider"></div>
-
-              <section className="about">
-                <header className="about__header">
-                  <h2 className="about__title">Om restaurangen</h2>
-                  {isOwner && (
-                    <button
-                      aria-label="Redigera restaurangbeskrivning"
-                      className="about__edit-btn"
-                      onClick={() => setIsEditAboutModalOpen(true)}
-                    >
-                      <Edit size={16} aria-hidden="true" />
-                    </button>
-                  )}
-                </header>
-
-                <p
-                  className={`about__text ${!profile.description ? "empty-text" : ""}`}
-                >
-                  {profile.description ?? "Ingen beskrivning angiven"}
-                </p>
-              </section>
-
+          <section className="contact-info">
+            <header className="contact-info__header">
+              <h2 className="contact-info__title">Kontaktinformation</h2>
               {isOwner && (
                 <button
-                  className="btn btn--primary btn--full"
-                  onClick={handleLogout}
+                  aria-label="Redigera kontaktinformation"
+                  onClick={() => setIsEditContactModalOpen(true)}
+                  className="contact-info__edit-btn"
                 >
-                  Logga ut
+                  <Edit size={16} aria-hidden="true" />
                 </button>
               )}
-            </>
+            </header>
+
+            <ul className="contact-info__list">
+              <li className="contact-info__item">
+                <div className="contact-info__icon-container">
+                  <Mail size={18} aria-hidden="true" />
+                </div>
+                <div className="contact-info__item-content">
+                  <p className="contact-info__label">E-post</p>
+                  <p
+                    className={`contact-info__value ${!profile.email ? "contact-info__value--empty" : ""}`}
+                  >
+                    {profile.email ?? "Ingen e-post angiven"}
+                  </p>
+                </div>
+              </li>
+              <li className="contact-info__item">
+                <div className="contact-info__icon-container">
+                  <Phone size={18} aria-hidden="true" />
+                </div>
+                <div className="contact-info__item-content">
+                  <p className="contact-info__label">Telefon</p>
+                  <p
+                    className={`contact-info__value ${!profile.phone ? "empty-text" : ""}`}
+                  >
+                    {profile.phone ?? "Inget telefonnummer angivet"}
+                  </p>
+                </div>
+              </li>
+              <li className="contact-info__item">
+                <div className="contact-info__icon-container">
+                  <MapPin size={18} aria-hidden="true" />
+                </div>
+                <div className="contact-info__item-content">
+                  <p className="contact-info__label">Adress</p>
+                  <p className="contact-info__value">
+                    {formatAddress(
+                      profile.street ?? null,
+                      profile.postal_code ?? null,
+                      profile.city ?? null,
+                    )}
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </section>
+
+          <div className="divider"></div>
+
+          <section className="about">
+            <header className="about__header">
+              <h2 className="about__title">Om restaurangen</h2>
+              {isOwner && (
+                <button
+                  aria-label="Redigera restaurangbeskrivning"
+                  className="about__edit-btn"
+                  onClick={() => setIsEditAboutModalOpen(true)}
+                >
+                  <Edit size={16} aria-hidden="true" />
+                </button>
+              )}
+            </header>
+
+            <p
+              className={`about__text ${!profile.description ? "empty-text" : ""}`}
+            >
+              {profile.description ?? "Ingen beskrivning angiven"}
+            </p>
+          </section>
+
+          {isOwner && (
+            <button
+              className="btn btn--primary btn--full"
+              onClick={handleLogout}
+            >
+              Logga ut
+            </button>
           )}
 
           {user?.role === "worker" && (

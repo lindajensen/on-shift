@@ -174,6 +174,22 @@ function FindWorkersPage() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <section className="find-workers">
+        <div className="section__inner">
+          <ul className="find-workers__list-skeleton">
+            {[1, 2, 3].map((i) => (
+              <li key={i} className="find-workers__item">
+                <div className="find-workers__skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
+
   if (error) return <ErrorMessage message={error} />;
 
   return (
@@ -184,11 +200,6 @@ function FindWorkersPage() {
         </header>
 
         <div className="find-workers__search">
-          {/* <Search
-            className="find-workers__search-icon"
-            size={16}
-            aria-hidden="true"
-          /> */}
           <input
             className="find-workers__search-input"
             type="text"
@@ -210,17 +221,7 @@ function FindWorkersPage() {
           ))}
         </div>
 
-        {isLoading && (
-          <ul className="find-workers__list-skeleton">
-            {[1, 2, 3].map((i) => (
-              <li key={i} className="find-workers__item">
-                <div className="find-workers__skeleton skeleton" />
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {!isLoading && !error && filteredWorkers.length === 0 ? (
+        {filteredWorkers.length === 0 ? (
           <div className="empty">
             <div className="empty__icon">
               <Search size={18} aria-hidden="true" />

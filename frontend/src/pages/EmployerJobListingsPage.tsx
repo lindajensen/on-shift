@@ -121,6 +121,22 @@ function EmployerJobListingsPage() {
       (a, b) => new Date(b.job_date).getTime() - new Date(a.job_date).getTime(),
     );
 
+  if (isLoading) {
+    return (
+      <section className="job-listings-page">
+        <div className="section__inner">
+          <ul className="job-listings-page__list">
+            {[1, 2, 3].map((i) => (
+              <li key={i} className="job-listings-page__item">
+                <div className="job-listings-page__skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
+
   if (error) return <ErrorMessage message={error} />;
 
   return (
@@ -156,17 +172,7 @@ function EmployerJobListingsPage() {
             </button>
           </div>
 
-          {isLoading && (
-            <ul className="job-listings-page__list">
-              {[1, 2, 3].map((i) => (
-                <li key={i} className="job-listings-page__item">
-                  <div className="job-listings-page__skeleton skeleton" />
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {!isLoading && !error && activeTab === "aktiva" && (
+          {activeTab === "aktiva" && (
             <>
               {activeListings.length === 0 ? (
                 <div className="empty">
@@ -278,7 +284,7 @@ function EmployerJobListingsPage() {
             </>
           )}
 
-          {!isLoading && !error && activeTab === "avslutade" && (
+          {activeTab === "avslutade" && (
             <>
               {closedListings.length === 0 ? (
                 <div className="empty">

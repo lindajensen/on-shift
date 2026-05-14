@@ -29,6 +29,49 @@ function RecommendedJobs() {
     fetchRecommendedJobs();
   }, []);
 
+  if (isLoading) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="card-list__title">Rekommenderade pass</h2>
+          <Link className="card-list__link" to="/jobb">
+            Visa alla
+            <ChevronRight size={16} aria-hidden="true" />
+          </Link>
+        </header>
+        <ul className="card-list__list">
+          {[1, 2, 3].map((i) => (
+            <li key={i} className="card-list__item">
+              <div className="card-list__skeleton skeleton" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+
+  if (jobs.length === 0) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="card-list__title">Rekommenderade pass</h2>
+          <Link className="card-list__link" to="/jobb">
+            Visa alla
+            <ChevronRight size={16} aria-hidden="true" />
+          </Link>
+        </header>
+        <div className="empty">
+          <div className="empty__icon">
+            <SearchX size={18} aria-hidden="true" />
+          </div>
+          <div>
+            <p className="empty__text">Inga rekommenderade pass hittades.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="card-list">
       <header className="card-list__header">
@@ -38,58 +81,36 @@ function RecommendedJobs() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+      <ul className="card-list__list">
+        {jobs.slice(0, 3).map((job) => (
+          <li key={job.id} className="card-list__item">
+            <article className="card-list__card">
+              <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
+              <p className="card-list__employer">{job.restaurant_name}</p>
 
-      {isLoading && (
-        <ul className="card-list__list">
-          {[1, 2, 3].map((i) => (
-            <li key={i} className="card-list__item">
-              <div className="card-list__skeleton skeleton" />
-            </li>
-          ))}
-        </ul>
-      )}
+              <div className="card-list__meta">
+                <Clock size={18} aria-hidden="true" />
+                <p className="card-list__meta-text">
+                  {formatDate(job.job_date)} kl. {formatTime(job.start_time)} -{" "}
+                  {formatTime(job.end_time)}
+                </p>
+              </div>
 
-      {!isLoading && jobs.length === 0 ? (
-        <div className="empty">
-          <div className="empty__icon">
-            <SearchX size={18} aria-hidden="true" />
-          </div>
-          <div>
-            <p className="empty__text">Inga rekommenderade pass hittades.</p>
-          </div>
-        </div>
-      ) : (
-        <ul className="card-list__list">
-          {jobs.slice(0, 3).map((job) => (
-            <li key={job.id} className="card-list__item">
-              <article className="card-list__card">
-                <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
-                <p className="card-list__employer">{job.restaurant_name}</p>
+              <div className="card-list__meta">
+                <MapPin size={18} aria-hidden="true" />
+                <p className="card-list__meta-text">{job.location}</p>
+              </div>
 
-                <div className="card-list__meta">
-                  <Clock size={18} aria-hidden="true" />
-                  <p className="card-list__meta-text">
-                    {formatDate(job.job_date)} kl. {formatTime(job.start_time)}{" "}
-                    - {formatTime(job.end_time)}
-                  </p>
-                </div>
-
-                <div className="card-list__meta">
-                  <MapPin size={18} aria-hidden="true" />
-                  <p className="card-list__meta-text">{job.location}</p>
-                </div>
-
-                <footer className="card-list__card-footer">
-                  <p className="card-list__rate">
-                    {Number(job.compensation).toFixed(0)} kr/h
-                  </p>
-                  <button className="card-list__apply-btn">Ansök</button>
-                </footer>
-              </article>
-            </li>
-          ))}
-        </ul>
-      )}
+              <footer className="card-list__card-footer">
+                <p className="card-list__rate">
+                  {Number(job.compensation).toFixed(0)} kr/h
+                </p>
+                <button className="card-list__apply-btn">Ansök</button>
+              </footer>
+            </article>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
