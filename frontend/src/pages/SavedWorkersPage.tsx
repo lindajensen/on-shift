@@ -9,7 +9,6 @@ import "../styles/SavedPage.css";
 
 function SavedWorkersPage() {
   const [savedWorkers, setSavedWorkers] = useState<Worker[]>([]);
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,16 +39,10 @@ function SavedWorkersPage() {
     }
   }
 
-  if (error) return <ErrorMessage message={error} />;
-
-  return (
-    <section className="saved-page">
-      <div className="section__inner">
-        <header className="saved-page__header">
-          <h1 className="saved-page__title">Sparad personal</h1>
-        </header>
-
-        {isLoading && (
+  if (isLoading) {
+    return (
+      <section className="saved-page">
+        <div className="section__inner">
           <ul className="preview__list">
             {[1, 2, 3].map((i) => (
               <li key={i} className="saved-page__item">
@@ -57,9 +50,20 @@ function SavedWorkersPage() {
               </li>
             ))}
           </ul>
-        )}
+        </div>
+      </section>
+    );
+  }
 
-        {!isLoading && !error && savedWorkers.length === 0 ? (
+  if (error) return <ErrorMessage message={error} />;
+
+  if (savedWorkers.length === 0) {
+    return (
+      <section className="saved-page">
+        <div className="section__inner">
+          <header className="saved-page__header">
+            <h1 className="saved-page__title">Sparad personal</h1>
+          </header>
           <div className="empty">
             <div className="empty__icon">
               <Bookmark size={18} aria-hidden="true" />
@@ -71,20 +75,29 @@ function SavedWorkersPage() {
               </p>
             </div>
           </div>
-        ) : (
-          <ul className="saved-page__list">
-            {savedWorkers.map((worker) => (
-              <li key={worker.id}>
-                <WorkerCard
-                  worker={worker}
-                  isAnonymous={false}
-                  onUnsave={() => handleUnsaveWorker(worker.id)}
-                  isSaved={true}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="saved-page">
+      <div className="section__inner">
+        <header className="saved-page__header">
+          <h1 className="saved-page__title">Sparad personal</h1>
+        </header>
+        <ul className="saved-page__list">
+          {savedWorkers.map((worker) => (
+            <li key={worker.id}>
+              <WorkerCard
+                worker={worker}
+                isAnonymous={false}
+                onUnsave={() => handleUnsaveWorker(worker.id)}
+                isSaved={true}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -31,17 +31,16 @@ function SavedWorkersPreview() {
     fetchSavedWorkers();
   }, []);
 
-  return (
-    <section className="card-list">
-      <header className="card-list__header">
-        <h2 className="">Sparad personal</h2>
-        <Link className="card-list__link" to="/sparad-personal">
-          Visa alla
-          <ChevronRight size={16} aria-hidden="true" />
-        </Link>
-      </header>
-
-      {isLoading && (
+  if (isLoading) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="">Sparad personal</h2>
+          <Link className="card-list__link" to="/sparad-personal">
+            Visa alla
+            <ChevronRight size={16} aria-hidden="true" />
+          </Link>
+        </header>
         <ul className="card-list__list">
           {[1, 2, 3].map((i) => (
             <li key={i} className="card-list__item">
@@ -49,9 +48,20 @@ function SavedWorkersPreview() {
             </li>
           ))}
         </ul>
-      )}
+      </section>
+    );
+  }
 
-      {savedWorkers.length === 0 ? (
+  if (savedWorkers.length === 0) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="">Sparad personal</h2>
+          <Link className="card-list__link" to="/sparad-personal">
+            Visa alla
+            <ChevronRight size={16} aria-hidden="true" />
+          </Link>
+        </header>
         <div className="empty">
           <div className="empty__icon">
             <Bookmark size={18} aria-hidden="true" />
@@ -63,44 +73,54 @@ function SavedWorkersPreview() {
             </p>
           </div>
         </div>
-      ) : (
-        <ul className="card-list__list">
-          {savedWorkers.slice(0, 3).map((savedWorker) => (
-            <li key={savedWorker.id} className="card-list__item">
-              <article className="card-list__card">
-                <div className="card-list__card-header">
-                  <h3 className="card-list__role">{savedWorker.name}</h3>
+      </section>
+    );
+  }
 
-                  {savedWorker.rating && (
-                    <div className="card-list__meta">
-                      <Star
-                        className="rating-star"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                      <p className="card-list__meta-text">
-                        {Number(savedWorker.rating).toFixed(1)}
-                      </p>
-                    </div>
-                  )}
-                </div>
+  return (
+    <section className="card-list">
+      <header className="card-list__header">
+        <h2 className="">Sparad personal</h2>
+        <Link className="card-list__link" to="/sparad-personal">
+          Visa alla
+          <ChevronRight size={16} aria-hidden="true" />
+        </Link>
+      </header>
+      <ul className="card-list__list">
+        {savedWorkers.slice(0, 3).map((savedWorker) => (
+          <li key={savedWorker.id} className="card-list__item">
+            <article className="card-list__card">
+              <div className="card-list__card-header">
+                <h3 className="card-list__role">{savedWorker.name}</h3>
 
-                <ul className="card-list__role-list">
-                  {savedWorker.roles.map((role, index) => (
-                    <li key={index} className="card-list__role-item">
-                      {" "}
-                      {getRoleLabel(role.role)} |{" "}
-                      {getExperienceLevel(role.experience_level)}
-                    </li>
-                  ))}
-                </ul>
+                {savedWorker.rating && (
+                  <div className="card-list__meta">
+                    <Star
+                      className="rating-star"
+                      size={18}
+                      aria-hidden="true"
+                    />
+                    <p className="card-list__meta-text">
+                      {Number(savedWorker.rating).toFixed(1)}
+                    </p>
+                  </div>
+                )}
+              </div>
 
-                <button className="card-list__contact-btn">Kontakta</button>
-              </article>
-            </li>
-          ))}
-        </ul>
-      )}
+              <ul className="card-list__role-list">
+                {savedWorker.roles.map((role, index) => (
+                  <li key={index} className="card-list__role-item">
+                    {getRoleLabel(role.role)} |{" "}
+                    {getExperienceLevel(role.experience_level)}
+                  </li>
+                ))}
+              </ul>
+
+              <button className="card-list__contact-btn">Kontakta</button>
+            </article>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
