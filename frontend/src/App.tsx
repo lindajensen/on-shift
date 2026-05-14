@@ -24,6 +24,7 @@ import FavouritesPage from "./pages/FavouritesPage";
 import EmployerProfilePage from "./pages/EmployerProfilePage";
 import WorkerProfilePage from "./pages/WorkerProfilePage";
 import EmployerJobsPage from "./pages/EmployerJobsPage";
+import SessionExpiredPage from "./pages/SessionExpiredPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -32,6 +33,8 @@ import "./App.css";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route path="/session-utgangen" element={<SessionExpiredPage />} />
+
       <Route element={<MainLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/registrera" element={<RegisterPage />} />
