@@ -836,8 +836,11 @@ export async function getPublicJobListings(
         j.end_time,
         j.compensation,
         j.is_urgent,
-        j.requires_experience
+        j.requires_experience,
+        j.created_at,
+        ep.name AS restaurant_name
       FROM job j
+      JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.employer_id = $1
       AND j.status = 'active'
       ORDER BY j.job_date ASC
