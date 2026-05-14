@@ -806,3 +806,48 @@ export async function reopenJobListing(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Fetches all active job listings for a given employer.
+ * @param request - The request object
+ * @param response - The response object
+ * @returns A JSON array of active job listings for the specified employer, or an error message if something went wrong.
+ */
+export async function getPublicJobListings(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id: employerId } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  try {
+    const jobListings = await pool.query(
+      `
+      SELECT
+        j.id,
+        j.role,
+        j.job_date,
+        j.start_time,
+        j.end_time,
+        j.compensation,
+        j.is_urgent,
+        j.requires_experience
+      FROM job j
+      WHERE j.employer_id = $1
+      AND j.status = 'active'
+      ORDER BY j.job_date ASC
+      `,
+      [employerId],
+    );
+
+    response.status(200).json(jobListings.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
