@@ -19,11 +19,8 @@ function Header() {
             <span className="header__logo-accent">on</span>Shift
           </Link>
           {user ? (
-            <Link
-              to="/dashboard"
-              className="header__login-btn btn btn--primary"
-            >
-              Till dashboarden
+            <Link to="/hem" className="header__login-btn btn btn--primary">
+              Hem
             </Link>
           ) : (
             <button

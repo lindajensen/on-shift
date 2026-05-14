@@ -49,7 +49,7 @@ const router = createBrowserRouter(
       {/* WorkerLayout and EmployerLayout */}
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/hem" element={<Dashboard />} />
           <Route path="/min-profil" element={<ProfilePage />} />
           <Route path="/favoriter" element={<FavouritesPage />} />
         </Route>

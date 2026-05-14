@@ -18,7 +18,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <span>on</span>Shift
               </Link>
               <NavLink
-                to="/dashboard"
+                to="/hem"
                 className={({ isActive }) =>
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }
@@ -65,7 +65,7 @@ function BottomNav({ role }: BottomNavProps) {
                 <span>on</span>Shift
               </Link>
               <NavLink
-                to="/dashboard"
+                to="/hem"
                 className={({ isActive }) =>
                   `bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`
                 }

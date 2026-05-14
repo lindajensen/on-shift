@@ -60,7 +60,7 @@ function LoginForm({ onClose }: LoginFormProps) {
 
       login(result.token, result.user);
 
-      navigate("/dashboard");
+      navigate("/hem");
     } catch (error) {
       console.error("Registration error:", error);
       setServerError("Något gick fel. Försök igen senare.");

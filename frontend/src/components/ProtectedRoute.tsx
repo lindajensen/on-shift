@@ -18,15 +18,13 @@ function ProtectedRoute({ role }: ProtectedRouteProps) {
   const { user } = useAuth();
   const token = localStorage.getItem("token");
 
-    if (!token || isTokenExpired(token)) {
-      return <Navigate to="/session-utgangen" replace />;
-    }
-
-  if (role && user?.role !== role) {
-    return <Navigate to="/dashboard" replace />;
+  if (!token || isTokenExpired(token)) {
+    return <Navigate to="/session-utgangen" replace />;
   }
 
-
+  if (role && user?.role !== role) {
+    return <Navigate to="/hem" replace />;
+  }
 
   return <Outlet />;
 }
