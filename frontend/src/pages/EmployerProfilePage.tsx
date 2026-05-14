@@ -87,7 +87,6 @@ function EmployerProfilePage() {
 
         const jobs = await getEmployerJobListings(data.id);
         setEmployerJobListings(jobs);
-        console.log("jobs:", jobs);
       } catch (error) {
         console.error("Kunde inte hämta pass", error);
       }
