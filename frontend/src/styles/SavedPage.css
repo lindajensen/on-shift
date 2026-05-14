@@ -1,3 +1,7 @@
+.saved-page__inner {
+  padding-block: 0.5rem;
+}
+
 .saved-page__header {
   margin-bottom: 0.5rem;
 }
@@ -26,7 +30,7 @@
 .saved-card__title-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .saved-card__meta {
@@ -56,4 +60,8 @@
 .saved-page__skeleton {
   height: 9rem;
   border-radius: var(--radius-md);
+}
+
+.saved-page__skeleton--small {
+  height: 5rem;
 }

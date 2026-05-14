@@ -16,6 +16,9 @@ import {
   getSavedJobs,
   saveJob,
   unsaveJob,
+  getSavedEmployers,
+  saveEmployer,
+  unsaveEmployer,
 } from "../controllers/workersController";
 import { authenticateToken } from "../middleware/auth";
 
@@ -45,6 +48,10 @@ router.delete("/saved-jobs", authenticateToken, unsaveJob);
 router.get("/applications", authenticateToken, getWorkerApplications);
 
 router.get("/recommended-jobs", authenticateToken, getRecommendedJobs);
+
+router.get("/saved-employers", authenticateToken, getSavedEmployers);
+router.post("/saved-employers", authenticateToken, saveEmployer);
+router.delete("/saved-employers", authenticateToken, unsaveEmployer);
 
 router.get("/reviews", authenticateToken, getWorkerReviews);
 

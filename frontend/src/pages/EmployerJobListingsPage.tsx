@@ -6,7 +6,7 @@ import {
   updateJobListing,
   closeJobListing,
   reopenJobListing,
-} from "../api/employerJobs";
+} from "../api/employer";
 import { formatDate, formatTime } from "../utils/date";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
 import { EmployerJobListing, JobFormData } from "../types";

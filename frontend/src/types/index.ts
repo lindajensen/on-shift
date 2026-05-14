@@ -100,23 +100,6 @@ export interface WorkerAboutFormData {
   bio: string;
 }
 
-// export interface EditWorkerEducationFormData {
-//   school: string;
-//   program: string;
-//   graduation_year: string | null;
-// }
-
-// export interface EditWorkerExperienceFormData {
-//   job_title: string;
-//   workplace: string;
-//   start_date: string;
-//   end_date: string | null;
-// }
-
-// export interface EditWorkerRolesFormData {
-//   roles: WorkerRole[];
-// }
-
 export interface DayAvailability {
   day_of_week: string;
   start_time: string;
@@ -136,6 +119,14 @@ export interface WorkerApplicationPreview {
   start_time: string;
   end_time: string;
   status: string;
+}
+
+export interface SavedEmployer {
+  id: number;
+  name: string;
+  city: string | null;
+  description: string | null;
+  rating: string | null;
 }
 
 export interface WorkerContactValidationErrors {
@@ -243,6 +234,18 @@ export interface EmployerApplicationPreview {
   end_time: string;
   status: string;
 }
+
+export interface EmployerPublicJob {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  is_urgent: boolean;
+  requires_experience: boolean;
+}
+
 export interface SavedWorkerPreview {
   id: number;
   worker_name: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getJobApplications } from "../api/employerJobs";
+import { getJobApplications } from "../api/employer";
 import { getStatusLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerApplicationPreview } from "../types";

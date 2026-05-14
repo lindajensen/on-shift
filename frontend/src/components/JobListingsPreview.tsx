@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllJobListings } from "../api/employerJobs";
+import { getAllJobListings } from "../api/employer";
 import { getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerJobListing } from "../types";

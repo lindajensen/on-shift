@@ -6,26 +6,36 @@ import {
   getEmployerProfileById,
   updateEmployerContact,
   updateEmployerDescription,
+  getEmployerJobListings,
 } from "../api/employer";
+import { getSavedEmployers, saveEmployer, unsaveEmployer } from "../api/worker";
+
 import { formatAddress } from "../utils/formatters";
 import {
   EmployerProfile,
   EditContactFormData,
   EditAboutFormData,
+  EmployerPublicJob,
 } from "../types";
 import ProfileHeader from "../components/ProfileHeader";
 import ErrorMessage from "../components/ErrorMessage";
 import Modal from "../components/modals/Modal";
 import EditEmployerContactModal from "../components/modals/EditEmployerContactModal";
 import EditEmployerAboutModal from "../components/modals/EditEmployerAboutModal";
+import EmployerJobListings from "../components/EmployerJobListings";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 import "../styles/ProfilePage.css";
 
 function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
+  const [employerJobListings, setEmployerJobListings] = useState<
+    EmployerPublicJob[]
+  >([]);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
   const [isEditAboutModalOpen, setIsEditAboutModalOpen] = useState(false);
+
+  const [isSaved, setIsSaved] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,6 +57,14 @@ function EmployerProfilePage() {
           : await getEmployerProfileByUserId();
 
         setProfile(data);
+
+        if (user?.role === "worker") {
+          const savedEmployers = await getSavedEmployers();
+
+          setIsSaved(
+            savedEmployers.some((employer) => employer.id === data.id),
+          );
+        }
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -57,6 +75,44 @@ function EmployerProfilePage() {
 
     fetchEmployerProfile();
   }, [profileId, id, user]);
+
+  useEffect(() => {
+    async function fetchEmployerJobListings() {
+      try {
+        const data = id
+          ? await getEmployerProfileById(Number(id))
+          : await getEmployerProfileByUserId();
+
+        setProfile(data);
+
+        const jobs = await getEmployerJobListings(data.id);
+        setEmployerJobListings(jobs);
+        console.log("jobs:", jobs);
+      } catch (error) {
+        console.error("Kunde inte hämta pass", error);
+      }
+    }
+
+    fetchEmployerJobListings();
+  }, [id]);
+
+  async function handleSave(id: number) {
+    try {
+      await saveEmployer(id);
+      setIsSaved(true);
+    } catch (error) {
+      console.error("Kunde inte spara restaurangen", error);
+    }
+  }
+
+  async function handleUnsave(id: number) {
+    try {
+      await unsaveEmployer(id);
+      setIsSaved(false);
+    } catch (error) {
+      console.error("Kunde inte ta bort sparad restaurang", error);
+    }
+  }
 
   function handleLogout() {
     navigate("/");
@@ -108,8 +164,6 @@ function EmployerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
 
-  //TODO: Implement save employer functionality
-
   return (
     <>
       <section className="profile">
@@ -128,6 +182,9 @@ function EmployerProfilePage() {
                 name={profile.name}
                 rating={profile.rating}
                 isOwner={isOwner}
+                isSaved={isSaved}
+                onSave={() => handleSave(profile.id)}
+                onUnsave={() => handleUnsave(profile.id)}
               />
 
               <div className="divider"></div>
@@ -222,6 +279,16 @@ function EmployerProfilePage() {
                   Logga ut
                 </button>
               )}
+            </>
+          )}
+
+          {user?.role === "worker" && (
+            <>
+              <div className="divider"></div>
+              <EmployerJobListings
+                jobs={employerJobListings}
+                employerId={Number(id)}
+              />
             </>
           )}
         </div>

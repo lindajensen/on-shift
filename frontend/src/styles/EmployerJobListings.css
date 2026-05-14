@@ -1,0 +1,64 @@
+.employer-jobs__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.employer-jobs__link {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.employer-jobs__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.employer-jobs__card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.employer-jobs__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.employer-jobs__card-btn {
+  background: none;
+  border: none;
+}
+
+.employer-jobs__card {
+  border: 2px solid var(--color-border);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.employer-jobs__card-meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.employer-jobs__card-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.employer-jobs__card-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.employer-jobs__card-published {
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-left: auto;
+}

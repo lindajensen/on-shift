@@ -17,6 +17,7 @@ import {
   updateJobListing,
   closeJobListing,
   reopenJobListing,
+  getPublicJobListings,
 } from "../controllers/employersControllers";
 import { authenticateToken } from "../middleware/auth";
 
@@ -30,6 +31,7 @@ router.patch(
   updateEmployerDescription,
 );
 router.get("/profile/:id", getEmployerProfileById);
+router.get("/profile/:id/jobs", authenticateToken, getPublicJobListings);
 
 router.get("/jobs", authenticateToken, getJobListings);
 router.post("/jobs", authenticateToken, createJobListing);

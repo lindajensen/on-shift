@@ -16,16 +16,17 @@ export async function getEmployerProfileById(
   try {
     const employerProfile = await pool.query(
       `
-     SELECT
-        ep.user_id,
-        ep.name,
-        ep.email,
-        ep.phone,
-        ep.street,
-        ep.postal_code,
-        ep.city,
-        ep.description,
-        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      SELECT
+       ep.id,
+       ep.user_id,
+       ep.name,
+       ep.email,
+       ep.phone,
+       ep.street,
+       ep.postal_code,
+       ep.city,
+       ep.description,
+      ROUND(AVG(r.rating)::numeric, 1) AS rating
       FROM employer_profile ep
       LEFT JOIN review r ON r.reviewee_id = ep.user_id
       WHERE ep.id = $1
@@ -63,6 +64,7 @@ export async function getEmployerProfileByUserId(
     const employerProfile = await pool.query(
       `
       SELECT
+        ep.id,
         ep.user_id,
         ep.name,
         ep.email,
@@ -477,7 +479,7 @@ export async function getSavedWorkers(
  * Saves a worker to the currently logged in restaurant's saved workers list.
  * @param request - The request object.
  * @param response - The response object.
- * @returns A success message if the worker was saved, or an error message if something went wrong.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
  */
 export async function saveWorker(
   request: Request,
@@ -506,7 +508,7 @@ export async function saveWorker(
       [userId, workerId],
     );
 
-    response.status(201).json({ message: "Arbetstagaren har sparats" });
+    response.status(201).json({ message: "Personalen har sparats" });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
@@ -536,14 +538,14 @@ export async function unsaveWorker(
   try {
     await pool.query(
       `
-     DELETE FROM saved_worker
+      DELETE FROM saved_worker
       WHERE worker_id = $1
       AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
       `,
       [workerId, userId],
     );
 
-    response.status(201).json({ message: "Arbetstagaren har tagits bort" });
+    response.status(200).json({ message: "Personalen har tagits bort" });
   } catch (error) {
     response.status(500).json({ message: "Något gick fel" });
   }
@@ -801,6 +803,51 @@ export async function reopenJobListing(
 
     response.status(200).json({ message: "Annonsen har återaktiverats" });
   } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches all active job listings for a given employer.
+ * @param request - The request object
+ * @param response - The response object
+ * @returns A JSON array of active job listings for the specified employer, or an error message if something went wrong.
+ */
+export async function getPublicJobListings(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id: employerId } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  try {
+    const jobListings = await pool.query(
+      `
+      SELECT
+        j.id,
+        j.role,
+        j.job_date,
+        j.start_time,
+        j.end_time,
+        j.compensation,
+        j.is_urgent,
+        j.requires_experience
+      FROM job j
+      WHERE j.employer_id = $1
+      AND j.status = 'active'
+      ORDER BY j.job_date ASC
+      `,
+      [employerId],
+    );
+
+    response.status(200).json(jobListings.rows);
+  } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }

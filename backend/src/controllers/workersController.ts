@@ -811,8 +811,131 @@ export async function unsaveJob(
       [jobId, userId],
     );
 
-    response.status(201).json({ message: "Passet har tagits bort" });
+    response.status(200).json({ message: "Passet har tagits bort" });
   } catch (error) {
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Fetches the saved employers for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of saved employers.
+ */
+export async function getSavedEmployers(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const savedEmployers = await pool.query(
+      `
+      SELECT
+        ep.id,
+        ep.name,
+        ep.city,
+        ep.description,
+        ROUND(AVG(r.rating)::numeric, 1) AS rating
+      FROM saved_employer se
+      JOIN employer_profile ep ON se.employer_id = ep.id
+      LEFT JOIN review r ON r.reviewee_id = ep.user_id
+      WHERE se.worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
+      GROUP BY ep.id, ep.name, ep.city, ep.description
+      `,
+      [userId],
+    );
+
+    response.status(200).json(savedEmployers.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Saves an employer to the currently logged in worker's saved employer's list.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
+ */
+export async function saveEmployer(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { employerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query(
+      `
+      INSERT INTO saved_employer (employer_id, worker_id)
+      VALUES (
+        $1,
+        (SELECT id FROM worker_profile WHERE user_id = $2)
+      )
+      `,
+      [employerId, userId],
+    );
+
+    response.status(201).json({ message: "Restaurangen har sparats" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Removes an employer from the currently logged in worker's list of saved employers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the unsave operation.
+ */
+export async function unsaveEmployer(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { employerId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query(
+      `
+      DELETE FROM saved_employer
+      WHERE employer_id = $1
+      AND worker_id = (SELECT id FROM worker_profile WHERE user_id = $2)
+      `,
+      [employerId, userId],
+    );
+
+    response.status(200).json({ message: "Restaurangen har tagits bort" });
+  } catch (error) {
+    console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
