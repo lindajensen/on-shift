@@ -54,7 +54,7 @@ function AuthHeader() {
 
               {isMenuOpen && (
                 <div className="auth-header__menu">
-                  <Link className="auth-header__menu-btn" to="/profil">
+                  <Link className="auth-header__menu-btn" to="/min-profil">
                     <User2 size={16} aria-hidden="true" />
                     Min profil
                   </Link>
