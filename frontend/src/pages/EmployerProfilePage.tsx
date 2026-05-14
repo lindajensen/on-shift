@@ -6,25 +6,32 @@ import {
   getEmployerProfileById,
   updateEmployerContact,
   updateEmployerDescription,
+  getEmployerJobListings,
 } from "../api/employer";
 import { getSavedEmployers, saveEmployer, unsaveEmployer } from "../api/worker";
+
 import { formatAddress } from "../utils/formatters";
 import {
   EmployerProfile,
   EditContactFormData,
   EditAboutFormData,
+  EmployerPublicJob,
 } from "../types";
 import ProfileHeader from "../components/ProfileHeader";
 import ErrorMessage from "../components/ErrorMessage";
 import Modal from "../components/modals/Modal";
 import EditEmployerContactModal from "../components/modals/EditEmployerContactModal";
 import EditEmployerAboutModal from "../components/modals/EditEmployerAboutModal";
+import EmployerJobListings from "../components/EmployerJobListings";
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 import "../styles/ProfilePage.css";
 
 function EmployerProfilePage() {
   const [profile, setProfile] = useState<EmployerProfile | null>(null);
+  const [employerJobListings, setEmployerJobListings] = useState<
+    EmployerPublicJob[]
+  >([]);
   const [isEditContactModalOpen, setIsEditContactModalOpen] = useState(false);
   const [isEditAboutModalOpen, setIsEditAboutModalOpen] = useState(false);
 
@@ -68,6 +75,26 @@ function EmployerProfilePage() {
 
     fetchEmployerProfile();
   }, [profileId, id, user]);
+
+  useEffect(() => {
+    async function fetchEmployerJobListings() {
+      try {
+        const data = id
+          ? await getEmployerProfileById(Number(id))
+          : await getEmployerProfileByUserId();
+
+        setProfile(data);
+
+        const jobs = await getEmployerJobListings(data.id);
+        setEmployerJobListings(jobs);
+        console.log("jobs:", jobs);
+      } catch (error) {
+        console.error("Kunde inte hämta pass", error);
+      }
+    }
+
+    fetchEmployerJobListings();
+  }, [id]);
 
   async function handleSave(id: number) {
     try {
@@ -252,6 +279,16 @@ function EmployerProfilePage() {
                   Logga ut
                 </button>
               )}
+            </>
+          )}
+
+          {user?.role === "worker" && (
+            <>
+              <div className="divider"></div>
+              <EmployerJobListings
+                jobs={employerJobListings}
+                employerId={Number(id)}
+              />
             </>
           )}
         </div>
