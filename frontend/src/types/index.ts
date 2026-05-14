@@ -234,6 +234,18 @@ export interface EmployerApplicationPreview {
   end_time: string;
   status: string;
 }
+
+export interface EmployerPublicJob {
+  id: number;
+  role: string;
+  job_date: string;
+  start_time: string;
+  end_time: string;
+  compensation: number;
+  is_urgent: boolean;
+  requires_experience: boolean;
+}
+
 export interface SavedWorkerPreview {
   id: number;
   worker_name: string;
