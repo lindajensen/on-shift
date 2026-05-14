@@ -5,7 +5,7 @@ import {
   updateJobListing,
   closeJobListing,
   reopenJobListing,
-} from "../api/employerJobs";
+} from "../api/employer";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
 import { EmployerJobDetails, JobFormData } from "../types";
 import { MoreHorizontal, Edit, XCircle, RotateCcw } from "lucide-react";
