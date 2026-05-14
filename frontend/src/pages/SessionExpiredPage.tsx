@@ -1,0 +1,28 @@
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Lock } from "lucide-react";
+
+import "../styles/SessionExpiredPage.css";
+
+function SessionExpiredPage() {
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
+
+  return (
+    <section className="session-expired">
+      <div className="session-expired__icon">
+        <Lock size={32} />
+      </div>
+      <h1 className="session-expired__title">Din session har gått ut</h1>
+      <p className="session-expired__text">
+        Du har blivit utloggad. Logga in igen för att fortsätta.
+      </p>
+      <Link to="/logga-in" className="btn btn--primary">
+        Logga in
+      </Link>
+    </section>
+  );
+}
+
+export default SessionExpiredPage;
