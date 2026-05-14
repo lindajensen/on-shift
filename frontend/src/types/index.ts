@@ -238,12 +238,14 @@ export interface EmployerApplicationPreview {
 export interface EmployerPublicJob {
   id: number;
   role: string;
+  restaurant_name: string;
   job_date: string;
   start_time: string;
   end_time: string;
   compensation: number;
   is_urgent: boolean;
   requires_experience: boolean;
+  created_at: string;
 }
 
 export interface SavedWorkerPreview {
