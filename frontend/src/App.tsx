@@ -23,6 +23,7 @@ import FavouritesPage from "./pages/FavouritesPage";
 
 import EmployerProfilePage from "./pages/EmployerProfilePage";
 import WorkerProfilePage from "./pages/WorkerProfilePage";
+import EmployerJobsPage from "./pages/EmployerJobsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
         <Route path="/restaurang/:id" element={<EmployerProfilePage />} />
         <Route path="/personal/:id" element={<WorkerProfilePage />} />
+        <Route path="/restaurang/:id/pass" element={<EmployerJobsPage />} />
       </Route>
 
       {/* WorkerLayout and EmployerLayout */}
