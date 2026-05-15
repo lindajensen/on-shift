@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { getWorkerReviews } from "../api/worker";
-import { formatDateWithYear } from "../utils/date";
-import { getRoleLabel } from "../utils/formatters";
+import ReviewCard from "../components/ReviewCard";
 import ErrorMessage from "../components/ErrorMessage";
 import { Review } from "../types";
-import { Star, StarOff } from "lucide-react";
+import { StarOff } from "lucide-react";
 
 import "../styles/WorkerReviewsPage.css";
 
-function WorkerRewiewsPage() {
+function WorkerReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -31,10 +30,10 @@ function WorkerRewiewsPage() {
 
   if (isLoading) {
     return (
-      <section>
+      <section className="reviews-page">
         <div className="section__inner">
-          <header>
-            <h1>Betyg</h1>
+          <header className="reviews-page__header">
+            <h1 className="reviews-page__title">Betyg</h1>
           </header>
           <ul className="latest-review__list">
             {[1, 2, 3].map((i) => (
@@ -52,10 +51,10 @@ function WorkerRewiewsPage() {
 
   if (reviews.length === 0) {
     return (
-      <section>
+      <section className="reviews-page">
         <div className="section__inner">
-          <header>
-            <h1>Betyg</h1>
+          <header className="reviews-page__header">
+            <h1 className="reviews-page__title">Betyg</h1>
           </header>
           <div className="empty">
             <div className="empty__icon">
@@ -71,47 +70,16 @@ function WorkerRewiewsPage() {
   }
 
   return (
-    <section>
+    <section className="reviews-page">
       <div className="section__inner">
-        <header>
-          <h1>Betyg</h1>
+        <header className="reviews-page__header">
+          <h1 className="reviews-page__title">Betyg</h1>
         </header>
 
         <ul className="latest-review__list">
           {reviews.map((review) => (
             <li key={review.id} className="latest-review__item">
-              <article className="latest-review__card">
-                <div className="latest-review__card-meta">
-                  <h3 className="latest-review__card-employer">
-                    {review.reviewer_name}
-                  </h3>
-                  {/* <p className="latest-review__card-date">
-                    {formatDateWithYear(review.created_at)}
-                  </p> */}
-                </div>
-
-                <div className="latest-review__card-rating">
-                  <Star
-                    className="latest-review__card-rating-icon"
-                    size={18}
-                    aria-hidden="true"
-                  />
-                  <span className="latest-review__card-rating-score">
-                    {review.rating.toFixed(1)}
-                  </span>
-                </div>
-
-                <p className="latest-review__card-comment">{review.comment}</p>
-
-                <div className="divider"></div>
-
-                <footer className="latest-review__card-footer">
-                  <p className="latest-review__footer-text">
-                    {getRoleLabel(review.role)} ·{" "}
-                    {formatDateWithYear(review.job_date)}
-                  </p>
-                </footer>
-              </article>
+              <ReviewCard review={review} />
             </li>
           ))}
         </ul>
@@ -120,4 +88,4 @@ function WorkerRewiewsPage() {
   );
 }
 
-export default WorkerRewiewsPage;
+export default WorkerReviewsPage;
