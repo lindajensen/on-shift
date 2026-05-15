@@ -308,6 +308,9 @@ export interface JobPreview {
   start_time: string;
   end_time: string;
   compensation: number;
+  is_urgent?: boolean;
+  requires_experience?: boolean;
+  created_at: string;
 }
 
 export interface SavedJob {

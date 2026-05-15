@@ -610,13 +610,11 @@ export async function getRecommendedJobs(
         j.start_time,
         j.end_time,
         j.compensation,
+        j.is_urgent,
+        j.requires_experience,
+        j.created_at,
         ep.name AS restaurant_name,
-        CASE
-          WHEN ep.street IS NOT NULL AND ep.postal_code IS NOT NULL AND ep.city IS NOT NULL
-          THEN CONCAT(ep.street, ', ', ep.postal_code, ' ', ep.city)
-          WHEN ep.city IS NOT NULL THEN ep.city
-          ELSE NULL
-        END AS location
+        ep.city AS location
       FROM job j
       JOIN employer_profile ep ON j.employer_id = ep.id
       WHERE j.role IN (
@@ -628,6 +626,7 @@ export async function getRecommendedJobs(
         SELECT job_id FROM application
         WHERE worker_id = (SELECT id FROM worker_profile WHERE user_id = $1)
       )
+      AND j.status = 'active'
       ORDER BY j.job_date ASC
       `,
       [userId],

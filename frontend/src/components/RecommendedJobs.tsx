@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getRecommendedJobs } from "../api/worker";
-import { getRoleLabel } from "../utils/formatters";
+import { formatCompensation, getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { JobPreview } from "../types";
 import { ChevronRight, Clock, MapPin, SearchX } from "lucide-react";
@@ -13,6 +13,7 @@ function RecommendedJobs() {
   const [isLoading, setIsLoading] = useState(true);
 
   //TODO: Apply button not yet implemented
+  //? Remove apply button
   //TODO: Implement error state
 
   useEffect(() => {
@@ -76,38 +77,43 @@ function RecommendedJobs() {
     <section className="card-list">
       <header className="card-list__header">
         <h2 className="card-list__title">Rekommenderade pass</h2>
-        <Link className="card-list__link" to="/jobb">
+        <Link className="card-list__link" to="/rekommenderade">
           Visa alla
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="card-list__list">
         {jobs.slice(0, 3).map((job) => (
           <li key={job.id} className="card-list__item">
-            <article className="card-list__card">
-              <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
-              <p className="card-list__employer">{job.restaurant_name}</p>
+            <Link to={`/jobb/${job.id}`}>
+              <article className="card-list__card">
+                <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
+                <p className="card-list__employer">{job.restaurant_name}</p>
 
-              <div className="card-list__meta">
-                <Clock size={18} aria-hidden="true" />
-                <p className="card-list__meta-text">
-                  {formatDate(job.job_date)} kl. {formatTime(job.start_time)} -{" "}
-                  {formatTime(job.end_time)}
-                </p>
-              </div>
+                <div className="card-list__meta">
+                  <Clock size={18} aria-hidden="true" />
+                  <p className="card-list__meta-text">
+                    {formatDate(job.job_date)} kl. {formatTime(job.start_time)}{" "}
+                    - {formatTime(job.end_time)}
+                  </p>
+                </div>
 
-              <div className="card-list__meta">
-                <MapPin size={18} aria-hidden="true" />
-                <p className="card-list__meta-text">{job.location}</p>
-              </div>
+                <div className="card-list__meta">
+                  <MapPin size={18} aria-hidden="true" />
+                  <p className="card-list__meta-text">
+                    {job.location ?? "Ingen plats angiven"}
+                  </p>
+                </div>
 
-              <footer className="card-list__card-footer">
-                <p className="card-list__rate">
-                  {Number(job.compensation).toFixed(0)} kr/h
-                </p>
-                <button className="card-list__apply-btn">Ansök</button>
-              </footer>
-            </article>
+                <footer className="card-list__card-footer">
+                  <p className="card-list__rate">
+                    {formatCompensation(job.compensation)}
+                  </p>
+                  <button className="card-list__apply-btn">Ansök</button>
+                </footer>
+              </article>
+            </Link>
           </li>
         ))}
       </ul>
