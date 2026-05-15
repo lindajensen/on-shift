@@ -28,6 +28,7 @@ import SessionExpiredPage from "./pages/SessionExpiredPage";
 
 import WorkerApplicationsPage from "./pages/WorkerApplicationsPage";
 import RecommendedJobsPage from "./pages/RecommendedJobsPage";
+import WorkerRewiewsPage from "./pages/WorkerRewiewsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -71,6 +72,7 @@ const router = createBrowserRouter(
         <Route element={<ProtectedRoute role="worker" />}>
           <Route path="/ansokningar" element={<WorkerApplicationsPage />} />
           <Route path="/rekommenderade" element={<RecommendedJobsPage />} />
+          <Route path="/betyg" element={<WorkerRewiewsPage />} />
         </Route>
       </Route>
     </>,
