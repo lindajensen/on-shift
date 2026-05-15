@@ -221,7 +221,6 @@ export interface EmployerApplicationDetail {
   role: string;
   experience_level: string;
   status: string;
-  rating: number | null;
 }
 
 export interface EmployerApplicationPreview {
@@ -233,6 +232,7 @@ export interface EmployerApplicationPreview {
   start_time: string;
   end_time: string;
   status: string;
+  job_id: number;
 }
 
 export interface EmployerPublicJob {
