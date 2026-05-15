@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import AvailabilityToggle from "./AvailabilityToggle";
-import ApplicationsPreview from "./WorkerApplicationsPreview";
+import WorkerApplicationsPreview from "./WorkerApplicationsPreview";
 import RecommendedJobs from "./RecommendedJobs";
 import LatestReview from "./LatestWorkerReview";
 
@@ -50,7 +50,7 @@ function WorkerDashboard() {
 
         {/* STATCARDS? */}
 
-        <ApplicationsPreview />
+        <WorkerApplicationsPreview />
         <RecommendedJobs />
         <LatestReview />
       </div>

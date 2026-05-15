@@ -36,7 +36,7 @@ function SavedWorkersPreview() {
       <section className="card-list">
         <header className="card-list__header">
           <h2 className="">Sparad personal</h2>
-          <Link className="card-list__link" to="/sparad-personal">
+          <Link className="card-list__link" to="/favoriter">
             Visa alla
             <ChevronRight size={16} aria-hidden="true" />
           </Link>
@@ -57,7 +57,7 @@ function SavedWorkersPreview() {
       <section className="card-list">
         <header className="card-list__header">
           <h2 className="">Sparad personal</h2>
-          <Link className="card-list__link" to="/sparad-personal">
+          <Link className="card-list__link" to="/favoriter">
             Visa alla
             <ChevronRight size={16} aria-hidden="true" />
           </Link>
@@ -81,7 +81,7 @@ function SavedWorkersPreview() {
     <section className="card-list">
       <header className="card-list__header">
         <h2 className="">Sparad personal</h2>
-        <Link className="card-list__link" to="/sparad-personal">
+        <Link className="card-list__link" to="/favoriter">
           Visa alla
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
