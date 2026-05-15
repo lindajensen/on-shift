@@ -8,7 +8,6 @@ import {
 import { EmployerApplicationDetail } from "../types";
 import {
   MoreHorizontal,
-  Star,
   User2,
   FileText,
   MessageCircle,
@@ -44,6 +43,7 @@ function ApplicationsSection({
   //TODO: Anställ button
   //TODO: Message button
   //TODO: Decline button
+  //? Ta bort rating från kortet
 
   const applicationList = applications ?? [];
 
@@ -74,19 +74,6 @@ function ApplicationsSection({
                       <h3 className="application-card__name">
                         {application.worker_name}
                       </h3>
-
-                      {application.rating && (
-                        <div className="application-card__rating-container">
-                          <Star
-                            className="rating-star"
-                            size={18}
-                            aria-hidden="true"
-                          />
-                          <span className="application-card__rating">
-                            {application.rating.toFixed(1)}
-                          </span>
-                        </div>
-                      )}
 
                       <button
                         aria-label="Fler alternativ"
