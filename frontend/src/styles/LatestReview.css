@@ -14,11 +14,11 @@
   gap: 0.2rem;
 }
 
-/* .latest-review__list {
-  display: flex;
-  flex-direction: column;
+.latest-review__list {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.5rem;
-} */
+}
 
 .latest-review__card {
   border: 2px solid var(--color-border);
@@ -59,4 +59,10 @@
 
 .latest-review__skeleton {
   height: 120px;
+}
+
+@media (min-width: 768px) {
+  .latest-review__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
