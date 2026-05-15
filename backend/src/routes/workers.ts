@@ -11,6 +11,7 @@ import {
   toggleAvailability,
   getWorkerProfile,
   getWorkerApplications,
+  deleteApplication,
   getRecommendedJobs,
   getWorkerReviews,
   getSavedJobs,
@@ -46,6 +47,7 @@ router.post("/saved-jobs", authenticateToken, saveJob);
 router.delete("/saved-jobs", authenticateToken, unsaveJob);
 
 router.get("/applications", authenticateToken, getWorkerApplications);
+router.delete("/applications/:id", authenticateToken, deleteApplication);
 
 router.get("/recommended-jobs", authenticateToken, getRecommendedJobs);
 

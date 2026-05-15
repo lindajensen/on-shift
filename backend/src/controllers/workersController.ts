@@ -696,6 +696,7 @@ export async function getSavedJobs(
   response: Response,
 ): Promise<void> {
   const user = request.user;
+
   if (!user) {
     response.status(401).json({ message: "Åtkomst nekad" });
 
@@ -934,6 +935,44 @@ export async function unsaveEmployer(
     );
 
     response.status(200).json({ message: "Restaurangen har tagits bort" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Deletes a pending application of the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the delete operation.
+ */
+export async function deleteApplication(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    await pool.query(
+      `
+      DELETE FROM application
+      WHERE id = $1
+      AND worker_id = (SELECT id FROM worker_profile WHERE user_id = $2)
+      AND status = 'pending'
+      `,
+      [id, userId],
+    );
+
+    response.status(200).json({ message: "Ansökningen har tagits bort" });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
