@@ -28,11 +28,11 @@ import SessionExpiredPage from "./pages/SessionExpiredPage";
 
 import WorkerApplicationsPage from "./pages/WorkerApplicationsPage";
 import RecommendedJobsPage from "./pages/RecommendedJobsPage";
-import WorkerRewiewsPage from "./pages/WorkerRewiewsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
+import ReviewsPage from "./pages/ReviewsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,6 +56,7 @@ const router = createBrowserRouter(
           <Route path="/hem" element={<Dashboard />} />
           <Route path="/min-profil" element={<ProfilePage />} />
           <Route path="/favoriter" element={<FavouritesPage />} />
+          <Route path="/betyg" element={<ReviewsPage />} />
         </Route>
 
         {/* Employer Routes  */}
@@ -72,7 +73,6 @@ const router = createBrowserRouter(
         <Route element={<ProtectedRoute role="worker" />}>
           <Route path="/ansokningar" element={<WorkerApplicationsPage />} />
           <Route path="/rekommenderade" element={<RecommendedJobsPage />} />
-          <Route path="/betyg" element={<WorkerRewiewsPage />} />
         </Route>
       </Route>
     </>,
