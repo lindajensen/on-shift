@@ -114,8 +114,8 @@ function EmployerProfilePage() {
   }
 
   function handleLogout() {
-    navigate("/");
     logout();
+    navigate("/");
   }
 
   async function handleSaveContact(contactData: EditContactFormData) {

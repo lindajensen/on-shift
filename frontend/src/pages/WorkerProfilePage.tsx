@@ -126,8 +126,8 @@ function WorkerProfilePage() {
   }
 
   function handleLogout() {
-    navigate("/");
     logout();
+    navigate("/");
   }
 
   async function handleSaveContact(contactData: WorkerContactFormData) {

@@ -13,8 +13,8 @@ function AuthHeader() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    navigate("/");
     logout();
+    navigate("/");
   }
 
   useEffect(() => {
