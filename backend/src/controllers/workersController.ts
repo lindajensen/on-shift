@@ -610,6 +610,8 @@ export async function getRecommendedJobs(
         j.start_time,
         j.end_time,
         j.compensation,
+        j.is_urgent,
+        j.requires_experience,
         j.created_at,
         ep.name AS restaurant_name,
         ep.city AS location
