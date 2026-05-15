@@ -26,6 +26,8 @@ import WorkerProfilePage from "./pages/WorkerProfilePage";
 import EmployerJobsPage from "./pages/EmployerJobsPage";
 import SessionExpiredPage from "./pages/SessionExpiredPage";
 
+import WorkerApplicationsPage from "./pages/WorkerApplicationsPage";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
@@ -65,7 +67,9 @@ const router = createBrowserRouter(
         </Route>
 
         {/* Worker Routes  */}
-        <Route element={<ProtectedRoute role="worker" />}></Route>
+        <Route element={<ProtectedRoute role="worker" />}>
+          <Route path="/ansokningar" element={<WorkerApplicationsPage />} />
+        </Route>
       </Route>
     </>,
   ),

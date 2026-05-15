@@ -24,3 +24,27 @@ export async function getAllApplications(): Promise<
 
   return response.json();
 }
+
+/**
+ * Deletes an application by its ID.
+ * @param id - The ID of the application to delete.
+ * @returns A promise that resolves when the application is deleted.
+ * @throws An error if the request fails.
+ */
+export async function deleteApplication(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/workers/applications/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort ansökan. Försök igen senare.");
+  }
+}
