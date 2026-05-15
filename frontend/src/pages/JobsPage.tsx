@@ -127,7 +127,6 @@ function JobsPage() {
   }
 
   //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
-  //TODO: Wrap /jobs in dynamic(?) layout based on if user is logged in or not
   //TODO: Vad göra med jobb där datum är passerat?
 
   if (isLoading) return <LoadingSpinner subtitle="Hämtar lediga pass" />;
