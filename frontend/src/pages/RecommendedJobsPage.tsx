@@ -22,8 +22,6 @@ function RecommendedJobsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //TODO: Loading, error and empty
-
   useEffect(() => {
     async function fetchRecommendedJobs() {
       try {
