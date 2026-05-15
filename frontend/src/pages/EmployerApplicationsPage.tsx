@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  getRoleLabel,
-  getExperienceLevel,
-  getStatusLabel,
-} from "../utils/formatters";
-import { EmployerApplicationDetail } from "../types";
+import { getJobApplications } from "../api/employer";
+import { getRoleLabel, getStatusLabel } from "../utils/formatters";
+import { formatDate, formatTime } from "../utils/date";
+import ErrorMessage from "../components/ErrorMessage";
+import { EmployerApplicationPreview } from "../types";
 import {
   MoreHorizontal,
+  ExternalLink,
   User2,
   FileText,
   MessageCircle,
@@ -16,56 +16,96 @@ import {
   ClipboardX,
 } from "lucide-react";
 
-import "../styles/ApplicationsSection.css";
+import "../styles/EmployerApplicationsPage.css";
 
-interface ApplicationsSectionProps {
-  applications: EmployerApplicationDetail[] | null;
-  openMenuId: number | null;
-  setOpenMenuId: (id: number | null) => void;
-  onOpen: () => void;
-}
+function EmployerApplicationsPage() {
+  const [applications, setApplications] = useState<
+    EmployerApplicationPreview[]
+  >([]);
 
-function ApplicationsSection({
-  applications,
-  openMenuId,
-  setOpenMenuId,
-  onOpen,
-}: ApplicationsSectionProps) {
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchApplications() {
+      try {
+        const data = await getJobApplications();
+        setApplications(data);
+      } catch (error) {
+        console.error("Kunde inte hämta ansökningar", error);
+        setError("Vi kunde inte hämta dina ansökningar. Försök igen senare.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchApplications();
+  }, []);
+
   useEffect(() => {
     function handleClickOutside() {
       setOpenMenuId(null);
     }
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
-  }, [setOpenMenuId]);
+  }, []);
 
   //TODO: CV button <a href={cv_url} target="_blank">
   //TODO: Anställ button
   //TODO: Message button
   //TODO: Decline button
-  //? Ta bort rating från kortet
 
-  const applicationList = applications ?? [];
+  if (isLoading) {
+    return (
+      <section className="applications-page">
+        <div className="section__inner">
+          <header className="applications-page__header">
+            <h1 className="applications-page__title">Mina ansökningar</h1>
+          </header>
+          <ul>
+            {[1, 2, 3].map((i) => (
+              <li key={i}>
+                <div className="application-skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
 
-  return (
-    <>
-      <header className="applications-section__header">
-        <h2 className="applications-section__title">Ansökningar</h2>
-        <p className="applications-section__count">{applicationList.length}</p>
-      </header>
+  if (error) return <ErrorMessage message={error} />;
 
-      {applicationList.length == 0 ? (
-        <div className="empty">
-          <div className="empty__icon">
-            <ClipboardX size={18} aria-hidden="true" />
-          </div>
-          <div>
-            <p className="empty__text">Du har inga ansökningar än.</p>
+  if (applications.length === 0) {
+    return (
+      <section className="applications-page">
+        <div className="section__inner">
+          <header className="applications-page__header">
+            <h1 className="applications-page__title">Mina ansökningar</h1>
+          </header>
+          <div className="empty">
+            <div className="empty__icon">
+              <ClipboardX size={18} aria-hidden="true" />
+            </div>
+            <div>
+              <p className="empty__text">Du har inga ansökningar än.</p>
+            </div>
           </div>
         </div>
-      ) : (
-        <ul className="application-list">
-          {applicationList.map((application) => (
+      </section>
+    );
+  }
+
+  return (
+    <section className="applications-page">
+      <div className="section__inner">
+        <header className="applications-page__header">
+          <h1 className="applications-page__title">Mina ansökningar</h1>
+        </header>
+
+        <ul>
+          {applications.map((application) => (
             <li key={application.id} className="application-item">
               <article className="application-card">
                 <div className="application-card__row">
@@ -80,9 +120,6 @@ function ApplicationsSection({
                         className="application-card__more"
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (openMenuId !== application.id) {
-                            onOpen();
-                          }
                           setOpenMenuId(
                             openMenuId === application.id
                               ? null
@@ -94,9 +131,11 @@ function ApplicationsSection({
                       </button>
                     </div>
 
-                    <p className="application-card__meta">
+                    <p className="preview__meta">
                       {getRoleLabel(application.role)} ·{" "}
-                      {getExperienceLevel(application.experience_level)}
+                      {formatDate(application.job_date)} kl.{" "}
+                      {formatTime(application.start_time)} -{" "}
+                      {formatTime(application.end_time)}
                     </p>
                   </div>
                 </div>
@@ -111,6 +150,15 @@ function ApplicationsSection({
                 {openMenuId === application.id && (
                   <div className="application-card__menu">
                     <ul className="application-card__menu-list">
+                      <li className="application-card__menu-item">
+                        <ExternalLink size={16} aria-hidden="true" />
+                        <Link
+                          to={`/mina-annonser/${application.job_id}`}
+                          className="application-card__menu-btn"
+                        >
+                          Gå till annons
+                        </Link>
+                      </li>
                       <li className="application-card__menu-item">
                         <User2 size={16} aria-hidden="true" />
                         <Link
@@ -151,9 +199,9 @@ function ApplicationsSection({
             </li>
           ))}
         </ul>
-      )}
-    </>
+      </div>
+    </section>
   );
 }
 
-export default ApplicationsSection;
+export default EmployerApplicationsPage;

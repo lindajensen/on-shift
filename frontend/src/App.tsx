@@ -20,19 +20,19 @@ import EmployerJobDetailsPage from "./pages/EmployerJobDetailsPage";
 import FindWorkersPage from "./pages/FindWorkersPage";
 import ProfilePage from "./pages/ProfilePage";
 import FavouritesPage from "./pages/FavouritesPage";
+import ReviewsPage from "./pages/ReviewsPage";
+import ApplicationsPage from "./pages/ApplicationsPage";
 
 import EmployerProfilePage from "./pages/EmployerProfilePage";
 import WorkerProfilePage from "./pages/WorkerProfilePage";
 import EmployerJobsPage from "./pages/EmployerJobsPage";
 import SessionExpiredPage from "./pages/SessionExpiredPage";
 
-import WorkerApplicationsPage from "./pages/WorkerApplicationsPage";
 import RecommendedJobsPage from "./pages/RecommendedJobsPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
-import ReviewsPage from "./pages/ReviewsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +57,7 @@ const router = createBrowserRouter(
           <Route path="/min-profil" element={<ProfilePage />} />
           <Route path="/favoriter" element={<FavouritesPage />} />
           <Route path="/betyg" element={<ReviewsPage />} />
+          <Route path="/ansokningar" element={<ApplicationsPage />} />
         </Route>
 
         {/* Employer Routes  */}
@@ -71,7 +72,6 @@ const router = createBrowserRouter(
 
         {/* Worker Routes  */}
         <Route element={<ProtectedRoute role="worker" />}>
-          <Route path="/ansokningar" element={<WorkerApplicationsPage />} />
           <Route path="/rekommenderade" element={<RecommendedJobsPage />} />
         </Route>
       </Route>

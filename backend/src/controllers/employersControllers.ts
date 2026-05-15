@@ -400,9 +400,10 @@ export async function getEmployerApplications(
   try {
     const applications = await pool.query(
       `
-      SELECT
+     SELECT
         a.id,
         a.status,
+        a.job_id,
         j.role,
         j.job_date,
         j.start_time,

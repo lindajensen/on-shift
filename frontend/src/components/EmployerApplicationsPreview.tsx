@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getJobApplications } from "../api/employer";
-import { getStatusLabel } from "../utils/formatters";
+import { getStatusLabel, getRoleLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import { EmployerApplicationPreview } from "../types";
 import { ChevronRight, ClipboardX } from "lucide-react";
@@ -31,7 +31,6 @@ function EmployerApplicationsPreview() {
 
   //TODO: Implement error state
   //TODO: Make cards clickable?
-  //TODO: Avatar?
 
   if (isLoading) {
     return (
@@ -92,6 +91,7 @@ function EmployerApplicationsPreview() {
                 <div className="preview__info">
                   <h3 className="preview__name">{application.worker_name}</h3>
                   <p className="preview__meta">
+                    {getRoleLabel(application.role)} ·{" "}
                     {formatDate(application.job_date)} kl.{" "}
                     {formatTime(application.start_time)} -{" "}
                     {formatTime(application.end_time)}
