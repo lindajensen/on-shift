@@ -74,6 +74,7 @@ function LatestWorkerReview() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="latest-review__list">
         {reviews.slice(0, 1).map((review) => (
           <li key={review.id} className="latest-review__item">
@@ -82,9 +83,9 @@ function LatestWorkerReview() {
                 <h3 className="latest-review__card-employer">
                   {review.reviewer_name}
                 </h3>
-                <p className="latest-review__card-date">
+                {/* <p className="latest-review__card-date">
                   {formatDateWithYear(review.created_at)}
-                </p>
+                </p> */}
               </div>
 
               <div className="latest-review__card-rating">
