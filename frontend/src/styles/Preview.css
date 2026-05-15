@@ -50,3 +50,38 @@
   height: 72px;
   margin-bottom: 0.5rem;
 }
+
+/* Preview card with footer */
+.preview__card--with-footer {
+  flex-direction: column;
+}
+
+.preview__card-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.preview__card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.preview__delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  gap: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.preview__delete-btn:hover {
+  color: var(--color-error);
+}
+
+.preview__delete-btn:disabled {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
