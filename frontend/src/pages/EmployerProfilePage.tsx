@@ -58,9 +58,11 @@ function EmployerProfilePage() {
 
         setProfile(data);
 
+        const jobs = await getEmployerJobListings(data.id);
+        setEmployerJobListings(jobs);
+
         if (user?.role === "worker") {
           const savedEmployers = await getSavedEmployers();
-
           setIsSaved(
             savedEmployers.some((employer) => employer.id === data.id),
           );
@@ -76,24 +78,53 @@ function EmployerProfilePage() {
     fetchEmployerProfile();
   }, [profileId, id, user]);
 
-  useEffect(() => {
-    async function fetchEmployerJobListings() {
-      try {
-        const data = id
-          ? await getEmployerProfileById(Number(id))
-          : await getEmployerProfileByUserId();
+  // useEffect(() => {
+  //   if (!profileId) return;
 
-        setProfile(data);
+  //   async function fetchEmployerProfile() {
+  //     try {
+  //       const data = id
+  //         ? await getEmployerProfileById(Number(id))
+  //         : await getEmployerProfileByUserId();
 
-        const jobs = await getEmployerJobListings(data.id);
-        setEmployerJobListings(jobs);
-      } catch (error) {
-        console.error("Kunde inte hämta pass", error);
-      }
-    }
+  //       setProfile(data);
 
-    fetchEmployerJobListings();
-  }, [id]);
+  //       if (user?.role === "worker") {
+  //         const savedEmployers = await getSavedEmployers();
+
+  //         setIsSaved(
+  //           savedEmployers.some((employer) => employer.id === data.id),
+  //         );
+  //       }
+  //     } catch (error) {
+  //       console.error("Kunde inte hämta profil", error);
+  //       setError("Vi kunde inte hämta profilen. Försök igen senare.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+
+  //   fetchEmployerProfile();
+  // }, [profileId, id, user]);
+
+  // useEffect(() => {
+  //   async function fetchEmployerJobListings() {
+  //     try {
+  //       const data = id
+  //         ? await getEmployerProfileById(Number(id))
+  //         : await getEmployerProfileByUserId();
+
+  //       setProfile(data);
+
+  //       const jobs = await getEmployerJobListings(data.id);
+  //       setEmployerJobListings(jobs);
+  //     } catch (error) {
+  //       console.error("Kunde inte hämta pass", error);
+  //     }
+  //   }
+
+  //   fetchEmployerJobListings();
+  // }, [id]);
 
   async function handleSave(id: number) {
     try {
