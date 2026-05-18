@@ -19,6 +19,8 @@ import {
   closeJobListing,
   reopenJobListing,
   getPublicJobListings,
+  hireApplicant,
+  rejectApplicant,
 } from "../controllers/employersControllers";
 import { authenticateToken } from "../middleware/auth";
 
@@ -52,5 +54,8 @@ router.post("/saved-workers", authenticateToken, saveWorker);
 router.delete("/saved-workers", authenticateToken, unsaveWorker);
 
 router.get("/reviews", authenticateToken, getEmployerReviews);
+
+router.patch("/applications/:id/hire", authenticateToken, hireApplicant);
+router.patch("/applications/:id/reject", authenticateToken, rejectApplicant);
 
 export default router;
