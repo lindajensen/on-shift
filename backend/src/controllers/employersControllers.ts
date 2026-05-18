@@ -600,6 +600,46 @@ export async function getEmployerReviews(
 }
 
 /**
+ * Fetches the 3 most recent reviews of a restaurant by the restaurant's employer profile ID.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON array of the restaurant's reviews.
+ */
+export async function getEmployerReviewsById(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const { id } = request.params;
+
+  try {
+    const reviews = await pool.query(
+      `
+         SELECT
+        r.id,
+        r.rating,
+        r.comment,
+        r.created_at,
+        wp.name AS reviewer_name,
+        j.role,
+        j.job_date
+      FROM review r
+      JOIN worker_profile wp ON r.reviewer_id = wp.user_id
+      JOIN job j ON r.job_id = j.id
+      JOIN employer_profile ep ON j.employer_id = ep.id
+      WHERE ep.id = $1
+      ORDER BY r.created_at DESC
+      LIMIT 3
+      `,
+      [id],
+    );
+    response.status(200).json(reviews.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
  * Creates a new job listing for the currently logged in employer.
  * @param request - The request object containing the job data.
  * @param response - The response object.

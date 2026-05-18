@@ -23,7 +23,7 @@ function EmployerJobListings({ jobs, employerId }: EmployerJobListingsProps) {
   }
 
   return (
-    <div className="employer-jobs">
+    <section className="employer-jobs">
       <header className="employer-jobs__header">
         <h2 className="employer-jobs__title">Kommande pass</h2>
         {jobs.length > 3 && (
@@ -77,7 +77,7 @@ function EmployerJobListings({ jobs, employerId }: EmployerJobListingsProps) {
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 

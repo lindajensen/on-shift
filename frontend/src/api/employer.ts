@@ -239,6 +239,33 @@ export async function getEmployerReviews(): Promise<Review[]> {
 }
 
 /**
+ * Fetches all reviews for an employer by their ID.
+ * @param workerId - The ID of the employer whose reviews to fetch.
+ * @returns A promise that resolves to an array of reviews.
+ * @throws An error if the request fails.
+ */
+export async function getEmployerReviewsById(
+  employerId: number,
+): Promise<Review[]> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/profile/${employerId}/reviews`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta betyg. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
  * Fetches all job listings for a given employer.
  * @param employerId - The ID of the employer to fetch job listings for.
  * @returns A promise that resolves to an array of job listings.

@@ -37,6 +37,7 @@ import EditWorkerExperienceModal from "../components/modals/EditWorkerExperience
 import EditWorkerEducationModal from "../components/modals/EditWorkerEducationModal";
 import EditWorkerRolesModal from "../components/modals/EditWorkerRolesModal";
 import EditWorkerAvailabilityModal from "../components/modals/EditWorkerAvailabilityModal";
+import WorkerReviewsPreview from "../components/WorkerReviewsPreview";
 import ErrorMessage from "../components/ErrorMessage";
 
 import {
@@ -226,7 +227,6 @@ function WorkerProfilePage() {
   }
 
   //TODO: CV section (upload only is isOwner)
-  //? Var lägga sparade employers och jobb?
 
   if (isLoading) {
     return (
@@ -555,6 +555,13 @@ function WorkerProfilePage() {
             >
               Logga ut
             </button>
+          )}
+
+          {user?.role === "employer" && (
+            <>
+              <div className="divider"></div>
+              <WorkerReviewsPreview workerId={Number(id)} />
+            </>
           )}
         </div>
       </section>

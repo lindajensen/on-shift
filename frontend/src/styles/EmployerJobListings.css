@@ -1,3 +1,7 @@
+.employer-jobs {
+  padding-block: 0.5rem;
+}
+
 .employer-jobs__header {
   display: flex;
   justify-content: space-between;
