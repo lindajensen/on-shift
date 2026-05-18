@@ -2,3 +2,26 @@
   height: 90px;
   margin-bottom: 0.5rem;
 }
+
+.application-card__menu-item:has(.application-card__menu-btn:disabled) {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.application-card__menu-item--danger:has(
+  .application-card__menu-btn--danger:disabled
+) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.application-card__menu-item:has(.application-card__menu-btn:disabled):not(
+    .application-card__menu-item--danger
+  ) {
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.application-card__menu-btn:disabled {
+  cursor: not-allowed;
+}
