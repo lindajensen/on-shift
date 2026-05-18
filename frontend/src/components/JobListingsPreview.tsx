@@ -84,31 +84,34 @@ function JobListingsPreview() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="preview__list">
         {activeJobListings.slice(0, 3).map((jobListing) => (
           <li key={jobListing.id} className="preview__item">
-            <article className="preview__card">
-              <div className="preview__info">
-                <h3 className="preview__name">
-                  {getRoleLabel(jobListing.role)}
-                </h3>
-                <p className="preview__meta">
-                  {formatDate(jobListing.job_date)} kl.{" "}
-                  {formatTime(jobListing.start_time)} -{" "}
-                  {formatTime(jobListing.end_time)}
-                </p>
-              </div>
-              <div className="preview__status">
-                <p className="preview__status-count">
-                  {jobListing.application_count}
-                </p>
-                <p className="preview__status-label">
-                  {parseInt(jobListing.application_count) === 1
-                    ? "ansökning"
-                    : "ansökningar"}
-                </p>
-              </div>
-            </article>
+            <Link to={`/mina-annonser/${jobListing.id}`}>
+              <article className="preview__card">
+                <div className="preview__info">
+                  <h3 className="preview__name">
+                    {getRoleLabel(jobListing.role)}
+                  </h3>
+                  <p className="preview__meta">
+                    {formatDate(jobListing.job_date)} kl.{" "}
+                    {formatTime(jobListing.start_time)} -{" "}
+                    {formatTime(jobListing.end_time)}
+                  </p>
+                </div>
+                <div className="preview__status">
+                  <p className="preview__status-count">
+                    {jobListing.application_count}
+                  </p>
+                  <p className="preview__status-label">
+                    {parseInt(jobListing.application_count) === 1
+                      ? "ansökning"
+                      : "ansökningar"}
+                  </p>
+                </div>
+              </article>
+            </Link>
           </li>
         ))}
       </ul>
