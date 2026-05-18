@@ -5,6 +5,8 @@ import {
   updateJobListing,
   closeJobListing,
   reopenJobListing,
+  hireApplicant,
+  rejectApplicant,
 } from "../api/employer";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
 import { EmployerJobDetails, JobFormData } from "../types";
@@ -86,6 +88,37 @@ function EmployerJobDetailsPage() {
       setIsMenuOpen(false);
     } catch (error) {
       console.error("Kunde inte återaktivera annonsen", error);
+    }
+  }
+
+  async function handleHire(applicationId: number) {
+    try {
+      await hireApplicant(applicationId);
+      const updatedJob = await getJobDetails(Number(id));
+      setJob(updatedJob);
+    } catch (error) {
+      console.error("Kunde inte godkänna ansökan", error);
+    }
+  }
+
+  async function handleReject(id: number) {
+    try {
+      await rejectApplicant(id);
+
+      setJob((prev) =>
+        prev
+          ? {
+              ...prev,
+              applications: prev.applications.map((application) =>
+                application.id === id
+                  ? { ...application, status: "rejected" }
+                  : application,
+              ),
+            }
+          : prev,
+      );
+    } catch (error) {
+      console.error("Kunde inte neka ansökan", error);
     }
   }
 
@@ -197,6 +230,8 @@ function EmployerJobDetailsPage() {
             openMenuId={openMenuId}
             setOpenMenuId={setOpenMenuId}
             onOpen={() => setIsMenuOpen(false)}
+            onHire={handleHire}
+            onReject={handleReject}
           />
         </div>
       </section>

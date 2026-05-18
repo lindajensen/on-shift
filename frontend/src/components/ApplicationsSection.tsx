@@ -23,6 +23,8 @@ interface ApplicationsSectionProps {
   openMenuId: number | null;
   setOpenMenuId: (id: number | null) => void;
   onOpen: () => void;
+  onHire: (id: number) => void;
+  onReject: (id: number) => void;
 }
 
 function ApplicationsSection({
@@ -30,6 +32,8 @@ function ApplicationsSection({
   openMenuId,
   setOpenMenuId,
   onOpen,
+  onHire,
+  onReject,
 }: ApplicationsSectionProps) {
   useEffect(() => {
     function handleClickOutside() {
@@ -40,10 +44,7 @@ function ApplicationsSection({
   }, [setOpenMenuId]);
 
   //TODO: CV button <a href={cv_url} target="_blank">
-  //TODO: Anställ button
   //TODO: Message button
-  //TODO: Decline button
-  //? Ta bort rating från kortet
 
   const applicationList = applications ?? [];
 
@@ -134,13 +135,21 @@ function ApplicationsSection({
                       </li>
                       <li className="application-card__menu-item">
                         <ChefHat size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn">
+                        <button
+                          className="application-card__menu-btn"
+                          disabled={application.status !== "pending"}
+                          onClick={() => onHire(application.id)}
+                        >
                           Anställ
                         </button>
                       </li>
                       <li className="application-card__menu-item application-card__menu-item--danger">
                         <Ban size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn application-card__menu-btn--danger">
+                        <button
+                          className="application-card__menu-btn application-card__menu-btn--danger"
+                          disabled={application.status !== "pending"}
+                          onClick={() => onReject(application.id)}
+                        >
                           Tacka nej
                         </button>
                       </li>
