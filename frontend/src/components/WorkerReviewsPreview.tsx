@@ -50,7 +50,7 @@ function WorkerReviewsPreview({ workerId }: WorkerReviewsPreviewProps) {
       ) : (
         <ul className="reviews-preview__list">
           {reviews.map((review) => (
-            <li className="reviews-preview__item">
+            <li key={review.id} className="reviews-preview__item">
               <ReviewCard review={review} />
             </li>
           ))}

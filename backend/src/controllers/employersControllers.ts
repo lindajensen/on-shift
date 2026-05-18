@@ -895,3 +895,100 @@ export async function getPublicJobListings(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Hires a worker by setting the application status to 'hired'.
+ * Also updates the job status to 'filled' if all available slots are taken.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function hireApplicant(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  try {
+    await pool.query(
+      `
+      UPDATE application
+      SET status = 'hired'
+      WHERE id = $1
+      AND job_id IN (
+        SELECT id FROM job
+        WHERE employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      )
+      `,
+      [id, user.id],
+    );
+
+    await pool.query(
+      `
+      UPDATE job
+      SET status = CASE
+        WHEN (
+          SELECT COUNT(*) FROM application
+          WHERE job_id = (SELECT job_id FROM application WHERE id = $1)
+          AND status = 'hired'
+        ) >= available_slots
+        THEN 'filled'
+        ELSE status
+      END
+      WHERE id = (SELECT job_id FROM application WHERE id = $1)
+      AND employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      `,
+      [id, user.id],
+    );
+
+    response.status(200).json({ message: "Ansökan godkänd" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Rejects a worker by setting the application status to 'rejected'.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function rejectApplicant(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  try {
+    await pool.query(
+      `
+      UPDATE application
+      SET status = 'rejected'
+      WHERE id = $1
+      AND job_id IN (
+        SELECT id FROM job
+        WHERE employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      )
+      `,
+      [id, user.id],
+    );
+
+    response.status(200).json({ message: "Ansökan nekad" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
