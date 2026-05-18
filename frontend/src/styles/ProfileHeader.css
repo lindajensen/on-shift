@@ -4,6 +4,10 @@
   margin-bottom: 1rem;
 }
 
+.profile-header__name {
+  margin-bottom: 0;
+}
+
 .profile-header__avatar {
   width: 3.5rem;
   height: 3.5rem;
