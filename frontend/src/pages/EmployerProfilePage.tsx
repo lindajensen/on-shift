@@ -23,6 +23,8 @@ import Modal from "../components/modals/Modal";
 import EditEmployerContactModal from "../components/modals/EditEmployerContactModal";
 import EditEmployerAboutModal from "../components/modals/EditEmployerAboutModal";
 import EmployerJobListings from "../components/EmployerJobListings";
+import EmployerReviewsPreview from "../components/EmployerReviewsPreview";
+
 import { Edit, Mail, Phone, MapPin } from "lucide-react";
 
 import "../styles/ProfilePage.css";
@@ -77,54 +79,6 @@ function EmployerProfilePage() {
 
     fetchEmployerProfile();
   }, [profileId, id, user]);
-
-  // useEffect(() => {
-  //   if (!profileId) return;
-
-  //   async function fetchEmployerProfile() {
-  //     try {
-  //       const data = id
-  //         ? await getEmployerProfileById(Number(id))
-  //         : await getEmployerProfileByUserId();
-
-  //       setProfile(data);
-
-  //       if (user?.role === "worker") {
-  //         const savedEmployers = await getSavedEmployers();
-
-  //         setIsSaved(
-  //           savedEmployers.some((employer) => employer.id === data.id),
-  //         );
-  //       }
-  //     } catch (error) {
-  //       console.error("Kunde inte hämta profil", error);
-  //       setError("Vi kunde inte hämta profilen. Försök igen senare.");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   }
-
-  //   fetchEmployerProfile();
-  // }, [profileId, id, user]);
-
-  // useEffect(() => {
-  //   async function fetchEmployerJobListings() {
-  //     try {
-  //       const data = id
-  //         ? await getEmployerProfileById(Number(id))
-  //         : await getEmployerProfileByUserId();
-
-  //       setProfile(data);
-
-  //       const jobs = await getEmployerJobListings(data.id);
-  //       setEmployerJobListings(jobs);
-  //     } catch (error) {
-  //       console.error("Kunde inte hämta pass", error);
-  //     }
-  //   }
-
-  //   fetchEmployerJobListings();
-  // }, [id]);
 
   async function handleSave(id: number) {
     try {
@@ -320,6 +274,13 @@ function EmployerProfilePage() {
                 jobs={employerJobListings}
                 employerId={Number(id)}
               />
+            </>
+          )}
+
+          {user?.role === "worker" && (
+            <>
+              <div className="divider"></div>
+              <EmployerReviewsPreview employerId={Number(id)} />
             </>
           )}
         </div>
