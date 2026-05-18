@@ -475,3 +475,51 @@ export async function deleteJobListing(id: number): Promise<void> {
     throw new Error("Kunde inte ta bort annonsen. Försök igen senare.");
   }
 }
+
+/**
+ * Hires an applicant for a job listing by the application ID, changing the status of the application to "hired".
+ * @param id - The ID of the application to hire.
+ * @returns A promise that resolves when the applicant is hired.
+ * @throws An error if the request fails.
+ */
+export async function hireApplicant(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/applications/${id}/hire`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte godkänna ansökan. Försök igen senare.");
+  }
+}
+
+/**
+ * Rejects an applicant for a job listing by the application ID, changing the status of the application to "rejected".
+ * @param id - The ID of the application to reject.
+ * @returns A promise that resolves when the applicant is rejected.
+ * @throws An error if the request fails.
+ */
+export async function rejectApplicant(id: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/applications/${id}/reject`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte neka ansökan. Försök igen senare.");
+  }
+}
