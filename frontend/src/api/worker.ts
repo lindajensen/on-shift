@@ -305,6 +305,33 @@ export async function getWorkerReviews(): Promise<Review[]> {
 }
 
 /**
+ * Fetches all reviews for a worker by their ID.
+ * @param workerId - The ID of the worker whose reviews to fetch.
+ * @returns A promise that resolves to an array of reviews.
+ * @throws An error if the request fails.
+ */
+export async function getWorkerReviewsById(
+  workerId: number,
+): Promise<Review[]> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/workers/profile/${workerId}/reviews`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta betyg. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
  * Fetches the list of jobs that the currently logged in worker has saved.
  * @returns A promise that resolves to an array of saved job previews.
  * @throws An error if the request fails.
