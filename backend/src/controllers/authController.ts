@@ -162,7 +162,7 @@ export async function loginUser(
         name: user.name,
       },
       jwtSecret,
-      { expiresIn: "7d" },
+      { expiresIn: "8h" },
     );
 
     response.status(200).json({
