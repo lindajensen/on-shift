@@ -14,6 +14,7 @@ import {
   deleteApplication,
   getRecommendedJobs,
   getWorkerReviews,
+  getWorkerReviewsById,
   getSavedJobs,
   saveJob,
   unsaveJob,
@@ -30,6 +31,7 @@ router.get("/me", authenticateToken, getWorkerProfile);
 
 router.get("/profile/me", authenticateToken, getWorkerProfileByUserId);
 router.get("/profile/:id", getWorkerProfileById);
+router.get("/profile/:id/reviews", getWorkerReviewsById);
 
 router.patch("/profile/contact", authenticateToken, updateWorkerContact);
 router.patch("/profile/bio", authenticateToken, updateWorkerBio);
