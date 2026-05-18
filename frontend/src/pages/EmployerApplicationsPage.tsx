@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getJobApplications } from "../api/employer";
+import {
+  getJobApplications,
+  hireApplicant,
+  rejectApplicant,
+} from "../api/employer";
 import { getRoleLabel, getStatusLabel } from "../utils/formatters";
 import { formatDate, formatTime } from "../utils/date";
 import ErrorMessage from "../components/ErrorMessage";
@@ -51,10 +55,40 @@ function EmployerApplicationsPage() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  async function handleHire(id: number) {
+    try {
+      await hireApplicant(id);
+
+      setApplications((prev) =>
+        prev.map((application) =>
+          application.id === id
+            ? { ...application, status: "hired" }
+            : application,
+        ),
+      );
+    } catch (error) {
+      console.error("Kunde inte godkänna ansökan", error);
+    }
+  }
+
+  async function handleReject(id: number) {
+    try {
+      await rejectApplicant(id);
+
+      setApplications((prev) =>
+        prev.map((application) =>
+          application.id === id
+            ? { ...application, status: "rejected" }
+            : application,
+        ),
+      );
+    } catch (error) {
+      console.error("Kunde inte neka ansökan", error);
+    }
+  }
+
   //TODO: CV button <a href={cv_url} target="_blank">
-  //TODO: Anställ button
   //TODO: Message button
-  //TODO: Decline button
 
   if (isLoading) {
     return (
@@ -182,13 +216,21 @@ function EmployerApplicationsPage() {
                       </li>
                       <li className="application-card__menu-item">
                         <ChefHat size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn">
+                        <button
+                          className="application-card__menu-btn"
+                          disabled={application.status !== "pending"}
+                          onClick={() => handleHire(application.id)}
+                        >
                           Anställ
                         </button>
                       </li>
                       <li className="application-card__menu-item application-card__menu-item--danger">
                         <Ban size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn application-card__menu-btn--danger">
+                        <button
+                          className="application-card__menu-btn application-card__menu-btn--danger"
+                          disabled={application.status !== "pending"}
+                          onClick={() => handleReject(application.id)}
+                        >
                           Tacka nej
                         </button>
                       </li>
