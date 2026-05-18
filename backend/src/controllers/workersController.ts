@@ -685,7 +685,7 @@ export async function getWorkerReviews(
 }
 
 /**
- * Fetches the reviews of a worker by their worker profile ID.
+ * Fetches the 3 most recent reviews of a worker by their worker profile ID.
  * @param request - The request object.
  * @param response - The response object.
  * @returns A JSON array of the worker's reviews.
