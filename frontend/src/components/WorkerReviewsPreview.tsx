@@ -3,7 +3,7 @@ import { getWorkerReviewsById } from "../api/worker";
 import { Review } from "../types";
 import ReviewCard from "./ReviewCard";
 
-import "../styles/WorkerReviewsPreview.css";
+import "../styles/ReviewsPreview.css";
 
 interface WorkerReviewsPreviewProps {
   workerId: number;
@@ -40,17 +40,17 @@ function WorkerReviewsPreview({ workerId }: WorkerReviewsPreviewProps) {
   }
 
   return (
-    <section className="worker-reviews">
-      <header className="worker-reviews__header">
-        <h2 className="worker-reviews__title">Senaste betygen</h2>
+    <section className="reviews-preview">
+      <header className="reviews-preview__header">
+        <h2 className="reviews-preview__title">Senaste betygen</h2>
       </header>
 
       {reviews.length === 0 ? (
         <p className="empty-text">Inga betyg än.</p>
       ) : (
-        <ul className="worker-reviews__list">
+        <ul className="reviews-preview__list">
           {reviews.map((review) => (
-            <li className="worker-reviews__item">
+            <li className="reviews-preview__item">
               <ReviewCard review={review} />
             </li>
           ))}

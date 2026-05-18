@@ -1,0 +1,17 @@
+.reviews-preview {
+  padding-block: 0.5rem;
+}
+
+.reviews-preview__title {
+  margin-bottom: 0.5rem;
+}
+
+.reviews-preview__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reviews-preview__skeleton {
+  height: 80px;
+}
