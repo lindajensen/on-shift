@@ -13,6 +13,7 @@ import {
   saveWorker,
   unsaveWorker,
   getEmployerReviews,
+  getEmployerReviewsById,
   createJobListing,
   updateJobListing,
   closeJobListing,
@@ -32,6 +33,7 @@ router.patch(
 );
 router.get("/profile/:id", getEmployerProfileById);
 router.get("/profile/:id/jobs", authenticateToken, getPublicJobListings);
+router.get("/profile/:id/reviews", getEmployerReviewsById);
 
 router.get("/jobs", authenticateToken, getJobListings);
 router.post("/jobs", authenticateToken, createJobListing);
