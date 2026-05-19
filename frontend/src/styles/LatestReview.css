@@ -14,6 +14,10 @@
   gap: 0.2rem;
 }
 
+.latest-review__link:hover {
+  color: var(--color-accent);
+}
+
 .latest-review__list {
   display: grid;
   grid-template-columns: 1fr;

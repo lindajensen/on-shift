@@ -15,8 +15,7 @@
 }
 
 .preview__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  color: var(--color-accent);
 }
 
 .preview__list {

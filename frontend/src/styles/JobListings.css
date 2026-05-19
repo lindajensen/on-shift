@@ -17,8 +17,7 @@
 }
 
 .job-listings__see-all:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  color: var(--color-accent);
 }
 
 .job-list {
