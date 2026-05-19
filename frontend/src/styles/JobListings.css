@@ -52,7 +52,9 @@
 }
 
 .job-card__bookmark-btn--saved svg {
-  fill: currentColor;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .job-card__restaurant {

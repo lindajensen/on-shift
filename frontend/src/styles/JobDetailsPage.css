@@ -7,7 +7,8 @@
 }
 
 .job-details__bookmark-btn--saved svg {
-  fill: currentColor;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
 }
 
 .job-details__name {
@@ -21,11 +22,12 @@
 
 .job-details__title-row {
   display: flex;
-  gap: 0.3rem;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .job-details__title-row svg {
-  margin-top: 0.3rem;
+  margin-top: 0;
 }
 
 .job-details .job-card__tags {

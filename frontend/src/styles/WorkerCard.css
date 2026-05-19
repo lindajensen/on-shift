@@ -42,7 +42,8 @@
 }
 
 .worker-card__bookmark-btn--saved svg {
-  fill: currentColor;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
 }
 
 .worker-card__name-skeleton {

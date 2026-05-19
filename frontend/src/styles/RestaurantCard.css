@@ -24,8 +24,8 @@
 }
 
 .restaurant-card__bookmark--saved {
-  fill: var(--color-primary);
-  stroke: var(--color-primary);
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
 }
 
 .restaurant-card__meta {
