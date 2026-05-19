@@ -121,6 +121,7 @@ export interface WorkerApplicationPreview {
   start_time: string;
   end_time: string;
   status: string;
+  has_review: boolean;
 }
 
 export interface SavedEmployer {
