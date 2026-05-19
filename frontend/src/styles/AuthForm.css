@@ -37,7 +37,16 @@
 
 .auth-form__role-btn--active {
   border-color: var(--color-primary);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.auth-form__role-btn--active .auth-form__role-btn-title {
+  color: #fff;
+}
+
+.auth-form__role-btn--active .auth-form__role-btn-subtitle {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .auth-form__role-btn-title {
