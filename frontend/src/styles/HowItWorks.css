@@ -55,13 +55,13 @@
 }
 
 /* Media Queries */
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .how-it-works {
     text-align: center;
   }
 
   .how-it-works__toggle {
-    width: 350px;
+    width: 21.875rem;
     margin: 1rem auto;
   }
 
@@ -77,6 +77,5 @@
 
   .how-it-works__step {
     flex-direction: column;
-    /* text-align: center; */
   }
 }

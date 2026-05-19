@@ -38,6 +38,15 @@
   border: none;
 }
 
+.contact-info__edit-btn:hover,
+.about__edit-btn:hover,
+.experience__edit-btn:hover,
+.education__edit-btn:hover,
+.roles__edit-btn:hover,
+.availability__edit-btn:hover {
+  color: var(--color-accent);
+}
+
 .contact-info__list,
 .availability__list {
   display: flex;
@@ -105,7 +114,7 @@
   background: var(--color-accent);
   flex-shrink: 0;
   position: absolute;
-  left: -18px;
+  left: -1.125rem;
   top: 0.25rem;
 }
 

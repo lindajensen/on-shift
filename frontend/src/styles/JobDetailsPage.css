@@ -40,7 +40,7 @@
   width: 100%;
 }
 
-@media (min-width: 598px) {
+@media (min-width: 37.375rem) {
   .job-details__header {
     display: flex;
     flex-wrap: wrap;
@@ -59,65 +59,10 @@
   }
 
   .job-details__header-actions .btn--primary {
-    width: 140px;
+    width: 8.75rem;
   }
 
   .job-details__actions {
     display: none;
   }
-}
-
-/* DELETE WHEN IMPLEMENTED JobInfoSection */
-.job-details__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-}
-
-.job-details__info-item {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.job-details__icon-container {
-  width: 2rem;
-  height: 2rem;
-  background-color: var(--color-primary-light);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  color: var(--color-primary);
-}
-
-.job-details__info-item span {
-  display: flex;
-  flex-direction: column;
-}
-
-.job-details__info-label {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  margin-bottom: 0.2rem;
-}
-
-.job-details__section {
-  margin-bottom: 1rem;
-}
-
-.job-details__section-title {
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.job-details__requirement {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.3rem;
 }

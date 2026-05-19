@@ -15,8 +15,7 @@
 }
 
 .employer-jobs__link:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  color: var(--color-accent);
 }
 
 .employer-jobs__card-header {

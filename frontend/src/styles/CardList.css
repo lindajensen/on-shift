@@ -36,8 +36,8 @@
   color: #fff;
   padding: 1rem;
   border-radius: var(--radius-lg);
-  min-width: 260px;
-  min-height: 180px;
+  min-width: 16.25rem;
+  min-height: 11.25rem;
   flex-shrink: 0;
 }
 

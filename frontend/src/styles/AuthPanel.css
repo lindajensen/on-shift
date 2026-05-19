@@ -23,7 +23,7 @@
 }
 
 .auth-panel-icon {
-  margin-top: 4px;
+  margin-top: 0.25rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: var(--radius-md);

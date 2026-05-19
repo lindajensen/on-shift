@@ -5,7 +5,7 @@
 }
 
 .footer__inner {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 2.5rem 1.5rem;
 }
@@ -21,7 +21,7 @@
 }
 
 .footer__nav-group {
-  min-width: 120px;
+  min-width: 7.5rem;
 }
 
 .footer__nav-title {
@@ -48,14 +48,14 @@
 }
 
 /* Media Queries */
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .footer__inner {
     display: flex;
     justify-content: space-between;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 56.25rem) {
   .footer__nav {
     display: flex;
     flex-direction: row;

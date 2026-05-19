@@ -7,7 +7,7 @@
 }
 
 .auth-header__container {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 0.5rem 1rem;
 }
@@ -82,19 +82,13 @@
   transition: background-color 0.1s ease;
 }
 
-/* .auth-header__menu-divider {
-  height: 1px;
-  background: var(--color-border);
-  margin: 4px 0;
-} */
-
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .auth-header__container {
     padding: 0 1.5rem;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .auth-header {
     margin-left: 12.5rem;
   }

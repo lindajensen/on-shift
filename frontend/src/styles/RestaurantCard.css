@@ -39,8 +39,3 @@
   align-items: center;
   gap: 0.2rem;
 }
-
-.restaurant-card__meta svg {
-  fill: #f5a623;
-  color: #f5a623;
-}

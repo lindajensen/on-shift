@@ -37,7 +37,7 @@
 }
 
 /* Media Queries */
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .hero {
     text-align: center;
     padding: 4rem 0;
@@ -49,6 +49,6 @@
 
   .hero__actions .btn {
     flex: 0;
-    min-width: 180px;
+    min-width: 11.25rem;
   }
 }

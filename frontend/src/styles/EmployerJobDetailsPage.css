@@ -11,7 +11,7 @@
 .job-details-page__indicator {
   width: 0.5rem;
   height: 0.5rem;
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   background-color: var(--color-text-muted);
 }
 

@@ -19,7 +19,7 @@
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
+  margin-bottom: -0.063rem;
 }
 
 .job-listings-page__tab--active {
@@ -48,7 +48,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: var(--radius-full);
-  margin-bottom: 2px;
+  margin-bottom: 0.125rem;
 }
 
 .job-listings-page__card-indicator--active {
@@ -91,7 +91,7 @@
 }
 
 .job-listings-page__card-meta svg {
-  margin-bottom: 1px;
+  margin-bottom: 0.063rem;
 }
 
 .job-listings-page__card-footer {

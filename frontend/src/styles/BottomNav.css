@@ -37,7 +37,7 @@
   color: var(--color-accent);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .bottom-nav {
     width: 12.5rem;
     height: 100vh;
@@ -71,10 +71,6 @@
     margin-top: 0;
     width: 100%;
   }
-
-  /* .layout__content {
-    margin-left: 13rem;
-  } */
 
   .bottom-nav__item svg {
     padding: 0;
