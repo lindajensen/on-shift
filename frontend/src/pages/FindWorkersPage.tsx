@@ -240,6 +240,7 @@ function FindWorkersPage() {
                 <WorkerCard
                   worker={worker}
                   isAnonymous={false}
+                  showBookmark={true}
                   onSave={() => handleSaveWorker(worker.id)}
                   onUnsave={() => handleUnsaveWorker(worker.id)}
                   isSaved={savedWorkerIds.has(worker.id)}

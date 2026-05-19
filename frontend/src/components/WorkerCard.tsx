@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/useAuth";
 import { getExperienceLevel, getRoleLabel } from "../utils/formatters";
 import { getInitials } from "../utils/text";
 import { formatAvailability } from "../utils/formatters";
@@ -11,6 +12,7 @@ import "../styles/WorkerCard.css";
 interface WorkerCardProps {
   worker: Worker;
   isAnonymous?: boolean;
+  showBookmark?: boolean;
   isSaved?: boolean;
   onSave?: () => void;
   onUnsave?: () => void;
@@ -19,21 +21,24 @@ interface WorkerCardProps {
 function WorkerCard({
   worker,
   isAnonymous = false,
+  showBookmark = false,
   isSaved,
   onSave,
   onUnsave,
 }: WorkerCardProps) {
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const initials = worker.name ? getInitials(worker.name) : "";
 
   //TODO: Implement worker tags
-  //TODO: Link to worker profile (ska inte funka om man inte är inloggad?? Eller ska det vara skeleton blurrat?)
 
   return (
     <article
       className="worker-card"
-      onClick={() => navigate(`/personal/${worker.id}`)}
+      onClick={() => {
+        if (!isAnonymous) navigate(`/personal/${worker.id}`);
+      }}
     >
       <header className="worker-card__header">
         <div className="worker-card__avatar avatar">
@@ -50,7 +55,7 @@ function WorkerCard({
             ) : (
               <h3 className="worker-card__name">{worker.name}</h3>
             )}
-            {!isAnonymous && (
+            {!isAnonymous && showBookmark && (
               <button
                 aria-label={isSaved ? "Ta bort från sparade" : "Spara"}
                 className={`worker-card__bookmark-btn ${isSaved ? "worker-card__bookmark-btn--saved" : ""}`}
@@ -113,16 +118,29 @@ function WorkerCard({
           </div>
         </div> */}
       <div className="worker-card__footer">
+        {isAnonymous && (
+          <Link
+            className="btn btn--primary btn--full"
+            to="/logga-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Logga in för att kontakta
+          </Link>
+        )}
+
+        {!isAnonymous && user?.role === "employer" && (
+          <button
+            className="btn btn--primary btn--full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Kontakta
+          </button>
+        )}
+
         {worker.saved_at && (
           <p className="worker-card__footer--saved-at">
             Sparad den {formatDateWithYear(worker.saved_at)}
           </p>
-        )}
-
-        {isAnonymous && (
-          <Link className="btn btn--primary btn--full" to="/logga-in">
-            Logga in för att kontakta
-          </Link>
         )}
       </div>
     </article>
