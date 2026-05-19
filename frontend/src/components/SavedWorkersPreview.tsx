@@ -89,35 +89,37 @@ function SavedWorkersPreview() {
       <ul className="card-list__list">
         {savedWorkers.slice(0, 3).map((savedWorker) => (
           <li key={savedWorker.id} className="card-list__item">
-            <article className="card-list__card">
-              <div className="card-list__card-header">
-                <h3 className="card-list__role">{savedWorker.name}</h3>
+            <Link to={`/personal/${savedWorker.id}`}>
+              <article className="card-list__card">
+                <div className="card-list__card-header">
+                  <h3 className="card-list__role">{savedWorker.name}</h3>
 
-                {savedWorker.rating && (
-                  <div className="card-list__meta">
-                    <Star
-                      className="rating-star"
-                      size={18}
-                      aria-hidden="true"
-                    />
-                    <p className="card-list__meta-text">
-                      {Number(savedWorker.rating).toFixed(1)}
-                    </p>
-                  </div>
-                )}
-              </div>
+                  {savedWorker.rating && (
+                    <div className="card-list__meta">
+                      <Star
+                        className="rating-star"
+                        size={18}
+                        aria-hidden="true"
+                      />
+                      <p className="card-list__meta-text">
+                        {Number(savedWorker.rating).toFixed(1)}
+                      </p>
+                    </div>
+                  )}
+                </div>
 
-              <ul className="card-list__role-list">
-                {savedWorker.roles.map((role, index) => (
-                  <li key={index} className="card-list__role-item">
-                    {getRoleLabel(role.role)} |{" "}
-                    {getExperienceLevel(role.experience_level)}
-                  </li>
-                ))}
-              </ul>
+                <ul className="card-list__role-list">
+                  {savedWorker.roles.map((role, index) => (
+                    <li key={index} className="card-list__role-item">
+                      {getRoleLabel(role.role)} |{" "}
+                      {getExperienceLevel(role.experience_level)}
+                    </li>
+                  ))}
+                </ul>
 
-              <button className="card-list__contact-btn">Kontakta</button>
-            </article>
+                <button className="card-list__contact-btn">Kontakta</button>
+              </article>
+            </Link>
           </li>
         ))}
       </ul>
