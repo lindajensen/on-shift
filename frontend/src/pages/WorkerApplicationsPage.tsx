@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getAllApplications, deleteApplication } from "../api/applications";
+import { createReview } from "../api/worker";
 import { getRoleLabel, getStatusLabel } from "../utils/formatters";
-import { formatDate, formatTime } from "../utils/date";
-import { WorkerApplicationPreview } from "../types";
+import { formatDate, formatTime, hasJobDatePassed } from "../utils/date";
+import { WorkerApplicationPreview, ReviewData } from "../types";
+import Modal from "../components/modals/Modal";
+import ReviewModal from "../components/modals/ReviewModal";
 import ErrorMessage from "../components/ErrorMessage";
-import { ClipboardX, Trash2 } from "lucide-react";
+import { ClipboardX, Trash2, Star } from "lucide-react";
 
 import "../styles/WorkerApplicationsPage.css";
 import "../styles/Preview.css";
@@ -16,6 +19,10 @@ function WorkerApplicationsPage() {
   const [applicationToDelete, setApplicationToDelete] = useState<number | null>(
     null,
   );
+  const [applicationToReview, setApplicationToReview] =
+    useState<WorkerApplicationPreview | null>(null);
+
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,6 +50,16 @@ function WorkerApplicationsPage() {
       );
     } catch (error) {
       console.error("Kunde inte ta bort ansökan", error);
+    }
+  }
+
+  async function handleReview(reviewData: ReviewData) {
+    try {
+      await createReview(reviewData);
+      setIsReviewModalOpen(false);
+      setApplicationToReview(null);
+    } catch (error) {
+      console.error("Kunde inte spara betyg", error);
     }
   }
 
@@ -118,17 +135,40 @@ function WorkerApplicationsPage() {
                     </div>
                   </div>
 
-                  <div className="divider"></div>
+                  {(application.status === "pending" ||
+                    (application.status === "hired" &&
+                      hasJobDatePassed(application.job_date))) && (
+                    <div className="divider"></div>
+                  )}
+
                   <footer className="preview__card-footer">
-                    <button
-                      className="preview__delete-btn"
-                      aria-label="Ta bort ansökan"
-                      disabled={application.status !== "pending"}
-                      onClick={() => setApplicationToDelete(application.id)}
-                    >
-                      <Trash2 size={14} aria-hidden="true" />
-                      Ta bort
-                    </button>
+                    {application.status === "pending" && (
+                      <button
+                        className="preview__delete-btn"
+                        aria-label="Ta bort ansökan"
+                        onClick={() => setApplicationToDelete(application.id)}
+                      >
+                        <Trash2 size={14} aria-hidden="true" />
+                        Ta bort
+                      </button>
+                    )}
+                    {application.status === "hired" &&
+                      hasJobDatePassed(application.job_date) && (
+                        <button
+                          className="preview__review-btn"
+                          aria-label="Betygsätt pass"
+                          disabled={application.has_review}
+                          onClick={() => {
+                            setApplicationToReview(application);
+                            setIsReviewModalOpen(true);
+                          }}
+                        >
+                          {!application.has_review && (
+                            <Star size={14} aria-hidden="true" />
+                          )}
+                          {application.has_review ? "Betygsatt" : "Betygsätt"}
+                        </button>
+                      )}
                   </footer>
                 </article>
               </li>
@@ -136,6 +176,20 @@ function WorkerApplicationsPage() {
           </ul>
         </div>
       </section>
+
+      {applicationToReview && (
+        <Modal
+          isOpen={isReviewModalOpen}
+          onClose={() => setIsReviewModalOpen(false)}
+          showCloseButton={false}
+        >
+          <ReviewModal
+            onClose={() => setIsReviewModalOpen(false)}
+            onSave={handleReview}
+            application={applicationToReview}
+          />
+        </Modal>
+      )}
 
       {applicationToDelete && (
         <div
