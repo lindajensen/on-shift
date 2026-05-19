@@ -16,6 +16,11 @@
   white-space: nowrap;
 }
 
+.job-listings__see-all:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .job-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
