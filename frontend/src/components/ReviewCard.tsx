@@ -17,11 +17,7 @@ function ReviewCard({ review }: ReviewCardProps) {
       </div>
 
       <div className="latest-review__card-rating">
-        <Star
-          className="latest-review__card-rating-icon"
-          size={18}
-          aria-hidden="true"
-        />
+        <Star className="rating-star" size={18} aria-hidden="true" />
         <span className="latest-review__card-rating-score">
           {review.rating.toFixed(1)}
         </span>
