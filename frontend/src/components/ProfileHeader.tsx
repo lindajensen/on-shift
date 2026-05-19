@@ -35,7 +35,7 @@ function ProfileHeader({
               className={`profile-header__bookmark-btn ${isSaved ? "profile-header__bookmark-btn--saved" : ""}`}
               onClick={isSaved ? onUnsave : onSave}
             >
-              <Bookmark size={18} aria-hidden="true" />
+              <Bookmark size={20} aria-hidden="true" />
             </button>
           )}
         </div>

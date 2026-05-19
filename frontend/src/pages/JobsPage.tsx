@@ -213,7 +213,7 @@ function JobsPage() {
                               }
                             }}
                           >
-                            <Bookmark size={18} aria-hidden="true" />
+                            <Bookmark size={20} aria-hidden="true" />
                           </button>
                         )}
                       </div>

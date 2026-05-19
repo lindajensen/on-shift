@@ -73,7 +73,7 @@ function SavedJobsList({
                         onUnsave(job.job_id);
                       }}
                     >
-                      <Bookmark size={18} aria-hidden="true" />
+                      <Bookmark size={20} aria-hidden="true" />
                     </button>
                   </div>
                   <p className="saved-card__restaurant">

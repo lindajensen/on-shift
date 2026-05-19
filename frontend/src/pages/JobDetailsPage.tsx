@@ -91,7 +91,7 @@ function JobDetailsPage() {
                     isSaved ? handleUnsave(job.id) : handleSave(job.id)
                   }
                 >
-                  <Bookmark size={18} aria-hidden="true" />
+                  <Bookmark size={24} aria-hidden="true" />
                 </button>
               )}
             </div>
