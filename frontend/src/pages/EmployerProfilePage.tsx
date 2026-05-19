@@ -259,10 +259,7 @@ function EmployerProfilePage() {
           </section>
 
           {isOwner && (
-            <button
-              className="btn btn--primary btn--full"
-              onClick={handleLogout}
-            >
+            <button className="btn btn--primary" onClick={handleLogout}>
               Logga ut
             </button>
           )}

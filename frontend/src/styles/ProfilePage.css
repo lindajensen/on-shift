@@ -235,6 +235,8 @@
 
 .profile .btn--primary {
   margin-top: 0.8rem;
+  max-width: 15rem;
+  display: block;
 }
 
 .profile__skeleton {
