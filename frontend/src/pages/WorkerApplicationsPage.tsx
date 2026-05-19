@@ -3,7 +3,7 @@ import { getAllApplications, deleteApplication } from "../api/applications";
 import { createReview } from "../api/worker";
 import { getRoleLabel, getStatusLabel } from "../utils/formatters";
 import { formatDate, formatTime, hasJobDatePassed } from "../utils/date";
-import { WorkerApplicationPreview, ReviewData } from "../types";
+import { WorkerApplicationPreview } from "../types";
 import Modal from "../components/modals/Modal";
 import ReviewModal from "../components/modals/ReviewModal";
 import ErrorMessage from "../components/ErrorMessage";
@@ -53,11 +53,25 @@ function WorkerApplicationsPage() {
     }
   }
 
-  async function handleReview(reviewData: ReviewData) {
+  async function handleReview(rating: number, comment: string) {
+    if (!applicationToReview) return;
+
     try {
-      await createReview(reviewData);
+      await createReview({
+        jobId: applicationToReview.job_id,
+        revieweeId: applicationToReview.employer_id,
+        rating,
+        comment,
+      });
       setIsReviewModalOpen(false);
       setApplicationToReview(null);
+      setApplications((prev) =>
+        prev.map((application) =>
+          application.id === applicationToReview.id
+            ? { ...application, has_review: true }
+            : application,
+        ),
+      );
     } catch (error) {
       console.error("Kunde inte spara betyg", error);
     }
@@ -184,6 +198,7 @@ function WorkerApplicationsPage() {
           showCloseButton={false}
         >
           <ReviewModal
+            revieweeName={applicationToReview!.restaurant_name}
             onClose={() => setIsReviewModalOpen(false)}
             onSave={handleReview}
             application={applicationToReview}
