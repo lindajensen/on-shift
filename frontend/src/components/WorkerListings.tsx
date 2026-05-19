@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/useAuth";
 import { getRandomWorkers } from "../api/employer";
 import { Worker } from "../types";
 import WorkerCard from "./WorkerCard";
@@ -7,6 +8,8 @@ import "../styles/WorkerListings.css";
 
 function WorkerListings() {
   const [workers, setWorkers] = useState<Worker[]>([]);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchRandomWorkers() {
@@ -36,7 +39,10 @@ function WorkerListings() {
         <ul className="worker-list">
           {workers.map((worker) => (
             <li key={worker.id} className="find-workers__item">
-              <WorkerCard worker={worker} isAnonymous={true} />
+              <WorkerCard
+                worker={worker}
+                isAnonymous={user?.role !== "employer"}
+              />
             </li>
           ))}
         </ul>
