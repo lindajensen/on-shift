@@ -2,6 +2,7 @@ import {
   WorkerProfile,
   JobPreview,
   Review,
+  ReviewData,
   SavedJob,
   WorkerContactFormData,
   WorkerAboutFormData,
@@ -329,6 +330,32 @@ export async function getWorkerReviewsById(
   }
 
   return response.json();
+}
+
+/**
+ * Creates a review for an employer after a completed shift.
+ * @param jobId - The ID of the job the review is for.
+ * @param revieweeId - The employer profile ID being reviewed.
+ * @param rating - The rating given (1-5).
+ * @param comment - The review comment.
+ * @returns A promise that resolves when the review has been saved.
+ * @throws An error if the request fails.
+ */
+export async function createReview(reviewData: ReviewData) {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/reviews`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(reviewData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte spara betyg. Försök igen senare.");
+  }
 }
 
 /**
