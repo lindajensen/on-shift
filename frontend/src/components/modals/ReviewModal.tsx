@@ -1,18 +1,28 @@
 import { useState } from "react";
 import { getRoleLabel } from "../../utils/formatters";
 import { formatDate } from "../../utils/date";
-import { WorkerApplicationPreview, ReviewData } from "../../types";
 import { Star } from "lucide-react";
 
 import "../../styles/modals/ReviewModal.css";
 
-interface ReviewModalProps {
-  application: WorkerApplicationPreview;
-  onClose: () => void;
-  onSave: (reviewData: ReviewData) => Promise<void>;
+interface ReviewableApplication {
+  role: string;
+  job_date: string;
 }
 
-function ReviewModal({ application, onClose, onSave }: ReviewModalProps) {
+interface ReviewModalProps {
+  application: ReviewableApplication;
+  revieweeName: string;
+  onClose: () => void;
+  onSave: (rating: number, comment: string) => Promise<void>;
+}
+
+function ReviewModal({
+  application,
+  revieweeName,
+  onClose,
+  onSave,
+}: ReviewModalProps) {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -27,19 +37,12 @@ function ReviewModal({ application, onClose, onSave }: ReviewModalProps) {
       return;
     }
 
-    const reviewData = {
-      jobId: application.job_id,
-      revieweeId: application.employer_id,
-      rating,
-      comment,
-    };
-
     setIsSubmitting(true);
 
     try {
-      await onSave(reviewData);
+      await onSave(rating, comment);
     } catch (error) {
-      console.error("Kunde inte spara annonsen", error);
+      console.error("Kunde inte spara betyg", error);
       setServerError("Något gick fel. Försök igen senare.");
     } finally {
       setIsSubmitting(false);
@@ -54,7 +57,7 @@ function ReviewModal({ application, onClose, onSave }: ReviewModalProps) {
           className="
         review-modal__subtitle"
         >
-          {application.restaurant_name} · {getRoleLabel(application.role)} ·{" "}
+          {revieweeName} · {getRoleLabel(application.role)} ·{" "}
           {formatDate(application.job_date)}
         </p>
       </header>

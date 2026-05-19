@@ -236,6 +236,7 @@ export interface EmployerApplicationPreview {
   end_time: string;
   status: string;
   job_id: number;
+  has_review: boolean;
 }
 
 export interface EmployerPublicJob {
