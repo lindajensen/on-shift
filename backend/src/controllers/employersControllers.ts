@@ -401,15 +401,21 @@ export async function getEmployerApplications(
     const applications = await pool.query(
       `
      SELECT
-        a.id,
-        a.status,
-        a.job_id,
-        j.role,
-        j.job_date,
-        j.start_time,
-        j.end_time,
-        wp.id AS worker_id,
-        wp.name AS worker_name
+      a.id,
+      a.status,
+      a.job_id,
+      j.role,
+      j.job_date,
+      j.start_time,
+      j.end_time,
+      wp.id AS worker_id,
+      wp.name AS worker_name,
+      EXISTS (
+        SELECT 1 FROM review r
+        WHERE r.job_id = a.job_id
+        AND r.reviewer_id = ep.user_id
+        AND r.reviewee_id = wp.user_id
+        ) AS has_review
       FROM application a
       JOIN job j ON a.job_id = j.id
       JOIN worker_profile wp ON a.worker_id = wp.id
@@ -633,6 +639,69 @@ export async function getEmployerReviewsById(
       [id],
     );
     response.status(200).json(reviews.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Creates a review for a worker after a completed shift.
+ * Only allows reviews if the worker was hired and the job date has passed.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function createEmployerReview(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const data = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const check = await pool.query(
+      `
+      SELECT a.id FROM application a
+      JOIN job j ON a.job_id = j.id
+      WHERE a.job_id = $1
+      AND j.employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
+      AND a.worker_id = (SELECT id FROM worker_profile WHERE id = $3)
+      AND a.status = 'hired'
+      AND j.job_date < CURRENT_DATE
+      `,
+      [data.jobId, userId, data.revieweeId],
+    );
+
+    if (check.rows.length === 0) {
+      response
+        .status(403)
+        .json({ message: "Du kan inte betygsätta denna person" });
+      return;
+    }
+
+    await pool.query(
+      `
+      INSERT INTO review (job_id, reviewer_id, reviewee_id, rating, comment)
+      VALUES (
+        $1,
+        $2,
+        (SELECT user_id FROM worker_profile WHERE id = $3),
+        $4,
+        $5
+      )
+      `,
+      [data.jobId, userId, data.revieweeId, data.rating, data.comment],
+    );
+
+    response.status(201).json({ message: "Betyget har sparats" });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
