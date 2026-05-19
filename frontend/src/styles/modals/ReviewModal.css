@@ -1,0 +1,49 @@
+.review-modal__header {
+  margin-bottom: 0.5rem;
+}
+
+.review-modal__subtitle {
+  color: var(--color-text-muted);
+}
+
+.review-modal__fieldset {
+  border: none;
+  padding: 0;
+  margin-block: 0.5rem;
+}
+
+.review-modal__legend {
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.review-modal__stars {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.review-modal__star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+/* .review-modal__star--active svg {
+  fill: #ef9f27;
+  stroke: #ef9f27;
+} */
+
+.review-modal__star--active {
+  color: #ef9f27;
+}
+
+.review-modal__footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.review-modal__footer .btn--primary {
+  flex: 1;
+}

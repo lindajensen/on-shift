@@ -15,6 +15,7 @@ import {
   getRecommendedJobs,
   getWorkerReviews,
   getWorkerReviewsById,
+  createReview,
   getSavedJobs,
   saveJob,
   unsaveJob,
@@ -58,6 +59,7 @@ router.post("/saved-employers", authenticateToken, saveEmployer);
 router.delete("/saved-employers", authenticateToken, unsaveEmployer);
 
 router.get("/reviews", authenticateToken, getWorkerReviews);
+router.post("/reviews", authenticateToken, createReview);
 
 router.patch("/availability", authenticateToken, toggleAvailability);
 
