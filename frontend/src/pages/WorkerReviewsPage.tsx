@@ -5,8 +5,6 @@ import ErrorMessage from "../components/ErrorMessage";
 import { Review } from "../types";
 import { StarOff } from "lucide-react";
 
-import "../styles/WorkerReviewsPage.css";
-
 function WorkerReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
 
