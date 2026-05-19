@@ -129,7 +129,7 @@ section {
 }
 
 .section__inner {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
   padding: 0 1.2rem;
 }
@@ -247,7 +247,6 @@ textarea {
   align-items: center;
   font-size: 0.8rem;
   font-weight: 500;
-  /* padding: 0.4rem 0.625rem; */
   padding: 0.4rem 0.875rem;
   border-radius: var(--radius-full);
   white-space: nowrap;
