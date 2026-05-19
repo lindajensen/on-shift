@@ -201,14 +201,16 @@ function EmployerJobDetailsPage() {
               )}
             </div>
 
-            <div className="job-card__tags">
-              {job.is_urgent && (
-                <span className="badge badge--accent">Akut</span>
-              )}
-              {job.requires_experience && (
-                <span className="badge badge--accent">Erfarenhet</span>
-              )}
-            </div>
+            {(job.is_urgent || job.requires_experience) && (
+              <div className="job-card__tags">
+                {job.is_urgent && (
+                  <span className="badge badge--accent">Akut</span>
+                )}
+                {job.requires_experience && (
+                  <span className="badge badge--accent">Erfarenhet</span>
+                )}
+              </div>
+            )}
           </header>
 
           <div className="divider"></div>

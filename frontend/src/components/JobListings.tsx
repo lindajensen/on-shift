@@ -93,14 +93,16 @@ function JobListings() {
                     </div>
 
                     <div className="job-card__footer-meta">
-                      <ul className="job-card__tags">
-                        {job.is_urgent && (
-                          <li className="badge badge--accent">Akut</li>
-                        )}
-                        {job.requires_experience && (
-                          <li className="badge badge--accent">Erfarenhet</li>
-                        )}
-                      </ul>
+                      {(job.is_urgent || job.requires_experience) && (
+                        <ul className="job-card__tags">
+                          {job.is_urgent && (
+                            <li className="badge badge--accent">Akut</li>
+                          )}
+                          {job.requires_experience && (
+                            <li className="badge badge--accent">Erfarenhet</li>
+                          )}
+                        </ul>
+                      )}
 
                       <div className="divider"></div>
                       <p className="job-card__published">

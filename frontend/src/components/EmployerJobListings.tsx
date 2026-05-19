@@ -64,14 +64,16 @@ function EmployerJobListings({ jobs, employerId }: EmployerJobListingsProps) {
                   </div>
                 </div>
 
-                <ul className="employer-jobs__card-tags">
-                  {job.is_urgent && (
-                    <li className="badge badge--accent">Akut</li>
-                  )}
-                  {job.requires_experience && (
-                    <li className="badge badge--accent">Erfarenhet</li>
-                  )}
-                </ul>
+                {(job.is_urgent || job.requires_experience) && (
+                  <ul className="employer-jobs__card-tags">
+                    {job.is_urgent && (
+                      <li className="badge badge--accent">Akut</li>
+                    )}
+                    {job.requires_experience && (
+                      <li className="badge badge--accent">Erfarenhet</li>
+                    )}
+                  </ul>
+                )}
               </article>
             </Link>
           </li>
