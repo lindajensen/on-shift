@@ -241,6 +241,7 @@ function FindWorkersPage() {
                   worker={worker}
                   isAnonymous={false}
                   showBookmark={true}
+                  showContactButton={true}
                   onSave={() => handleSaveWorker(worker.id)}
                   onUnsave={() => handleUnsaveWorker(worker.id)}
                   isSaved={savedWorkerIds.has(worker.id)}

@@ -13,6 +13,7 @@ interface WorkerCardProps {
   worker: Worker;
   isAnonymous?: boolean;
   showBookmark?: boolean;
+  showContactButton?: boolean;
   isSaved?: boolean;
   onSave?: () => void;
   onUnsave?: () => void;
@@ -22,6 +23,7 @@ function WorkerCard({
   worker,
   isAnonymous = false,
   showBookmark = false,
+  showContactButton = false,
   isSaved,
   onSave,
   onUnsave,
@@ -72,6 +74,7 @@ function WorkerCard({
                 <Bookmark size={20} aria-hidden="true" />
               </button>
             )}
+
             <div className="worker-card__rating">
               {worker.rating && (
                 <span>
@@ -81,6 +84,7 @@ function WorkerCard({
               )}
             </div>
           </div>
+
           <p className="worker-card__role">
             {getRoleLabel(worker.roles[0].role)} ·{" "}
             {getExperienceLevel(worker.roles[0].experience_level)}{" "}
@@ -117,6 +121,7 @@ function WorkerCard({
             <span className="badge badge--neutral">Engelska</span>
           </div>
         </div> */}
+
       <div className="worker-card__footer">
         {isAnonymous && (
           <Link
@@ -128,9 +133,9 @@ function WorkerCard({
           </Link>
         )}
 
-        {!isAnonymous && user?.role === "employer" && (
+        {!isAnonymous && showContactButton && user?.role === "employer" && (
           <button
-            className="btn btn--primary btn--full"
+            className="btn btn--primary worker-card__contact-btn"
             onClick={(e) => e.stopPropagation()}
           >
             Kontakta

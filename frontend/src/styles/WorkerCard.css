@@ -100,8 +100,26 @@
   margin-top: 1rem;
 }
 
+.worker-card__footer .btn--primary {
+  align-self: flex-end;
+}
+
 .worker-card__footer--saved-at {
   color: var(--color-text-muted);
   font-style: italic;
   margin-left: auto;
+}
+
+.worker-card__footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.worker-card__footer--saved-at {
+  color: var(--color-text-muted);
+  font-style: italic;
 }

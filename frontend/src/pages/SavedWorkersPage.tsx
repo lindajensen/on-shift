@@ -93,6 +93,7 @@ function SavedWorkersPage() {
                 showBookmark={true}
                 worker={worker}
                 isAnonymous={false}
+                showContactButton={true}
                 onUnsave={() => handleUnsaveWorker(worker.id)}
                 isSaved={true}
               />
