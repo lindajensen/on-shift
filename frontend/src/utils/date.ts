@@ -22,3 +22,11 @@ export function formatDateWithYear(dateString: string) {
 export function formatTime(time: string) {
   return time.slice(0, 5);
 }
+
+export function hasJobDatePassed(jobDate: string): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const date = new Date(jobDate);
+  date.setHours(0, 0, 0, 0);
+  return date < today;
+}
