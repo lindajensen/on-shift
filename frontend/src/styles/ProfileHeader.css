@@ -44,5 +44,6 @@
 }
 
 .profile-header__bookmark-btn--saved svg {
-  fill: currentColor;
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
 }
