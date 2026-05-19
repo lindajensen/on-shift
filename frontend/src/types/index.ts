@@ -113,6 +113,8 @@ export interface WorkerAvailabilityFormData {
 
 export interface WorkerApplicationPreview {
   id: number;
+  employer_id: number;
+  job_id: number;
   restaurant_name: string;
   role: string;
   job_date: string;
@@ -338,4 +340,11 @@ export interface Review {
   reviewer_name: string;
   role: string;
   job_date: string;
+}
+
+export interface ReviewData {
+  jobId: number;
+  revieweeId: number;
+  rating: number;
+  comment: string;
 }
