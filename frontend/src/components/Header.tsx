@@ -20,7 +20,7 @@ function Header() {
           </Link>
           {user ? (
             <Link to="/hem" className="header__login-btn btn btn--primary">
-              Hem
+              Mina sidor
             </Link>
           ) : (
             <button
