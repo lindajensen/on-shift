@@ -54,7 +54,6 @@ dialog[open]::-webkit-scrollbar {
   background-color: var(--color-bg-hover);
   border: none;
   border-radius: var(--radius-full);
-  cursor: pointer;
   width: 2rem;
   height: 2rem;
   display: flex;

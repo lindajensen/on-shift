@@ -169,7 +169,6 @@ button {
   transition:
     background 0.15s,
     transform 0.1s;
-  cursor: pointer;
   border: none;
 }
 
@@ -332,7 +331,6 @@ textarea {
 .confirm-buttons button {
   border-radius: var(--radius-md);
   font-weight: 600;
-  cursor: pointer;
 }
 
 .confirm-button--cancel {

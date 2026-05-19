@@ -71,7 +71,6 @@
   color: var(--color-error);
   padding: 0.6rem;
   border-radius: var(--radius-md);
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.2rem;
@@ -87,7 +86,6 @@
   border: none;
   padding: 0.6rem;
   border-radius: var(--radius-md);
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.2rem;

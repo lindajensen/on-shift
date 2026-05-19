@@ -18,7 +18,6 @@
   color: var(--color-text-muted);
   background: none;
   border: none;
-  cursor: poiner;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
@@ -115,7 +114,6 @@
   height: 2.25rem;
   border-radius: var(--radius-md);
   border: none;
-  cursor: pointer;
 }
 
 .job-listings-page__card-edit-btn {

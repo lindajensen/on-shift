@@ -219,7 +219,6 @@
 
 .cv__view-btn,
 .cv__upload-btn {
-  cursor: pointer;
   border: none;
   padding: 0.55rem;
   border-radius: var(--radius-md);
@@ -248,4 +247,3 @@
   color: var(--color-text-muted);
   font-style: italic;
 }
-
