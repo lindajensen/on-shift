@@ -90,6 +90,7 @@ function SavedWorkersPage() {
           {savedWorkers.map((worker) => (
             <li key={worker.id}>
               <WorkerCard
+                showBookmark={true}
                 worker={worker}
                 isAnonymous={false}
                 onUnsave={() => handleUnsaveWorker(worker.id)}
