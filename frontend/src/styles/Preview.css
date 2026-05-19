@@ -102,4 +102,5 @@
   color: var(--color-text-muted);
   cursor: not-allowed;
   font-style: italic;
+  padding: 0;
 }
