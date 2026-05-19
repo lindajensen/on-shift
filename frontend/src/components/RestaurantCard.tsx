@@ -50,7 +50,7 @@ function RestaurantCard({
             {location}{" "}
             {rating && (
               <span>
-                | <Star size={14} aria-hidden="true" />{" "}
+                | <Star size={14} aria-hidden="true" className="rating-star" />{" "}
                 {Number(rating).toFixed(1)}
               </span>
             )}
