@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import {
   getEmployerProfileByUserId,
@@ -43,8 +43,8 @@ function EmployerProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  // const navigate = useNavigate();
 
   const isOwner = user?.id === profile?.user_id;
   const profileId = id ?? user?.id;
@@ -98,10 +98,10 @@ function EmployerProfilePage() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+  // function handleLogout() {
+  //   logout();
+  //   navigate("/");
+  // }
 
   async function handleSaveContact(contactData: EditContactFormData) {
     try {
@@ -258,11 +258,11 @@ function EmployerProfilePage() {
             </p>
           </section>
 
-          {isOwner && (
+          {/* {isOwner && (
             <button className="btn btn--primary" onClick={handleLogout}>
               Logga ut
             </button>
-          )}
+          )} */}
 
           {user?.role === "worker" && (
             <>
