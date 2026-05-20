@@ -1,9 +1,11 @@
 /// <reference path="../types/express.d.ts" />
 import { Request, Response } from "express";
+import multer from "multer";
 import pool from "../db";
+import supabase from "../supabase";
 
 /**
- * Fetches the profile of an worker by their worker profile ID.
+ * Fetches the profile of a worker by their worker profile ID.
  * @param request - The request object.
  * @param response - The response object.
  * @returns A JSON object containing the employer's profile information.
@@ -26,6 +28,8 @@ export async function getWorkerProfileById(
         wp.phone,
         wp.city,
         wp.cv_url,
+        wp.cv_filename,
+        wp.cv_uploaded_at,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -39,7 +43,7 @@ export async function getWorkerProfileById(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.cv_uploaded_at, wp.is_available
       `,
       [id],
     );
@@ -82,6 +86,8 @@ export async function getWorkerProfileByUserId(
         wp.phone,
         wp.city,
         wp.cv_url,
+        wp.cv_filename,
+        wp.cv_uploaded_at,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -95,7 +101,7 @@ export async function getWorkerProfileByUserId(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.user_id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.cv_uploaded_at, wp.is_available
       `,
       [userId],
     );
@@ -1082,6 +1088,155 @@ export async function deleteApplication(
     );
 
     response.status(200).json({ message: "Ansökningen har tagits bort" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Uploads a CV file for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with the updated cv_url and cv_filename.
+ */
+export async function uploadCV(
+  request: Request & { file?: Express.Multer.File },
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const file = request.file;
+
+  if (!file) {
+    response.status(400).json({ message: "Ingen fil hittades" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  const filePath = `${userId}/cv.pdf`;
+
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("cvs")
+      .upload(filePath, file.buffer, {
+        contentType: "application/pdf",
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("Supabase upload error:", uploadError);
+      response.status(500).json({ message: "Kunde inte ladda upp filen" });
+      return;
+    }
+
+    const { data: urlData, error: signedUrlError } = await supabase.storage
+      .from("cvs")
+      .createSignedUrl(filePath, 3600);
+
+    if (signedUrlError || !urlData) {
+      response.status(500).json({ message: "Kunde inte hämta URL" });
+      return;
+    }
+
+    await pool.query(
+      `
+      UPDATE worker_profile
+      SET cv_url = $1, cv_filename = $2, cv_uploaded_at = NOW()
+      WHERE user_id = $3
+      `,
+      [filePath, file.originalname, userId],
+    );
+
+    response.status(200).json({
+      cv_url: urlData.signedUrl,
+      cv_filename: file.originalname,
+    });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Generates a signed URL for the currently logged in worker's CV stored in Supabase Storage. The URL is valid for 1 hour.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response containing the signed URL for the worker's CV.
+ */
+export async function generateSignedCVUrl(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+  const filePath = `${userId}/cv.pdf`;
+
+  try {
+    const { data: urlData, error: signedUrlError } = await supabase.storage
+      .from("cvs")
+      .createSignedUrl(filePath, 3600);
+
+    if (signedUrlError || !urlData) {
+      response.status(500).json({ message: "Kunde inte hämta URL" });
+      return;
+    }
+
+    response.status(200).json({ url: urlData.signedUrl });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Deletes the CV of the currently logged in worker.
+ * Removes the file from Supabase Storage and clears the CV fields in the database.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function deleteCV(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+  const filePath = `${userId}/cv.pdf`;
+
+  try {
+    await supabase.storage.from("cvs").remove([filePath]);
+
+    await pool.query(
+      `
+      UPDATE worker_profile
+      SET cv_url = NULL, cv_filename = NULL, cv_uploaded_at = NULL
+      WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    response.status(200).json({ message: "CV raderat" });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });

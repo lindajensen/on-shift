@@ -495,3 +495,72 @@ export async function unsaveEmployer(id: number): Promise<void> {
     );
   }
 }
+
+/**
+ * Fetches the URL of the currently logged in worker's CV.
+ * @returns A promise that resolves to the URL of the worker's CV.
+ * @throws An error if the request fails.
+ */
+export async function getCVUrl(): Promise<string> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/cv/url`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta CV. Försök igen senare.");
+  }
+
+  const data = await response.json();
+  return data.url;
+}
+
+/**
+ * Uploads a CV file for the currently logged in worker.
+ * @param file - The CV file to upload.
+ * @returns A promise that resolves when the CV has been uploaded.
+ * @throws An error if the request fails.
+ */
+export async function uploadCV(file: File) {
+  const token = localStorage.getItem("token");
+
+  const formData = new FormData();
+  formData.append("cv", file);
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/cv`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ladda upp CV. Försök igen senare.");
+  }
+
+  return response.json();
+}
+
+/**
+ * Deletes the CV of the currently logged in worker.
+ * @returns A promise that resolves when the CV has been deleted.
+ * @throws An error if the request fails.
+ */
+export async function deleteCV(): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/cv`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort CV. Försök igen senare.");
+  }
+}

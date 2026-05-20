@@ -212,7 +212,7 @@
 .cv__filename {
   font-size: 0.975rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .cv__date {
@@ -226,8 +226,13 @@
   margin-left: auto;
 }
 
+.cv__actions label {
+  margin-bottom: 0;
+}
+
 .cv__view-btn,
-.cv__upload-btn {
+.cv__replace-btn,
+.cv__delete-btn {
   border: none;
   padding: 0.55rem;
   border-radius: var(--radius-md);
@@ -238,8 +243,17 @@
 }
 
 .cv__view-btn:hover,
-.cv__upload-btn:hover {
+.cv__replace-btn:hover {
   background-color: #e5e7eb;
+}
+
+.cv__delete-btn {
+  background-color: var(--color-accent-light);
+  color: var(--color-error);
+}
+
+.cv__delete-btn:hover {
+  background-color: #fee2e2;
 }
 
 .profile .btn--primary {
@@ -257,4 +271,27 @@
 .empty-text {
   color: var(--color-text-muted);
   font-style: italic;
+}
+
+.cv__empty {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cv__empty-text {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.cv__upload-btn {
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+}
+
+.cv__file-input {
+  display: none;
 }

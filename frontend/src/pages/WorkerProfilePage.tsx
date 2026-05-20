@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+
 import {
   getWorkerProfileById,
   getWorkerProfileByUserId,
@@ -10,14 +11,21 @@ import {
   updateWorkerEducation,
   updateWorkerRoles,
   updateWorkerAvailability,
+  uploadCV,
+  getCVUrl,
+  deleteCV,
 } from "../api/worker";
+
 import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
+
 import {
   getRoleLabel,
   getExperienceLevel,
   getDayLabel,
+  formatFilename,
 } from "../utils/formatters";
-import { formatTime } from "../utils/date";
+import { formatTime, formatDateWithYear } from "../utils/date";
+
 import {
   WorkerAboutFormData,
   WorkerContactFormData,
@@ -48,6 +56,7 @@ import {
   GraduationCap,
   ExternalLink,
   Upload,
+  Trash2,
 } from "lucide-react";
 
 import "../styles/ProfilePage.css";
@@ -63,6 +72,7 @@ function WorkerProfilePage() {
   const [isEditRolesModalOpen, setIsEditRolesModalOpen] = useState(false);
   const [isEditAvailabilityModalOpen, setIsEditAvailabilityModalOpen] =
     useState(false);
+  const [showDeleteCVConfirm, setShowDeleteCVConfirm] = useState(false);
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -70,8 +80,7 @@ function WorkerProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const isOwner = user?.id === profile?.user_id;
   const profileId = id ?? user?.id;
@@ -97,6 +106,8 @@ function WorkerProfilePage() {
           const savedWorkers = await getSavedWorkers();
           setIsSaved(savedWorkers.some((worker) => worker.id === data.id));
         }
+
+        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -126,10 +137,10 @@ function WorkerProfilePage() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+  // function handleLogout() {
+  //   logout();
+  //   navigate("/");
+  // }
 
   async function handleSaveContact(contactData: WorkerContactFormData) {
     try {
@@ -226,7 +237,57 @@ function WorkerProfilePage() {
     }
   }
 
-  //TODO: CV section (upload only is isOwner)
+  async function handleUploadCV(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    try {
+      const data = await uploadCV(file);
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              cv_url: data.cv_url,
+              cv_filename: data.cv_filename,
+              cv_uploaded_at: new Date().toISOString(),
+            }
+          : prev,
+      );
+    } catch (error) {
+      console.error("Kunde inte ladda upp CV", error);
+    }
+  }
+
+  async function handleViewCV() {
+    try {
+      const url = await getCVUrl();
+
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Kunde inte öppna CV", error);
+    }
+  }
+
+  async function handleDeleteCV() {
+    try {
+      await deleteCV();
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              cv_url: null,
+              cv_filename: null,
+              cv_uploaded_at: null,
+            }
+          : prev,
+      );
+    } catch (error) {
+      console.error("Kunde inte radera CV", error);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -242,6 +303,8 @@ function WorkerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
   if (!profile) return null;
+
+  //TODO: Confirmdialog for deleting cv?
 
   return (
     <>
@@ -521,38 +584,79 @@ function WorkerProfilePage() {
             </header>
 
             <div className="cv__card">
-              <div className="cv__content">
-                <div className="cv__info">
-                  <p className="cv__filename">anna_andersson_CV.pdf</p>
-                  <p className="cv__date">Uppladdad 10 april 2026</p>
-                </div>
+              {profile.cv_url ? (
+                <div className="cv__content">
+                  <div className="cv__info">
+                    <p className="cv__filename">
+                      {profile.cv_filename
+                        ? formatFilename(profile.cv_filename)
+                        : ""}
+                    </p>
+                    <p className="cv__date">
+                      {profile.cv_uploaded_at
+                        ? `Uppladdad ${formatDateWithYear(profile.cv_uploaded_at)}`
+                        : ""}
+                    </p>
+                  </div>
 
-                <div className="cv__actions">
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visa CV"
-                    className="cv__view-btn"
-                  >
-                    <ExternalLink size={16} aria-hidden="true" />
-                  </a>
-                  <button
-                    aria-label="Ladda upp nytt CV"
-                    className="cv__upload-btn"
-                  >
-                    <Upload size={16} aria-hidden="true" />
-                  </button>
+                  <div className="cv__actions">
+                    {isOwner && (
+                      <>
+                        <input
+                          id="cv-replace"
+                          type="file"
+                          accept=".pdf"
+                          className="cv__file-input"
+                          onChange={handleUploadCV}
+                        />
+                        <label htmlFor="cv-replace" className="cv__replace-btn">
+                          <Upload size={16} aria-hidden="true" />
+                        </label>
+                      </>
+                    )}
+                    <button
+                      aria-label="Visa CV"
+                      className="cv__view-btn"
+                      onClick={handleViewCV}
+                    >
+                      <ExternalLink size={16} aria-hidden="true" />
+                    </button>
+                    {isOwner && (
+                      <button
+                        aria-label="Ta bort CV"
+                        className="cv__delete-btn"
+                        onClick={() => setShowDeleteCVConfirm(true)}
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : isOwner ? (
+                <div className="cv__empty">
+                  <p className="cv__empty-text">Inget CV uppladdat än</p>
+                  <input
+                    id="cv-upload"
+                    type="file"
+                    accept=".pdf"
+                    className="cv__file-input"
+                    onChange={handleUploadCV}
+                  />
+                  <label htmlFor="cv-upload" className="cv__upload-btn">
+                    Ladda upp
+                  </label>
+                </div>
+              ) : (
+                <p className="empty-text">Inget CV uppladdat än</p>
+              )}
             </div>
           </section>
 
-          {isOwner && (
+          {/* {isOwner && (
             <button className="btn btn--primary" onClick={handleLogout}>
               Logga ut
             </button>
-          )}
+          )} */}
 
           {user?.role === "employer" && (
             <>
@@ -562,6 +666,38 @@ function WorkerProfilePage() {
           )}
         </div>
       </section>
+
+      {showDeleteCVConfirm && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setShowDeleteCVConfirm(false)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Ta bort CV?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill ta bort ditt CV? Det går inte att
+              ångra.
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setShowDeleteCVConfirm(false)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  handleDeleteCV();
+                  setShowDeleteCVConfirm(false);
+                }}
+              >
+                Ta bort
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Modal
         isOpen={isEditContactModalOpen}

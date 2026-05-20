@@ -68,6 +68,8 @@ export interface WorkerProfile {
   experience: WorkerExperience[];
   education: WorkerEducation[];
   cv_url: string | null;
+  cv_filename: string | null;
+  cv_uploaded_at: string | null;
   is_available: boolean;
   roles: WorkerRole[];
   availability: Availability[];

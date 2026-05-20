@@ -1,4 +1,6 @@
 import { Router } from "express";
+import multer from "multer";
+
 import {
   getWorkerProfileByUserId,
   getWorkerProfileById,
@@ -22,9 +24,13 @@ import {
   getSavedEmployers,
   saveEmployer,
   unsaveEmployer,
+  uploadCV,
+  generateSignedCVUrl,
+  deleteCV,
 } from "../controllers/workersController";
 import { authenticateToken } from "../middleware/auth";
 
+const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();
 
 //TODO: Refactor and delete
@@ -62,5 +68,9 @@ router.get("/reviews", authenticateToken, getWorkerReviews);
 router.post("/reviews", authenticateToken, createReview);
 
 router.patch("/availability", authenticateToken, toggleAvailability);
+
+router.post("/cv", authenticateToken, upload.single("cv"), uploadCV);
+router.get("/cv/url", authenticateToken, generateSignedCVUrl);
+router.delete("/cv", authenticateToken, deleteCV);
 
 export default router;
