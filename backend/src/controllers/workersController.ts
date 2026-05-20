@@ -1090,6 +1090,12 @@ export async function deleteApplication(
   }
 }
 
+/**
+ * Uploads a CV for the currently logged in worker. The CV is stored in Supabase Storage and the URL and filename is saved in the database.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result of the upload operation.
+ */
 export async function uploadCV(
   request: Request & { file?: Express.Multer.File },
   response: Response,
@@ -1128,9 +1134,14 @@ export async function uploadCV(
       return;
     }
 
-    const { data: urlData } = supabase.storage
+    const { data: urlData, error: signedUrlError } = await supabase.storage
       .from("cvs")
-      .getPublicUrl(filePath);
+      .createSignedUrl(filePath, 3600);
+
+    if (signedUrlError || !urlData) {
+      response.status(500).json({ message: "Kunde inte hämta URL" });
+      return;
+    }
 
     await pool.query(
       `
@@ -1138,10 +1149,15 @@ export async function uploadCV(
       SET cv_url = $1, cv_filename = $2
       WHERE user_id = $3
       `,
-      [urlData.publicUrl, file.originalname, userId],
+      [urlData.signedUrl, file.originalname, userId],
     );
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+export async function getSignedUrl(
+  request: Request,
+  response: Response,
+): Promise<void> {}
