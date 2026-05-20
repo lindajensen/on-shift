@@ -150,3 +150,15 @@ export function getDayLabel(day: string): string {
       return day;
   }
 }
+
+export function formatFilename(
+  filename: string,
+  maxLength: number = 30,
+): string {
+  if (filename.length <= maxLength) return filename;
+
+  const suffix = filename.split(".").pop();
+  const name = filename.slice(0, maxLength - 4);
+
+  return `${name}...${suffix}`;
+}
