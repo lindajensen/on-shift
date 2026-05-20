@@ -45,6 +45,7 @@ CREATE TABLE worker_profile (
   city TEXT,
   cv_url TEXT,
   cv_filename TEXT,
+  cv_uploaded_at TIMESTAMPTZ,
   is_available BOOLEAN DEFAULT FALSE,
 
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
