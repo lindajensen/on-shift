@@ -1,6 +1,8 @@
 /// <reference path="../types/express.d.ts" />
 import { Request, Response } from "express";
+import multer from "multer";
 import pool from "../db";
+import supabase from "../supabase";
 
 /**
  * Fetches the profile of an worker by their worker profile ID.
@@ -1082,6 +1084,62 @@ export async function deleteApplication(
     );
 
     response.status(200).json({ message: "Ansökningen har tagits bort" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+export async function uploadCV(
+  request: Request & { file?: Express.Multer.File },
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+
+    return;
+  }
+
+  const file = request.file;
+
+  if (!file) {
+    response.status(400).json({ message: "Ingen fil hittades" });
+
+    return;
+  }
+
+  const userId = user.id;
+
+  const filePath = `${userId}/cv.pdf`;
+
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("cvs")
+      .upload(filePath, file.buffer, {
+        contentType: "application/pdf",
+        upsert: true,
+      });
+
+    if (uploadError) {
+      console.error("Supabase upload error:", uploadError);
+      response.status(500).json({ message: "Kunde inte ladda upp filen" });
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from("cvs")
+      .getPublicUrl(filePath);
+
+    await pool.query(
+      `
+      UPDATE worker_profile
+      SET cv_url = $1, cv_filename = $2
+      WHERE user_id = $3
+      `,
+      [urlData.publicUrl, file.originalname, userId],
+    );
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
