@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+
 import {
   getWorkerProfileById,
   getWorkerProfileByUserId,
@@ -10,14 +11,18 @@ import {
   updateWorkerEducation,
   updateWorkerRoles,
   updateWorkerAvailability,
+  uploadCV,
 } from "../api/worker";
+
 import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
+
 import {
   getRoleLabel,
   getExperienceLevel,
   getDayLabel,
 } from "../utils/formatters";
-import { formatTime } from "../utils/date";
+import { formatTime, formatDateWithYear } from "../utils/date";
+
 import {
   WorkerAboutFormData,
   WorkerContactFormData,
@@ -70,8 +75,7 @@ function WorkerProfilePage() {
   const [error, setError] = useState<string | null>(null);
 
   const { id } = useParams();
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const isOwner = user?.id === profile?.user_id;
   const profileId = id ?? user?.id;
@@ -97,6 +101,8 @@ function WorkerProfilePage() {
           const savedWorkers = await getSavedWorkers();
           setIsSaved(savedWorkers.some((worker) => worker.id === data.id));
         }
+
+        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -126,10 +132,10 @@ function WorkerProfilePage() {
     }
   }
 
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+  // function handleLogout() {
+  //   logout();
+  //   navigate("/");
+  // }
 
   async function handleSaveContact(contactData: WorkerContactFormData) {
     try {
@@ -226,7 +232,28 @@ function WorkerProfilePage() {
     }
   }
 
-  //TODO: CV section (upload only is isOwner)
+  async function handleUploadCV(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    try {
+      const data = await uploadCV(file);
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              cv_url: data.cv_url,
+              cv_filename: data.cv_filename,
+              cv_uploaded_at: new Date().toISOString(),
+            }
+          : prev,
+      );
+    } catch (error) {
+      console.error("Kunde inte ladda upp CV", error);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -521,38 +548,59 @@ function WorkerProfilePage() {
             </header>
 
             <div className="cv__card">
-              <div className="cv__content">
-                <div className="cv__info">
-                  <p className="cv__filename">anna_andersson_CV.pdf</p>
-                  <p className="cv__date">Uppladdad 10 april 2026</p>
-                </div>
+              {profile.cv_url ? (
+                <div className="cv__content">
+                  <div className="cv__info">
+                    <p className="cv__filename">{profile.cv_filename}</p>
+                    <p className="cv__date">
+                      {profile.cv_uploaded_at
+                        ? `Uppladdad ${formatDateWithYear(profile.cv_uploaded_at)}`
+                        : ""}
+                    </p>
+                  </div>
 
-                <div className="cv__actions">
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Visa CV"
-                    className="cv__view-btn"
-                  >
-                    <ExternalLink size={16} aria-hidden="true" />
-                  </a>
-                  <button
-                    aria-label="Ladda upp nytt CV"
-                    className="cv__upload-btn"
-                  >
-                    <Upload size={16} aria-hidden="true" />
-                  </button>
+                  <div className="cv__actions">
+                    <a
+                      href="#"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Visa CV"
+                      className="cv__view-btn"
+                    >
+                      <ExternalLink size={16} aria-hidden="true" />
+                    </a>
+                    <button
+                      aria-label="Ladda upp nytt CV"
+                      className="cv__replace-btn"
+                    >
+                      <Upload size={16} aria-hidden="true" />
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="cv__empty">
+                  <p className="cv__empty-text">Inget CV uppladdat än</p>
+                  <input
+                    id="cv-upload"
+                    type="file"
+                    accept=".pdf"
+                    className="cv__file-input"
+                    onChange={handleUploadCV}
+                  />
+
+                  <label htmlFor="cv-upload" className="cv__upload-btn">
+                    Ladda upp
+                  </label>
+                </div>
+              )}
             </div>
           </section>
 
-          {isOwner && (
+          {/* {isOwner && (
             <button className="btn btn--primary" onClick={handleLogout}>
               Logga ut
             </button>
-          )}
+          )} */}
 
           {user?.role === "employer" && (
             <>
