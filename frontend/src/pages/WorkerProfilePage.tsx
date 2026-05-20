@@ -12,6 +12,8 @@ import {
   updateWorkerRoles,
   updateWorkerAvailability,
   uploadCV,
+  getCVUrl,
+  deleteCV,
 } from "../api/worker";
 
 import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
@@ -20,6 +22,7 @@ import {
   getRoleLabel,
   getExperienceLevel,
   getDayLabel,
+  formatFilename,
 } from "../utils/formatters";
 import { formatTime, formatDateWithYear } from "../utils/date";
 
@@ -53,6 +56,7 @@ import {
   GraduationCap,
   ExternalLink,
   Upload,
+  Trash2,
 } from "lucide-react";
 
 import "../styles/ProfilePage.css";
@@ -68,6 +72,7 @@ function WorkerProfilePage() {
   const [isEditRolesModalOpen, setIsEditRolesModalOpen] = useState(false);
   const [isEditAvailabilityModalOpen, setIsEditAvailabilityModalOpen] =
     useState(false);
+  const [showDeleteCVConfirm, setShowDeleteCVConfirm] = useState(false);
 
   const [isSaved, setIsSaved] = useState(false);
 
@@ -255,6 +260,35 @@ function WorkerProfilePage() {
     }
   }
 
+  async function handleViewCV() {
+    try {
+      const url = await getCVUrl();
+
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Kunde inte öppna CV", error);
+    }
+  }
+
+  async function handleDeleteCV() {
+    try {
+      await deleteCV();
+
+      setProfile((prev) =>
+        prev
+          ? {
+              ...prev,
+              cv_url: null,
+              cv_filename: null,
+              cv_uploaded_at: null,
+            }
+          : prev,
+      );
+    } catch (error) {
+      console.error("Kunde inte radera CV", error);
+    }
+  }
+
   if (isLoading) {
     return (
       <section className="profile">
@@ -269,6 +303,8 @@ function WorkerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
   if (!profile) return null;
+
+  //TODO: Confirmdialog for deleting cv?
 
   return (
     <>
@@ -551,7 +587,11 @@ function WorkerProfilePage() {
               {profile.cv_url ? (
                 <div className="cv__content">
                   <div className="cv__info">
-                    <p className="cv__filename">{profile.cv_filename}</p>
+                    <p className="cv__filename">
+                      {profile.cv_filename
+                        ? formatFilename(profile.cv_filename)
+                        : ""}
+                    </p>
                     <p className="cv__date">
                       {profile.cv_uploaded_at
                         ? `Uppladdad ${formatDateWithYear(profile.cv_uploaded_at)}`
@@ -560,24 +600,39 @@ function WorkerProfilePage() {
                   </div>
 
                   <div className="cv__actions">
-                    <a
-                      href="#"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    {isOwner && (
+                      <>
+                        <input
+                          id="cv-replace"
+                          type="file"
+                          accept=".pdf"
+                          className="cv__file-input"
+                          onChange={handleUploadCV}
+                        />
+                        <label htmlFor="cv-replace" className="cv__replace-btn">
+                          <Upload size={16} aria-hidden="true" />
+                        </label>
+                      </>
+                    )}
+                    <button
                       aria-label="Visa CV"
                       className="cv__view-btn"
+                      onClick={handleViewCV}
                     >
                       <ExternalLink size={16} aria-hidden="true" />
-                    </a>
-                    <button
-                      aria-label="Ladda upp nytt CV"
-                      className="cv__replace-btn"
-                    >
-                      <Upload size={16} aria-hidden="true" />
                     </button>
+                    {isOwner && (
+                      <button
+                        aria-label="Ta bort CV"
+                        className="cv__delete-btn"
+                        onClick={() => setShowDeleteCVConfirm(true)}
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                      </button>
+                    )}
                   </div>
                 </div>
-              ) : (
+              ) : isOwner ? (
                 <div className="cv__empty">
                   <p className="cv__empty-text">Inget CV uppladdat än</p>
                   <input
@@ -587,11 +642,12 @@ function WorkerProfilePage() {
                     className="cv__file-input"
                     onChange={handleUploadCV}
                   />
-
                   <label htmlFor="cv-upload" className="cv__upload-btn">
                     Ladda upp
                   </label>
                 </div>
+              ) : (
+                <p className="empty-text">Inget CV uppladdat än</p>
               )}
             </div>
           </section>
@@ -610,6 +666,38 @@ function WorkerProfilePage() {
           )}
         </div>
       </section>
+
+      {showDeleteCVConfirm && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setShowDeleteCVConfirm(false)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Ta bort CV?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill ta bort ditt CV? Det går inte att
+              ångra.
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setShowDeleteCVConfirm(false)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  handleDeleteCV();
+                  setShowDeleteCVConfirm(false);
+                }}
+              >
+                Ta bort
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Modal
         isOpen={isEditContactModalOpen}
