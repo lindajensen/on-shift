@@ -5,7 +5,7 @@ import pool from "../db";
 import supabase from "../supabase";
 
 /**
- * Fetches the profile of an worker by their worker profile ID.
+ * Fetches the profile of a worker by their worker profile ID.
  * @param request - The request object.
  * @param response - The response object.
  * @returns A JSON object containing the employer's profile information.
@@ -28,6 +28,7 @@ export async function getWorkerProfileById(
         wp.phone,
         wp.city,
         wp.cv_url,
+        wp.cv_filename,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -41,7 +42,7 @@ export async function getWorkerProfileById(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.is_available
       `,
       [id],
     );
@@ -84,6 +85,7 @@ export async function getWorkerProfileByUserId(
         wp.phone,
         wp.city,
         wp.cv_url,
+        wp.cv_filename,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -97,7 +99,7 @@ export async function getWorkerProfileByUserId(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.user_id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.is_available
       `,
       [userId],
     );
@@ -1146,7 +1148,7 @@ export async function uploadCV(
     await pool.query(
       `
       UPDATE worker_profile
-      SET cv_url = $1, cv_filename = $2
+      SET cv_url = $1, cv_filename = $2, cv_uploaded_at = NOW()
       WHERE user_id = $3
       `,
       [filePath, file.originalname, userId],
