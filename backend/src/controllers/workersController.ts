@@ -29,6 +29,7 @@ export async function getWorkerProfileById(
         wp.city,
         wp.cv_url,
         wp.cv_filename,
+        wp.cv_uploaded_at,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -42,7 +43,7 @@ export async function getWorkerProfileById(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.cv_uploaded_at, wp.is_available
       `,
       [id],
     );
@@ -86,6 +87,7 @@ export async function getWorkerProfileByUserId(
         wp.city,
         wp.cv_url,
         wp.cv_filename,
+        wp.cv_uploaded_at,
         wp.is_available,
         JSON_AGG(DISTINCT jsonb_build_object('role', wr.role, 'experience_level', wr.experience_level)) FILTER (WHERE wr.id IS NOT NULL) AS roles,
         JSON_AGG(DISTINCT jsonb_build_object('day_of_week', a.day_of_week, 'start_time', a.start_time, 'end_time', a.end_time)) FILTER (WHERE a.id IS NOT NULL) AS availability,
@@ -99,7 +101,7 @@ export async function getWorkerProfileByUserId(
       LEFT JOIN worker_education wed ON wed.worker_id = wp.id
       LEFT JOIN review r ON r.reviewee_id = wp.user_id
       WHERE wp.user_id = $1
-      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.is_available
+      GROUP BY wp.id, wp.user_id, wp.name, wp.bio, wp.email, wp.phone, wp.city, wp.cv_url, wp.cv_filename, wp.cv_uploaded_at, wp.is_available
       `,
       [userId],
     );
@@ -1195,6 +1197,46 @@ export async function generateSignedCVUrl(
     }
 
     response.status(200).json({ url: urlData.signedUrl });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Deletes the CV of the currently logged in worker.
+ * Removes the file from Supabase Storage and clears the CV fields in the database.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function deleteCV(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+  const filePath = `${userId}/cv.pdf`;
+
+  try {
+    await supabase.storage.from("cvs").remove([filePath]);
+
+    await pool.query(
+      `
+      UPDATE worker_profile
+      SET cv_url = NULL, cv_filename = NULL, cv_uploaded_at = NULL
+      WHERE user_id = $1
+      `,
+      [userId],
+    );
+
+    response.status(200).json({ message: "CV raderat" });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
