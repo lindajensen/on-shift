@@ -1149,15 +1149,15 @@ export async function uploadCV(
       SET cv_url = $1, cv_filename = $2
       WHERE user_id = $3
       `,
-      [urlData.signedUrl, file.originalname, userId],
+      [filePath, file.originalname, userId],
     );
+
+    response.status(200).json({
+      cv_url: urlData.signedUrl,
+      cv_filename: file.originalname,
+    });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
   }
 }
-
-export async function getSignedUrl(
-  request: Request,
-  response: Response,
-): Promise<void> {}
