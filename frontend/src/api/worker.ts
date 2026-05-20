@@ -544,3 +544,23 @@ export async function uploadCV(file: File) {
 
   return response.json();
 }
+
+/**
+ * Deletes the CV of the currently logged in worker.
+ * @returns A promise that resolves when the CV has been deleted.
+ * @throws An error if the request fails.
+ */
+export async function deleteCV(): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/cv`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte ta bort CV. Försök igen senare.");
+  }
+}
