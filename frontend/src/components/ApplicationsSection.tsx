@@ -112,52 +112,40 @@ function ApplicationsSection({
                 {/* Dropdown Menu */}
                 {openMenuId === application.id && (
                   <div className="application-card__menu">
-                    <ul className="application-card__menu-list">
-                      <li className="application-card__menu-item">
-                        <User2 size={16} aria-hidden="true" />
-                        <Link
-                          to={`/personal/${application.worker_id}`}
-                          className="application-card__menu-btn"
-                        >
-                          Gå till profil
-                        </Link>
-                      </li>
-                      <li className="application-card__menu-item">
-                        <FileText size={16} aria-hidden="true" />
-                        <button
-                          className="application-card__menu-btn"
-                          onClick={() => onViewCV(application.worker_id)}
-                        >
-                          Visa CV
-                        </button>
-                      </li>
-                      <li className="application-card__menu-item">
-                        <MessageCircle size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn">
-                          Skicka meddelande
-                        </button>
-                      </li>
-                      <li className="application-card__menu-item">
-                        <ChefHat size={16} aria-hidden="true" />
-                        <button
-                          className="application-card__menu-btn"
-                          disabled={application.status !== "pending"}
-                          onClick={() => onHire(application.id)}
-                        >
-                          Anställ
-                        </button>
-                      </li>
-                      <li className="application-card__menu-item application-card__menu-item--danger">
-                        <Ban size={16} aria-hidden="true" />
-                        <button
-                          className="application-card__menu-btn application-card__menu-btn--danger"
-                          disabled={application.status !== "pending"}
-                          onClick={() => onReject(application.id)}
-                        >
-                          Tacka nej
-                        </button>
-                      </li>
-                    </ul>
+                    <Link
+                      to={`/personal/${application.worker_id}`}
+                      className="application-card__menu-btn"
+                    >
+                      <User2 size={16} aria-hidden="true" />
+                      Gå till profil
+                    </Link>
+                    <button
+                      className="application-card__menu-btn"
+                      onClick={() => onViewCV(application.worker_id)}
+                    >
+                      <FileText size={16} aria-hidden="true" />
+                      Visa CV
+                    </button>
+                    <button className="application-card__menu-btn">
+                      <MessageCircle size={16} aria-hidden="true" />
+                      Skicka meddelande
+                    </button>
+                    <button
+                      className="application-card__menu-btn"
+                      disabled={application.status !== "pending"}
+                      onClick={() => onHire(application.id)}
+                    >
+                      <ChefHat size={16} aria-hidden="true" />
+                      Anställ
+                    </button>
+                    <button
+                      className="application-card__menu-btn application-card__menu-btn--danger"
+                      disabled={application.status !== "pending"}
+                      onClick={() => onReject(application.id)}
+                    >
+                      <Ban size={16} aria-hidden="true" />
+                      Tacka nej
+                    </button>
                   </div>
                 )}
               </article>
