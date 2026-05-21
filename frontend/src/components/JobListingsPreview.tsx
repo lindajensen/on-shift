@@ -10,7 +10,9 @@ import "../styles/Preview.css";
 
 function JobListingsPreview() {
   const [jobListings, setJobListings] = useState<EmployerJobListing[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchJobListings() {
@@ -19,6 +21,7 @@ function JobListingsPreview() {
         setJobListings(data);
       } catch (error) {
         console.error("Kunde inte hämta annonser", error);
+        setError("Kunde inte hämta annonser.");
       } finally {
         setIsLoading(false);
       }
@@ -30,9 +33,6 @@ function JobListingsPreview() {
   const activeJobListings = jobListings.filter(
     (job) => job.status === "active" || job.status === "filled",
   );
-
-  //TODO: Implement error state
-  //TODO: Items clickable link to detailspage?
 
   if (isLoading) {
     return (
@@ -49,6 +49,17 @@ function JobListingsPreview() {
             <div key={i} className="preview-skeleton skeleton" />
           ))}
         </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="preview">
+        <header className="preview__header">
+          <h2 className="preview__title">Mina annonser</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }
