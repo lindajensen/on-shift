@@ -15,7 +15,6 @@ function SavedWorkersPreview() {
   const [error, setError] = useState<string | null>(null);
 
   //TODO: Contact button not yet implemented
-  //TODO: Make card clickable?
 
   useEffect(() => {
     async function fetchSavedWorkers() {

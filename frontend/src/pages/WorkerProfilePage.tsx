@@ -313,8 +313,6 @@ function WorkerProfilePage() {
   if (error) return <ErrorMessage message={error} />;
   if (!profile) return null;
 
-  //TODO: Confirmdialog for deleting cv?
-
   return (
     <>
       <section className="profile">
