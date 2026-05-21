@@ -14,6 +14,7 @@ function EmployerApplicationsPreview() {
   >([]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchApplications() {
@@ -22,6 +23,7 @@ function EmployerApplicationsPreview() {
         setApplications(data);
       } catch (error) {
         console.error("Kunde inte hämta ansökningar", error);
+        setError("Kunde inte hämta ansökningar.");
       } finally {
         setIsLoading(false);
       }
@@ -29,7 +31,6 @@ function EmployerApplicationsPreview() {
     fetchApplications();
   }, []);
 
-  //TODO: Implement error state
   //TODO: Make cards clickable?
 
   if (isLoading) {
@@ -47,6 +48,17 @@ function EmployerApplicationsPreview() {
             <div key={i} className="preview-skeleton skeleton" />
           ))}
         </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="preview">
+        <header className="preview__header">
+          <h2 className="preview__title">Mina ansökningar</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }
