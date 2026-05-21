@@ -15,7 +15,7 @@ function WorkerDashboard() {
     null,
   );
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const firstName = workerProfile?.name.split(" ")[0];
 
@@ -26,16 +26,14 @@ function WorkerDashboard() {
         setWorkerProfile(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
-      } finally {
-        setIsLoading(false);
+        setError(true);
       }
     }
 
     fetchWorkerProfile();
   }, []);
 
-  //TODO: Error handling
-
+  if (error) return null;
   if (!workerProfile) return;
 
   return (
