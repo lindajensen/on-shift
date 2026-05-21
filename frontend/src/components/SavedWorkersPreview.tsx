@@ -99,6 +99,7 @@ function SavedWorkersPreview() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="card-list__list">
         {savedWorkers.slice(0, 3).map((savedWorker) => (
           <li key={savedWorker.id} className="card-list__item">
@@ -129,8 +130,6 @@ function SavedWorkersPreview() {
                     </li>
                   ))}
                 </ul>
-
-                <button className="card-list__contact-btn">Kontakta</button>
               </article>
             </Link>
           </li>
