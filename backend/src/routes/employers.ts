@@ -22,6 +22,7 @@ import {
   getPublicJobListings,
   hireApplicant,
   rejectApplicant,
+  getWorkerCVUrl,
 } from "../controllers/employersControllers";
 import { authenticateToken } from "../middleware/auth";
 
@@ -59,5 +60,7 @@ router.post("/reviews", authenticateToken, createEmployerReview);
 
 router.patch("/applications/:id/hire", authenticateToken, hireApplicant);
 router.patch("/applications/:id/reject", authenticateToken, rejectApplicant);
+
+router.get("/workers/:id/cv-url", authenticateToken, getWorkerCVUrl);
 
 export default router;
