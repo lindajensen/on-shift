@@ -2,7 +2,7 @@ import { useState } from "react";
 import { validateEmail, validatePhone } from "../../utils/validation";
 import {
   WorkerProfile,
-  EditWorkerContactFormData,
+  WorkerContactFormData,
   WorkerContactValidationErrors,
 } from "../../types";
 import { Asterisk } from "lucide-react";
@@ -12,7 +12,7 @@ import "../../styles/modals/ModalForm.css";
 interface EditWorkerContactModalProps {
   profile: WorkerProfile | null;
   onClose: () => void;
-  onSave: (contactData: EditWorkerContactFormData) => Promise<void>;
+  onSave: (contactData: WorkerContactFormData) => Promise<void>;
 }
 
 function EditWorkerContactModal({
@@ -76,7 +76,9 @@ function EditWorkerContactModal({
   return (
     <article className="modal-form">
       <header className="modal-form__header">
-        <h2 className="modal-form__title">Kontaktinfo</h2>
+        <h2 className="modal-form__title" id="modal-title">
+          Kontaktinfo
+        </h2>
       </header>
 
       <form className="modal-form__form">

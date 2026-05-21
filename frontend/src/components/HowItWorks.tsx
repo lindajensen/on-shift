@@ -12,7 +12,9 @@ import {
 import "../styles/HowItWorks.css";
 
 function HowItWorks() {
-  const [activeTab, setActiveTab] = useState<"worker" | "employer">("worker");
+  const [activeTab, setActiveTab] = useState<"personal" | "restaurang">(
+    "personal",
+  );
 
   return (
     <section className="how-it-works" id="how-it-works">
@@ -21,21 +23,23 @@ function HowItWorks() {
 
         <div className="how-it-works__toggle">
           <button
-            className={`how-it-works__toggle-btn ${activeTab === "worker" ? "how-it-works__toggle-btn--active" : ""}`}
-            onClick={() => setActiveTab("worker")}
+            className={`how-it-works__toggle-btn ${activeTab === "personal" ? "how-it-works__toggle-btn--active" : ""}`}
+            onClick={() => setActiveTab("personal")}
+            aria-pressed={activeTab === "personal"}
           >
             För personal
           </button>
           <button
-            className={`how-it-works__toggle-btn ${activeTab === "employer" ? "how-it-works__toggle-btn--active" : ""}`}
-            onClick={() => setActiveTab("employer")}
+            className={`how-it-works__toggle-btn ${activeTab === "restaurang" ? "how-it-works__toggle-btn--active" : ""}`}
+            onClick={() => setActiveTab("restaurang")}
+            aria-pressed={activeTab === "restaurang"}
           >
             För restauranger
           </button>
         </div>
 
         {/* Worker Steps */}
-        {activeTab === "worker" && (
+        {activeTab === "personal" && (
           <ul className="how-it-works__steps">
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">
@@ -82,7 +86,7 @@ function HowItWorks() {
           </ul>
         )}
 
-        {activeTab === "employer" && (
+        {activeTab === "restaurang" && (
           <ul className="how-it-works__steps">
             <li className="how-it-works__step">
               <div className="how-it-works__step-icon">

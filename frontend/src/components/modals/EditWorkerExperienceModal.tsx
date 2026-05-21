@@ -111,7 +111,9 @@ function EditWorkerExperienceModal({
   return (
     <article className="modal-form">
       <header className="modal-form__header">
-        <h2 className="modal-form__title">Erfarenhet</h2>
+        <h2 className="modal-form__title" id="modal-title">
+          Erfarenhet
+        </h2>
       </header>
 
       <form className="modal-form__form">

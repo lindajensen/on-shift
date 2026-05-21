@@ -88,7 +88,10 @@ function JobListingsPreview() {
       <ul className="preview__list">
         {activeJobListings.slice(0, 3).map((jobListing) => (
           <li key={jobListing.id} className="preview__item">
-            <Link to={`/mina-annonser/${jobListing.id}`}>
+            <Link
+              to={`/mina-annonser/${jobListing.id}`}
+              aria-label={`Visa annons: ${getRoleLabel(jobListing.role)} ${formatDate(jobListing.job_date)}`}
+            >
               <article className="preview__card">
                 <div className="preview__info">
                   <h3 className="preview__name">

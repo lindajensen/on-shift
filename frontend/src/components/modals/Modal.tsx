@@ -29,7 +29,7 @@ function Modal({ isOpen, onClose, children, showCloseButton }: ModalProps) {
     <>
       <div className="modal__overlay" onClick={onClose}></div>
 
-      <dialog open={isOpen}>
+      <dialog open={isOpen} aria-labelledby="modal-title">
         <div className="modal__container">
           <header className="modal__header">
             {showCloseButton && (

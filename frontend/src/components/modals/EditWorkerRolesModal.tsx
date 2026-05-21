@@ -64,7 +64,9 @@ function EditWorkerRolesModal({
   return (
     <article className="modal-form">
       <header className="modal-form__header">
-        <h2 className="modal-form__title">Roller</h2>
+        <h2 className="modal-form__title" id="modal-title">
+          Roller
+        </h2>
         <p className="modal-form__subtitle">
           Välj de roller du söker och din erfarenhetsnivå
         </p>

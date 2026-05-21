@@ -31,11 +31,11 @@ function EmployerReviewsPreview({ employerId }: EmployerReviewsPreviewProps) {
 
   if (isLoading) {
     return (
-      <section className="worker-reviews">
-        <header className="worker-reviews__header">
-          <h2 className="worker-reviews__title">Senaste betygen</h2>
+      <section className="reviews-preview">
+        <header className="reviews-preview__header">
+          <h2 className="reviews-preview__title">Senaste betygen</h2>
         </header>
-        <div className="worker-reviews__skeleton skeleton" />
+        <div className="reviews-preview__skeleton skeleton" />
       </section>
     );
   }

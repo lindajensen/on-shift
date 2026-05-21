@@ -40,7 +40,10 @@ function EmployerJobListings({ jobs, employerId }: EmployerJobListingsProps) {
       <ul className="employer-jobs__list">
         {jobs.slice(0, 3).map((job) => (
           <li key={job.id} className="employer-jobs__item">
-            <Link to={`/jobb/${job.id}`}>
+            <Link
+              to={`/jobb/${job.id}`}
+              aria-label={`Visa pass: ${getRoleLabel(job.role)} ${formatDate(job.job_date)}`}
+            >
               <article className="employer-jobs__card">
                 <header className="employer-jobs__card-header">
                   <h3 className="employer-jobs__card-role">
