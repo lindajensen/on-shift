@@ -5,6 +5,7 @@ import {
   hireApplicant,
   rejectApplicant,
   createEmployerReview,
+  getWorkerCVUrl,
 } from "../api/employer";
 import { getRoleLabel, getStatusLabel } from "../utils/formatters";
 import { formatDate, formatTime, hasJobDatePassed } from "../utils/date";
@@ -118,7 +119,16 @@ function EmployerApplicationsPage() {
     }
   }
 
-  //TODO: CV button <a href={cv_url} target="_blank">
+  async function handleViewCV(workerId: number) {
+    try {
+      const url = await getWorkerCVUrl(workerId);
+
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Kunde inte öppna CV", error);
+    }
+  }
+
   //TODO: Message button
 
   if (isLoading) {
@@ -237,7 +247,10 @@ function EmployerApplicationsPage() {
 
                         <li className="application-card__menu-item">
                           <FileText size={16} aria-hidden="true" />
-                          <button className="application-card__menu-btn">
+                          <button
+                            className="application-card__menu-btn"
+                            onClick={() => handleViewCV(application.worker_id)}
+                          >
                             Visa CV
                           </button>
                         </li>
