@@ -60,7 +60,7 @@ function BottomNav({ role }: BottomNavProps) {
           </>
         ) : (
           <>
-            <nav className="bottom-nav">
+            <nav className="bottom-nav" aria-label="Huvudnavigering">
               <Link to="/" className="bottom-nav__logo">
                 <span>on</span>Shift
               </Link>
