@@ -14,8 +14,8 @@ function WorkerApplicationsPreview() {
     [],
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  //TODO: Implement error state
   //TODO: Items clickable link to detailspage?
 
   useEffect(() => {
@@ -25,6 +25,7 @@ function WorkerApplicationsPreview() {
         setApplications(data);
       } catch (error) {
         console.error("Kunde inte hämta ansökningar", error);
+        setError("Kunde inte hämta ansökningar.");
       } finally {
         setIsLoading(false);
       }
@@ -47,6 +48,17 @@ function WorkerApplicationsPreview() {
             <div key={i} className="preview-skeleton skeleton" />
           ))}
         </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="preview">
+        <header className="preview__header">
+          <h2 className="preview__title">Mina ansökningar</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }

@@ -10,9 +10,10 @@ import "../styles/CardList.css";
 
 function SavedWorkersPreview() {
   const [savedWorkers, setSavedWorkers] = useState<Worker[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  //TODO: Error handling
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   //TODO: Contact button not yet implemented
   //TODO: Make card clickable?
 
@@ -23,6 +24,7 @@ function SavedWorkersPreview() {
         setSavedWorkers(data);
       } catch (error) {
         console.error("Kunde inte hämta sparad personal", error);
+        setError("Kunde inte hämta sparad personal.");
       } finally {
         setIsLoading(false);
       }
@@ -48,6 +50,17 @@ function SavedWorkersPreview() {
             </li>
           ))}
         </ul>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="">Sparad personal</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }
