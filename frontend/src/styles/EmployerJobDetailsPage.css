@@ -32,6 +32,10 @@
   font-size: 0.8rem;
 }
 
+.job-details-page__title {
+  margin-bottom: 0;
+}
+
 .job-details-page__title-row {
   position: relative;
   display: flex;

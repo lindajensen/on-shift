@@ -5,6 +5,7 @@
   border-radius: var(--radius-md);
   display: flex;
   gap: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .restaurant-card__avatar {

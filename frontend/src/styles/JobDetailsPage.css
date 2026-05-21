@@ -20,6 +20,10 @@
   margin-bottom: 1rem;
 }
 
+.job-details__title {
+  margin-bottom: 0;
+}
+
 .job-details__title-row {
   display: flex;
   align-items: center;
@@ -32,6 +36,14 @@
 
 .job-details .job-card__tags {
   margin-bottom: 1rem;
+}
+
+.job-details__restaurant {
+  margin-top: 1.5rem;
+}
+
+.job-details__section-title {
+  margin-bottom: 0.3rem;
 }
 
 .job-details__header-actions {
