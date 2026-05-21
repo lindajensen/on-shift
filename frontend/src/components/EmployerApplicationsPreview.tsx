@@ -31,8 +31,6 @@ function EmployerApplicationsPreview() {
     fetchApplications();
   }, []);
 
-  //TODO: Make cards clickable?
-
   if (isLoading) {
     return (
       <section className="preview">
@@ -98,7 +96,7 @@ function EmployerApplicationsPreview() {
       <ul className="preview__list">
         {applications.slice(0, 3).map((application) => (
           <li key={application.id} className="preview__item">
-            <Link to={`/personal/${application.worker_id}`}>
+            <Link to={`/mina-annonser/${application.job_id}`}>
               <article className="preview__card">
                 <div className="preview__info">
                   <h3 className="preview__name">{application.worker_name}</h3>
