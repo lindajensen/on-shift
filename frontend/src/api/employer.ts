@@ -550,3 +550,29 @@ export async function rejectApplicant(id: number): Promise<void> {
     throw new Error("Kunde inte neka ansökan. Försök igen senare.");
   }
 }
+
+/**
+ * Fetches a signed URL for a worker's CV, accessible by employers.
+ * @param workerId - The worker profile ID.
+ * @returns A promise that resolves to the signed URL.
+ * @throws An error if the request fails.
+ */
+export async function getWorkerCVUrl(workerId: number): Promise<string> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/employers/workers/${workerId}/cv-url`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta CV. Försök igen senare.");
+  }
+
+  const data = await response.json();
+  return data.url;
+}
