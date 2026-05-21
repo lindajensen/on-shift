@@ -5,7 +5,7 @@ import WorkerApplicationsPreview from "./WorkerApplicationsPreview";
 import RecommendedJobs from "./RecommendedJobs";
 import LatestReview from "./LatestWorkerReview";
 
-import { getWorkerProfile } from "../api/worker";
+import { getWorkerProfileByUserId } from "../api/worker";
 import { WorkerProfile } from "../types";
 
 import "../styles/Dashboard.css";
@@ -22,7 +22,7 @@ function WorkerDashboard() {
   useEffect(() => {
     async function fetchWorkerProfile() {
       try {
-        const data = await getWorkerProfile();
+        const data = await getWorkerProfileByUserId();
         setWorkerProfile(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);

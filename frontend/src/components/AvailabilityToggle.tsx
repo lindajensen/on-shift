@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { toggleAvailability, getWorkerProfile } from "../api/worker";
+import { toggleAvailability, getWorkerProfileByUserId } from "../api/worker";
 
 import "../styles/AvailabilityToggle.css";
 
@@ -10,7 +10,7 @@ function AvailabilityToggle() {
   useEffect(() => {
     async function fetchWorkerProfile() {
       try {
-        const data = await getWorkerProfile();
+        const data = await getWorkerProfileByUserId();
         setIsAvailable(data.is_available);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
