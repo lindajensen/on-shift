@@ -145,9 +145,6 @@ function EmployerJobDetailsPage() {
 
   const isFilled = job.status === "filled";
 
-  //TODO: Fix hover styling dropdown menu
-  //? Calculate available_spots if people are hired?
-
   return (
     <>
       <section className="job-details-page">
