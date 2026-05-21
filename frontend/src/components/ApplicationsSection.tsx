@@ -25,6 +25,7 @@ interface ApplicationsSectionProps {
   onOpen: () => void;
   onHire: (id: number) => void;
   onReject: (id: number) => void;
+  onViewCV: (workerId: number) => void;
 }
 
 function ApplicationsSection({
@@ -34,6 +35,7 @@ function ApplicationsSection({
   onOpen,
   onHire,
   onReject,
+  onViewCV,
 }: ApplicationsSectionProps) {
   useEffect(() => {
     function handleClickOutside() {
@@ -43,7 +45,6 @@ function ApplicationsSection({
     return () => document.removeEventListener("click", handleClickOutside);
   }, [setOpenMenuId]);
 
-  //TODO: CV button <a href={cv_url} target="_blank">
   //TODO: Message button
 
   const applicationList = applications ?? [];
@@ -123,7 +124,10 @@ function ApplicationsSection({
                       </li>
                       <li className="application-card__menu-item">
                         <FileText size={16} aria-hidden="true" />
-                        <button className="application-card__menu-btn">
+                        <button
+                          className="application-card__menu-btn"
+                          onClick={() => onViewCV(application.worker_id)}
+                        >
                           Visa CV
                         </button>
                       </li>
