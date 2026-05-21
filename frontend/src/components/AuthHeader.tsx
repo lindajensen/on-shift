@@ -29,8 +29,6 @@ function AuthHeader() {
 
   const initials = user.name ? getInitials(user.name) : "";
 
-  //TODO: Fix hover styling dropdown menu
-
   return (
     <>
       <header className="auth-header">
