@@ -110,7 +110,7 @@ function JobModal({ job, onClose, onSave }: JobModalProps) {
   return (
     <article className="job-modal">
       <header className="job-modal__header">
-        <h2 className="job-modal__title">
+        <h2 className="job-modal__title" id="modal-title">
           {job ? "Redigera annons" : "Lägg till annons"}
         </h2>
         <p className="job-modal__subtitle">

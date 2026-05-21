@@ -52,7 +52,9 @@ function ReviewModal({
   return (
     <article className="review-modal">
       <header className="review-modal__header">
-        <h2 className="review-modal__title">Betygsätt pass</h2>
+        <h2 className="review-modal__title" id="modal-title">
+          Betygsätt pass
+        </h2>
         <p
           className="
         review-modal__subtitle"

@@ -31,7 +31,9 @@ function EditEmployerAboutModal({
   return (
     <article className="modal-form">
       <header className="modal-form__header">
-        <h2 className="modal-form__title">Om restaurangen</h2>
+        <h2 className="modal-form__title" id="modal-title">
+          Om restaurangen
+        </h2>
       </header>
 
       <form className="modal-form__form">

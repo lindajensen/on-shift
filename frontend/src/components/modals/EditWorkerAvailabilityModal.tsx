@@ -97,7 +97,7 @@ function EditWorkerAvailabilityModal({
 
   return (
     <article className="modal-form">
-      <header className="modal-form__header">
+      <header className="modal-form__header" id="modal-title">
         <h2 className="modal-form__title">Tillgänglighet</h2>
       </header>
 
