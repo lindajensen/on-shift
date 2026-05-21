@@ -16,8 +16,6 @@ function WorkerApplicationsPreview() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //TODO: Items clickable link to detailspage?
-
   useEffect(() => {
     async function fetchApplications() {
       try {
