@@ -41,10 +41,15 @@ function ProfileHeader({
         </div>
 
         {rating && (
-          <p className="profile-header__rating">
+          <p className="profile-header__rating" aria-hidden="true">
             <Star className="rating-star" size={14} aria-hidden="true" />
             {Number(rating).toFixed(1)}
           </p>
+        )}
+        {rating && (
+          <span className="screen-reader-only">
+            Betyg: {Number(rating).toFixed(1)}
+          </span>
         )}
       </div>
     </div>

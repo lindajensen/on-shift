@@ -30,7 +30,7 @@ function LatestEmployerReview() {
 
   if (isLoading) {
     return (
-      <section>
+      <section className="latest-review">
         <header className="latest-review__header">
           <h2 className="latest-review__title">Senaste betyget</h2>
           <Link className="latest-review__link" to="/betyg">
@@ -45,7 +45,7 @@ function LatestEmployerReview() {
 
   if (reviews.length === 0) {
     return (
-      <section>
+      <section className="latest-review">
         <header className="latest-review__header">
           <h2 className="latest-review__title">Senaste betyget</h2>
           <Link className="latest-review__link" to="/betyg">
@@ -66,7 +66,7 @@ function LatestEmployerReview() {
   }
 
   return (
-    <section>
+    <section className="latest-review">
       <header className="latest-review__header">
         <h2 className="latest-review__title">Senaste betyget</h2>
         <Link className="latest-review__link" to="/betyg">

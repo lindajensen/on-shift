@@ -200,6 +200,9 @@ function FindWorkersPage() {
         </header>
 
         <div className="find-workers__search">
+          <label htmlFor="worker-search" className="screen-reader-only">
+            Sök personal
+          </label>
           <input
             className="find-workers__search-input"
             type="text"
@@ -215,6 +218,7 @@ function FindWorkersPage() {
               className={`jobs__filter-btn ${activeFilter === filter ? "jobs__filter-btn--active" : ""}`}
               key={filter}
               onClick={() => setActiveFilter(filter)}
+              aria-pressed={activeFilter === filter}
             >
               {filter}
             </button>

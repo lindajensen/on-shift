@@ -22,7 +22,10 @@ function RestaurantCard({
   const initials = name ? getInitials(name) : "";
 
   return (
-    <Link to={`/restaurang/${employerId}`}>
+    <Link
+      to={`/restaurang/${employerId}`}
+      aria-label={`Gå till ${name}s profil`}
+    >
       <article className="restaurant-card">
         <div className="restaurant-card__avatar avatar">{initials}</div>
 

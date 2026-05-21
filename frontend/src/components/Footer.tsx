@@ -15,7 +15,7 @@ function Footer() {
           </p>
         </div>
 
-        <nav className="footer__nav">
+        <nav className="footer__nav" aria-label="Sidfotslänkar">
           <div className="footer__nav-group">
             <h3 className="footer__nav-title">För personal</h3>
             <ul className="footer__nav-list">

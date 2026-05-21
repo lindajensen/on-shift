@@ -13,7 +13,7 @@ import { SavedEmployer } from "../types";
 import "../styles/WorkerFavouritesPage.css";
 
 function WorkerFavouritesPage() {
-  const [activeTab, setActiveTab] = useState<"jobs" | "employers">("jobs");
+  const [activeTab, setActiveTab] = useState<"pass" | "restauranger">("pass");
   const [savedJobs, setSavedJobs] = useState<SavedJob[]>([]);
   const [savedEmployers, setSavedEmployers] = useState<SavedEmployer[]>([]);
 
@@ -69,20 +69,22 @@ function WorkerFavouritesPage() {
 
         <div className="favourites-page__tabs">
           <button
-            className={`favourites-page__tab ${activeTab === "jobs" ? "favourites-page__tab--active" : ""}`}
-            onClick={() => setActiveTab("jobs")}
+            className={`favourites-page__tab ${activeTab === "pass" ? "favourites-page__tab--active" : ""}`}
+            onClick={() => setActiveTab("pass")}
+            aria-pressed={activeTab === "pass"}
           >
             Pass
           </button>
           <button
-            className={`favourites-page__tab ${activeTab === "employers" ? "favourites-page__tab--active" : ""}`}
-            onClick={() => setActiveTab("employers")}
+            className={`favourites-page__tab ${activeTab === "restauranger" ? "favourites-page__tab--active" : ""}`}
+            onClick={() => setActiveTab("restauranger")}
+            aria-pressed={activeTab === "restauranger"}
           >
             Restauranger
           </button>
         </div>
 
-        {activeTab === "jobs" ? (
+        {activeTab === "pass" ? (
           <SavedJobsList
             savedJobs={savedJobs}
             isLoading={isLoading}

@@ -161,12 +161,14 @@ function EmployerJobListingsPage() {
             <button
               className={`job-listings-page__tab ${activeTab === "aktiva" ? "job-listings-page__tab--active" : ""}`}
               onClick={() => setActiveTab("aktiva")}
+              aria-pressed={activeTab === "aktiva"}
             >
               Aktiva ({activeListings.length})
             </button>
             <button
               className={`job-listings-page__tab ${activeTab === "avslutade" ? "job-listings-page__tab--active" : ""}`}
               onClick={() => setActiveTab("avslutade")}
+              aria-pressed={activeTab === "avslutade"}
             >
               Avslutade ({closedListings.length})
             </button>

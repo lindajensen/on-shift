@@ -41,6 +41,7 @@ function WorkerCard({
       onClick={() => {
         if (!isAnonymous) navigate(`/personal/${worker.id}`);
       }}
+      role="button"
     >
       <header className="worker-card__header">
         <div className="worker-card__avatar avatar">
