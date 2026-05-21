@@ -94,27 +94,32 @@ function WorkerApplicationsPreview() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="preview__list">
         {applications.slice(0, 3).map((application) => (
           <li key={application.id} className="preview__item">
-            <article className="preview__card">
-              <div className="preview__info">
-                <h3 className="preview__name">{application.restaurant_name}</h3>
-                <p className="preview__meta">
-                  {getRoleLabel(application.role)} ·{" "}
-                  {formatDate(application.job_date)} kl.{" "}
-                  {formatTime(application.start_time)} -{" "}
-                  {formatTime(application.end_time)}
-                </p>
-              </div>
-              <div className="preview__status">
-                <span
-                  className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
-                >
-                  {getStatusLabel(application.status)}
-                </span>
-              </div>
-            </article>
+            <Link to={`/jobb/${application.job_id}`}>
+              <article className="preview__card">
+                <div className="preview__info">
+                  <h3 className="preview__name">
+                    {application.restaurant_name}
+                  </h3>
+                  <p className="preview__meta">
+                    {getRoleLabel(application.role)} ·{" "}
+                    {formatDate(application.job_date)} kl.{" "}
+                    {formatTime(application.start_time)} -{" "}
+                    {formatTime(application.end_time)}
+                  </p>
+                </div>
+                <div className="preview__status">
+                  <span
+                    className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
+                  >
+                    {getStatusLabel(application.status)}
+                  </span>
+                </div>
+              </article>
+            </Link>
           </li>
         ))}
       </ul>
