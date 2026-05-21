@@ -126,8 +126,7 @@ function JobsPage() {
     }
   }
 
-  //TODO: If logged in, POST to /api/jobs/:id/applications instead of redirecting to /login
-  //TODO: Vad göra med jobb där datum är passerat?
+  //TODO: If logged in, POST to /api/jobs/:id/applications inst
 
   if (isLoading) return <LoadingSpinner subtitle="Hämtar lediga pass" />;
   if (error) return <ErrorMessage message={error} />;
