@@ -23,12 +23,14 @@ function HowItWorks() {
           <button
             className={`how-it-works__toggle-btn ${activeTab === "worker" ? "how-it-works__toggle-btn--active" : ""}`}
             onClick={() => setActiveTab("worker")}
+            aria-pressed={activeTab === "worker"}
           >
             För personal
           </button>
           <button
             className={`how-it-works__toggle-btn ${activeTab === "employer" ? "how-it-works__toggle-btn--active" : ""}`}
             onClick={() => setActiveTab("employer")}
+            aria-pressed={activeTab === "employer"}
           >
             För restauranger
           </button>
