@@ -16,7 +16,12 @@ import {
   deleteCV,
 } from "../api/worker";
 
-import { saveWorker, unsaveWorker, getSavedWorkers } from "../api/employer";
+import {
+  saveWorker,
+  unsaveWorker,
+  getSavedWorkers,
+  getWorkerCVUrl,
+} from "../api/employer";
 
 import {
   getRoleLabel,
@@ -262,9 +267,15 @@ function WorkerProfilePage() {
 
   async function handleViewCV() {
     try {
-      const url = await getCVUrl();
+      if (isOwner) {
+        const url = await getCVUrl();
 
-      window.open(url, "_blank");
+        window.open(url, "_blank");
+      } else {
+        const url = await getWorkerCVUrl(Number(id));
+
+        window.open(url, "_blank");
+      }
     } catch (error) {
       console.error("Kunde inte öppna CV", error);
     }

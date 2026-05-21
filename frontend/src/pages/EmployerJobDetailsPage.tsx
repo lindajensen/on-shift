@@ -7,6 +7,7 @@ import {
   reopenJobListing,
   hireApplicant,
   rejectApplicant,
+  getWorkerCVUrl,
 } from "../api/employer";
 import { getJobStatusLabel, getRoleLabel } from "../utils/formatters";
 import { EmployerJobDetails, JobFormData } from "../types";
@@ -122,6 +123,16 @@ function EmployerJobDetailsPage() {
     }
   }
 
+  async function handleViewCV(workerId: number) {
+    try {
+      const url = await getWorkerCVUrl(workerId);
+
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Kunde inte öppna CV", error);
+    }
+  }
+
   if (isLoading) return <LoadingSpinner subtitle="Hämtar annons" />;
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Ingen annons hittades" />;
@@ -234,6 +245,7 @@ function EmployerJobDetailsPage() {
             onOpen={() => setIsMenuOpen(false)}
             onHire={handleHire}
             onReject={handleReject}
+            onViewCV={handleViewCV}
           />
         </div>
       </section>

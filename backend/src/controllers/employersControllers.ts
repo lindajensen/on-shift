@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import supabase from "../supabase";
 import pool from "../db";
 
 /**
@@ -984,6 +985,8 @@ export async function hireApplicant(
     return;
   }
 
+  const userId = user.id;
+
   try {
     await pool.query(
       `
@@ -995,7 +998,7 @@ export async function hireApplicant(
         WHERE employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
       )
       `,
-      [id, user.id],
+      [id, userId],
     );
 
     await pool.query(
@@ -1041,6 +1044,8 @@ export async function rejectApplicant(
     return;
   }
 
+  const userId = user.id;
+
   try {
     await pool.query(
       `
@@ -1052,10 +1057,57 @@ export async function rejectApplicant(
         WHERE employer_id = (SELECT id FROM employer_profile WHERE user_id = $2)
       )
       `,
-      [id, user.id],
+      [id, userId],
     );
 
     response.status(200).json({ message: "Ansökan nekad" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
+
+/**
+ * Generates a signed URL for a worker's CV, accessible by employers.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with the signed URL.
+ */
+export async function getWorkerCVUrl(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { id } = request.params;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT cv_url FROM worker_profile WHERE id = $1`,
+      [id],
+    );
+
+    const cvUrl = result.rows[0]?.cv_url;
+
+    if (!cvUrl) {
+      response.status(404).json({ message: "Inget CV hittades" });
+      return;
+    }
+
+    const { data, error: signedUrlError } = await supabase.storage
+      .from("cvs")
+      .createSignedUrl(cvUrl, 3600);
+
+    if (signedUrlError || !data) {
+      response.status(500).json({ message: "Kunde inte hämta CV-länk" });
+      return;
+    }
+
+    response.status(200).json({ url: data.signedUrl });
   } catch (error) {
     console.error(error);
     response.status(500).json({ message: "Något gick fel" });
