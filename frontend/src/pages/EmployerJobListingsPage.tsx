@@ -13,6 +13,7 @@ import { EmployerJobListing, JobFormData } from "../types";
 
 import Modal from "../components/modals/Modal";
 import JobModal from "../components/modals/JobModal";
+import Tooltip from "../components/Tooltip";
 import ErrorMessage from "../components/ErrorMessage";
 
 import {
@@ -237,18 +238,35 @@ function EmployerJobListingsPage() {
                               </span>
 
                               <div className="job-listings-page__card-actions">
-                                <button
-                                  aria-label="Redigera annons"
-                                  className="job-listings-page__card-edit-btn"
-                                  disabled={isFilled}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    setSelectedJob(job);
-                                    setIsJobModalOpen(true);
-                                  }}
-                                >
-                                  <Edit size={20} aria-hidden="true" />
-                                </button>
+                                {isFilled ? (
+                                  <Tooltip text="Kan inte redigera en tillsatt annons">
+                                    <button
+                                      aria-label="Redigera annons"
+                                      className="job-listings-page__card-edit-btn"
+                                      disabled={isFilled}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setSelectedJob(job);
+                                        setIsJobModalOpen(true);
+                                      }}
+                                    >
+                                      <Edit size={20} aria-hidden="true" />
+                                    </button>
+                                  </Tooltip>
+                                ) : (
+                                  <button
+                                    aria-label="Redigera annons"
+                                    className="job-listings-page__card-edit-btn"
+                                    disabled={isFilled}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setSelectedJob(job);
+                                      setIsJobModalOpen(true);
+                                    }}
+                                  >
+                                    <Edit size={20} aria-hidden="true" />
+                                  </button>
+                                )}
 
                                 {job.status === "closed" ? (
                                   <button
@@ -261,6 +279,20 @@ function EmployerJobListingsPage() {
                                   >
                                     <RotateCcw size={20} aria-hidden="true" />
                                   </button>
+                                ) : isFilled ? (
+                                  <Tooltip text="Kan inte avsluta en tillsatt annons">
+                                    <button
+                                      aria-label="Avsluta annons"
+                                      className="job-listings-page__card-close-btn"
+                                      disabled={isFilled}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        setJobToClose(job.id);
+                                      }}
+                                    >
+                                      <XCircle size={20} aria-hidden="true" />
+                                    </button>
+                                  </Tooltip>
                                 ) : (
                                   <button
                                     aria-label="Avsluta annons"
@@ -357,16 +389,33 @@ function EmployerJobListingsPage() {
                               )}
 
                               <div className="job-listings-page__card-actions">
-                                <button
-                                  className="job-listings-page__card-reopen-btn"
-                                  disabled={isPastDate}
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    handleReopen(job.id);
-                                  }}
-                                >
-                                  <RotateCcw size={20} />
-                                </button>
+                                {isPastDate ? (
+                                  <Tooltip text="Kan inte återaktivera ett passerat jobb">
+                                    <button
+                                      aria-label="Återaktivera annons"
+                                      className="job-listings-page__card-reopen-btn"
+                                      disabled={isPastDate}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleReopen(job.id);
+                                      }}
+                                    >
+                                      <RotateCcw size={20} aria-hidden="true" />
+                                    </button>
+                                  </Tooltip>
+                                ) : (
+                                  <button
+                                    aria-label="Återaktivera annons"
+                                    className="job-listings-page__card-reopen-btn"
+                                    disabled={isPastDate}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleReopen(job.id);
+                                    }}
+                                  >
+                                    <RotateCcw size={20} aria-hidden="true" />
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </article>
