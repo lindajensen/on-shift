@@ -549,7 +549,7 @@ export async function getWorkerApplications(
       JOIN employer_profile ep ON j.employer_id = ep.id
       JOIN worker_profile wp ON a.worker_id = wp.id
       WHERE wp.user_id = $1
-      ORDER BY j.job_date ASC
+      ORDER BY j.job_date DESC
       `,
       [userId],
     );
