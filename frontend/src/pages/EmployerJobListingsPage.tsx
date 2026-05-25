@@ -343,12 +343,18 @@ function EmployerJobListingsPage() {
                             <div className="divider"></div>
 
                             <div className="job-listings-page__card-footer">
-                              <span className="badge badge--accent">
-                                {parseInt(job.application_count)}{" "}
-                                {parseInt(job.application_count) === 1
-                                  ? "ansökning"
-                                  : "ansökningar"}
-                              </span>
+                              {job.was_filled ? (
+                                <span className="badge badge--hired">
+                                  Tillsatt
+                                </span>
+                              ) : (
+                                <span className="badge badge--accent">
+                                  {parseInt(job.application_count)}{" "}
+                                  {parseInt(job.application_count) === 1
+                                    ? "ansökning"
+                                    : "ansökningar"}
+                                </span>
+                              )}
 
                               <div className="job-listings-page__card-actions">
                                 <button
