@@ -92,6 +92,7 @@ CREATE TABLE job (
   is_urgent BOOLEAN NOT NULL DEFAULT FALSE,
   requires_experience BOOLEAN NOT NULL DEFAULT FALSE,
   status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'filled', 'closed')),
+  was_filled BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
   FOREIGN KEY (employer_id) REFERENCES employer_profile(id) ON DELETE CASCADE

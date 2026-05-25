@@ -38,6 +38,14 @@
   border-radius: var(--radius-md);
 }
 
+.job-listings-page__card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+
 .job-listings-page__card-header {
   display: flex;
   gap: 0.3rem;
