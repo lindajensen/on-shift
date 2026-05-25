@@ -201,6 +201,7 @@ export interface EmployerJobListing {
   demands: string | null;
   is_urgent: boolean;
   requires_experience: boolean;
+  was_filled: boolean;
 }
 
 export interface EmployerJobDetails {
