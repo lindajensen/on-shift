@@ -111,8 +111,6 @@ function WorkerProfilePage() {
           const savedWorkers = await getSavedWorkers();
           setIsSaved(savedWorkers.some((worker) => worker.id === data.id));
         }
-
-        console.log(data);
       } catch (error) {
         console.error("Kunde inte hämta profil", error);
         setError("Vi kunde inte hämta profilen. Försök igen senare.");
@@ -314,8 +312,6 @@ function WorkerProfilePage() {
 
   if (error) return <ErrorMessage message={error} />;
   if (!profile) return null;
-
-  //TODO: Confirmdialog for deleting cv?
 
   return (
     <>

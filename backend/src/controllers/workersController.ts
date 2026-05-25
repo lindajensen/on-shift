@@ -506,39 +506,6 @@ export async function getAvailability(
   }
 }
 
-// TODO: Refactor: remove getWorkerProfile (check where it's used)
-/**
- * Fetches the profile information of the currently logged in worker.
- * @param request - The request object.
- * @param response - The response object.
- * @returns A JSON object containing the worker's profile information.
- */
-export async function getWorkerProfile(
-  request: Request,
-  response: Response,
-): Promise<void> {
-  const user = request.user;
-
-  if (!user) {
-    response.status(401).json({ message: "Åtkomst nekad" });
-
-    return;
-  }
-
-  const userId = user.id;
-
-  try {
-    const profile = await pool.query(
-      "SELECT * FROM worker_profile WHERE user_id = $1",
-      [userId],
-    );
-
-    response.status(200).json(profile.rows[0]);
-  } catch (error) {
-    response.status(500).json({ message: "Något gick fel" });
-  }
-}
-
 /**
  * Fetches the applications of the currently logged in worker.
  * @param request - The request object.
@@ -582,7 +549,7 @@ export async function getWorkerApplications(
       JOIN employer_profile ep ON j.employer_id = ep.id
       JOIN worker_profile wp ON a.worker_id = wp.id
       WHERE wp.user_id = $1
-      ORDER BY j.job_date ASC
+      ORDER BY j.job_date DESC
       `,
       [userId],
     );

@@ -20,28 +20,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
  * @returns A promise that resolves to the worker's profile.
  * @throws An error if the request fails.
  */
-//TODO: Refactor and delete (old getWorkerProfile)
-export async function getWorkerProfile(): Promise<WorkerProfile> {
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`${API_BASE_URL}/api/workers/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error("Kunde inte hämta profilen. Försök igen senare.");
-  }
-
-  return response.json();
-}
-
-/**
- * Fetches the profile of the currently logged in worker.
- * @returns A promise that resolves to the worker's profile.
- * @throws An error if the request fails.
- */
 export async function getWorkerProfileByUserId(): Promise<WorkerProfile> {
   const token = localStorage.getItem("token");
 

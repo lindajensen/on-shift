@@ -10,9 +10,9 @@ import "../styles/LatestReview.css";
 
 function LatestWorkerReview() {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  //TODO: Error?
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchReviews() {
@@ -21,6 +21,7 @@ function LatestWorkerReview() {
         setReviews(data);
       } catch (error) {
         console.error("Kunde inte hämta betyg", error);
+        setError("Kunde inte hämta betyg.");
       } finally {
         setIsLoading(false);
       }
@@ -39,6 +40,17 @@ function LatestWorkerReview() {
           </Link>
         </header>
         <div className="latest-review__skeleton skeleton" />
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="latest-review">
+        <header className="latest-review__header">
+          <h2 className="latest-review__title">Senaste betyget</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }

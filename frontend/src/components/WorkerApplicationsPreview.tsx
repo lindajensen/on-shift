@@ -14,9 +14,7 @@ function WorkerApplicationsPreview() {
     [],
   );
   const [isLoading, setIsLoading] = useState(true);
-
-  //TODO: Implement error state
-  //TODO: Items clickable link to detailspage?
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchApplications() {
@@ -25,6 +23,7 @@ function WorkerApplicationsPreview() {
         setApplications(data);
       } catch (error) {
         console.error("Kunde inte hämta ansökningar", error);
+        setError("Kunde inte hämta ansökningar.");
       } finally {
         setIsLoading(false);
       }
@@ -47,6 +46,17 @@ function WorkerApplicationsPreview() {
             <div key={i} className="preview-skeleton skeleton" />
           ))}
         </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="preview">
+        <header className="preview__header">
+          <h2 className="preview__title">Mina ansökningar</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }
@@ -82,27 +92,32 @@ function WorkerApplicationsPreview() {
           <ChevronRight size={16} aria-hidden="true" />
         </Link>
       </header>
+
       <ul className="preview__list">
         {applications.slice(0, 3).map((application) => (
           <li key={application.id} className="preview__item">
-            <article className="preview__card">
-              <div className="preview__info">
-                <h3 className="preview__name">{application.restaurant_name}</h3>
-                <p className="preview__meta">
-                  {getRoleLabel(application.role)} ·{" "}
-                  {formatDate(application.job_date)} kl.{" "}
-                  {formatTime(application.start_time)} -{" "}
-                  {formatTime(application.end_time)}
-                </p>
-              </div>
-              <div className="preview__status">
-                <span
-                  className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
-                >
-                  {getStatusLabel(application.status)}
-                </span>
-              </div>
-            </article>
+            <Link to={`/jobb/${application.job_id}`}>
+              <article className="preview__card">
+                <div className="preview__info">
+                  <h3 className="preview__name">
+                    {application.restaurant_name}
+                  </h3>
+                  <p className="preview__meta">
+                    {getRoleLabel(application.role)} ·{" "}
+                    {formatDate(application.job_date)} kl.{" "}
+                    {formatTime(application.start_time)} -{" "}
+                    {formatTime(application.end_time)}
+                  </p>
+                </div>
+                <div className="preview__status">
+                  <span
+                    className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
+                  >
+                    {getStatusLabel(application.status)}
+                  </span>
+                </div>
+              </article>
+            </Link>
           </li>
         ))}
       </ul>

@@ -86,7 +86,7 @@ function JobInfoSection({
         </li>
       </ul>
 
-      <div className="divider" />
+      {/* <div className="divider" /> */}
 
       <div className="job-info__section">
         <h2 className="job-info__section-title">Om passet</h2>

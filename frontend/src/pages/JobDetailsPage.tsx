@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import RestaurantCard from "../components/RestaurantCard";
-import ErrorMessage from "../components/ErrorMessage";
-import LoadingSpinner from "../components/LoadingSpinner";
-
 import { getJobById } from "../api/jobs";
 import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
 import { useAuth } from "../context/useAuth";
 import { getRoleLabel } from "../utils/formatters";
-import { PublicJobListing } from "../types";
+
 import JobInfoSection from "../components/JobInfoSection";
+import RestaurantCard from "../components/RestaurantCard";
+import ErrorMessage from "../components/ErrorMessage";
+import LoadingSpinner from "../components/LoadingSpinner";
+
+import { PublicJobListing } from "../types";
 
 import { Bookmark } from "lucide-react";
 
@@ -73,7 +74,7 @@ function JobDetailsPage() {
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
   //TODO: Implement Apply functionality
-  //? Where put published date
+  //TODO: Where put published date
 
   return (
     <section className="job-details">
@@ -82,7 +83,6 @@ function JobDetailsPage() {
           <div className="job-details__header-text">
             <div className="job-details__title-row">
               <h1 className="job-details__title">{getRoleLabel(job.role)}</h1>
-
               {user?.role === "worker" && (
                 <button
                   aria-label={isSaved ? "Ta bort från sparade" : "Spara pass"}
@@ -96,7 +96,6 @@ function JobDetailsPage() {
               )}
             </div>
             <p className="job-details__name">{job.restaurant_name}</p>
-
             {(job.is_urgent || job.requires_experience) && (
               <div className="job-card__tags">
                 {job.is_urgent && (
@@ -106,6 +105,16 @@ function JobDetailsPage() {
                   <span className="badge badge--accent">Erfarenhet</span>
                 )}
               </div>
+            )}
+          </div>
+
+          <div className="job-details__header-actions">
+            {user ? (
+              <button className="btn btn--primary">Ansök</button>
+            ) : (
+              <Link className="btn btn--primary" to="/logga-in">
+                Logga in för att ansöka
+              </Link>
             )}
           </div>
         </header>
@@ -124,7 +133,19 @@ function JobDetailsPage() {
           requires_experience={job.requires_experience}
         />
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
+
+        {/* <p
+          style={{
+            fontStyle: "italic",
+            textAlign: "right",
+            color: "var(--color-text-muted)",
+          }}
+        >
+          Publicerad: {formatDate(job.created_at)}
+        </p> */}
+
+        {/* <div className="divider"></div> */}
 
         <div className="job-details__restaurant">
           <h2 className="job-details__section-title">Restaurang</h2>
@@ -138,7 +159,7 @@ function JobDetailsPage() {
           )}
         </div>
 
-        <div className="divider"></div>
+        {/* <div className="divider"></div> */}
 
         <footer className="job-details__actions">
           {user ? (

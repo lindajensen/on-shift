@@ -11,6 +11,9 @@ import "../styles/JobListings.css";
 function JobListings() {
   const [jobs, setJobs] = useState<PublicJobListing[]>([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     async function fetchJobs() {
       try {
@@ -18,15 +21,42 @@ function JobListings() {
         setJobs(data);
       } catch (error) {
         console.error("Kunde inte hämta pass", error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchJobs();
   }, []);
 
-  return (
-    //TODO: Error and loading state (see JobsPage)
+  if (isLoading) {
+    return (
+      <section className="job-listings">
+        <div className="section__inner">
+          <header className="job-listings__header">
+            <div className="job-listings__header-right">
+              <h2 className="job-listings__title">Lediga pass just nu</h2>
+              <p className="job-listings__subtitle">
+                Säkra ett pass innan det försvinner
+              </p>
+            </div>
+          </header>
+          <ul className="job-list">
+            {[1, 2].map((i) => (
+              <li key={i} className="job-list__item">
+                <div className="job-listings-page__skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
 
+  if (error) return null;
+
+  return (
     <section className="job-listings">
       <div className="section__inner">
         <header className="job-listings__header">
@@ -96,18 +126,17 @@ function JobListings() {
                     </div>
 
                     <div className="job-card__footer-meta">
-                      {(job.is_urgent || job.requires_experience) && (
-                        <ul className="job-card__tags">
-                          {job.is_urgent && (
-                            <li className="badge badge--accent">Akut</li>
-                          )}
-                          {job.requires_experience && (
-                            <li className="badge badge--accent">Erfarenhet</li>
-                          )}
-                        </ul>
-                      )}
+                      <div className="job-card__tags">
+                        {job.is_urgent && (
+                          <span className="badge badge--accent">Akut</span>
+                        )}
+                        {job.requires_experience && (
+                          <span className="badge badge--accent">
+                            Erfarenhet
+                          </span>
+                        )}
+                      </div>
 
-                      <div className="divider"></div>
                       <p className="job-card__published">
                         Publicerad: {formatDate(job.created_at)}
                       </p>

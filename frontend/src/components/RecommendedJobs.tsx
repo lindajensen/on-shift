@@ -10,11 +10,12 @@ import "../styles/CardList.css";
 
 function RecommendedJobs() {
   const [jobs, setJobs] = useState<JobPreview[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   //TODO: Apply button not yet implemented
   //? Remove apply button
-  //TODO: Implement error state
 
   useEffect(() => {
     async function fetchRecommendedJobs() {
@@ -23,6 +24,7 @@ function RecommendedJobs() {
         setJobs(data);
       } catch (error) {
         console.error("Kunde inte hämta rekommenderade jobb", error);
+        setError("Kunde inte hämta rekommenderade jobb.");
       } finally {
         setIsLoading(false);
       }
@@ -47,6 +49,17 @@ function RecommendedJobs() {
             </li>
           ))}
         </ul>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="card-list">
+        <header className="card-list__header">
+          <h2 className="card-list__title">Rekommenderade pass</h2>
+        </header>
+        <p className="empty-text">{error}</p>
       </section>
     );
   }

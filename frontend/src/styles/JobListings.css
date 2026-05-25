@@ -10,7 +10,6 @@
 
 .job-listings__see-all {
   display: flex;
-  margin-top: 0.6rem;
   gap: 0.3rem;
   color: var(--color-primary);
   white-space: nowrap;
@@ -84,6 +83,7 @@
   color: var(--color-text-muted);
   text-align: right;
   font-style: italic;
+  font-size: 0.875rem;
 }
 
 .job-card__actions {

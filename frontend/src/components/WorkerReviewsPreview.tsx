@@ -11,7 +11,9 @@ interface WorkerReviewsPreviewProps {
 
 function WorkerReviewsPreview({ workerId }: WorkerReviewsPreviewProps) {
   const [reviews, setReviews] = useState<Review[]>([]);
+
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchReviews() {
@@ -20,6 +22,7 @@ function WorkerReviewsPreview({ workerId }: WorkerReviewsPreviewProps) {
         setReviews(data);
       } catch (error) {
         console.error("Kunde inte hämta betyg", error);
+        setError(true);
       } finally {
         setIsLoading(false);
       }
@@ -38,6 +41,8 @@ function WorkerReviewsPreview({ workerId }: WorkerReviewsPreviewProps) {
       </section>
     );
   }
+
+  if (error) return null;
 
   return (
     <section className="reviews-preview">

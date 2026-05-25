@@ -1,8 +1,3 @@
-//TODO: Delete if unused
-export function capitalize(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-}
-
 export function getInitials(name: string): string {
   return name
     .split(" ")

@@ -11,7 +11,6 @@ import {
   updateWorkerRoles,
   updateWorkerAvailability,
   toggleAvailability,
-  getWorkerProfile,
   getWorkerApplications,
   deleteApplication,
   getRecommendedJobs,
@@ -32,9 +31,6 @@ import { authenticateToken } from "../middleware/auth";
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();
-
-//TODO: Refactor and delete
-router.get("/me", authenticateToken, getWorkerProfile);
 
 router.get("/profile/me", authenticateToken, getWorkerProfileByUserId);
 router.get("/profile/:id", getWorkerProfileById);
