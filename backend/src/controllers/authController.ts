@@ -115,7 +115,7 @@ export async function loginUser(
   request: Request,
   response: Response,
 ): Promise<void> {
-  const { email, password } = request.body;
+  const { email, password, rememberMe } = request.body;
 
   try {
     const result = await pool.query(
@@ -162,7 +162,7 @@ export async function loginUser(
         name: user.name,
       },
       jwtSecret,
-      { expiresIn: "8h" },
+      { expiresIn: rememberMe ? "30d" : "8h" },
     );
 
     response.status(200).json({
