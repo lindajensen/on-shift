@@ -14,6 +14,7 @@ interface LoginFormProps {
 function LoginForm({ onClose }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -56,7 +57,7 @@ function LoginForm({ onClose }: LoginFormProps) {
     setIsSubmitting(true);
 
     try {
-      const result = await loginUser({ email, password });
+      const result = await loginUser({ email, password, rememberMe });
 
       login(result.token, result.user);
 
@@ -113,6 +114,18 @@ function LoginForm({ onClose }: LoginFormProps) {
           {errors.password && (
             <span className="form-error">{errors.password}</span>
           )}
+        </div>
+
+        <div className="auth-form__field">
+          <div className="auth-form__remember-me">
+            <input
+              type="checkbox"
+              id="remember-me"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="remember-me">Kom ihåg mig</label>
+          </div>
         </div>
 
         <button
