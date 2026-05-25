@@ -33,9 +33,6 @@ function FindWorkersPage() {
     "Diskare",
     "Runner",
     "Kock",
-    "Morgon",
-    "Dag",
-    "Kväll",
     "Helger",
     "Vardagar",
   ];
@@ -90,26 +87,6 @@ function FindWorkersPage() {
         matchesQuery
       );
     }
-
-    if (activeFilter === "Morgon")
-      return (
-        worker.availability?.some((entry) => entry.start_time < "12:00:00") &&
-        matchesQuery
-      );
-
-    if (activeFilter === "Dag")
-      return (
-        worker.availability?.some(
-          (entry) =>
-            entry.start_time >= "12:00:00" && entry.start_time < "17:00:00",
-        ) && matchesQuery
-      );
-
-    if (activeFilter === "Kväll")
-      return (
-        worker.availability?.some((entry) => entry.start_time >= "17:00:00") &&
-        matchesQuery
-      );
 
     if (activeFilter === "Helger")
       return (
