@@ -100,7 +100,7 @@ function EmployerJobListingsPage() {
   async function handleReopen(id: number) {
     try {
       await reopenJobListing(id);
-      await closeJobListing(id);
+
       setEmployerJobListings((prev) =>
         prev.map((job) => (job.id === id ? { ...job, status: "active" } : job)),
       );
