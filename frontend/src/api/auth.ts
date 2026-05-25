@@ -66,6 +66,7 @@ export async function registerEmployer(data: {
 export async function loginUser(data: {
   email: string;
   password: string;
+  rememberMe: boolean;
 }): Promise<LoginResponse> {
   const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
