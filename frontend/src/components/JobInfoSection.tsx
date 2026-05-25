@@ -108,7 +108,7 @@ function JobInfoSection({
               .filter((line) => line.trim())
               .map((demand, index) => (
                 <li key={index} className="job-info__requirement">
-                  <Check size={18} />
+                  <Check size={18} aria-hidden="true" />
                   {demand}
                 </li>
               ))}

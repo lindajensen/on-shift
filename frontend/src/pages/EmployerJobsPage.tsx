@@ -118,7 +118,10 @@ function EmployerJobsPage() {
 
             return (
               <li key={job.id} className="job-list__item">
-                <Link to={`/jobb/${job.id}`}>
+                <Link
+                  to={`/jobb/${job.id}`}
+                  aria-label={`Visa pass: ${getRoleLabel(job.role)} ${formatDate(job.job_date)}`}
+                >
                   <article className="job-card">
                     <header className="job-card__header">
                       <h2 className="job-card__role">

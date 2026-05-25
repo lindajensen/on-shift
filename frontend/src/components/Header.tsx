@@ -14,7 +14,7 @@ function Header() {
   return (
     <>
       <header className="header">
-        <nav className="header__nav">
+        <nav className="header__nav" aria-label="Huvudnavigering">
           <Link to="/" className="header__logo">
             <span className="header__logo-accent">on</span>Shift
           </Link>

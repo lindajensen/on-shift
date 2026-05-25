@@ -64,10 +64,10 @@ function RecommendedJobsPage() {
 
   if (isLoading) {
     return (
-      <section className="job-listings-page">
+      <section className="recommended-page">
         <div className="section__inner">
-          <header>
-            <h1>Rekommenderade pass</h1>
+          <header className="recommended-page__header">
+            <h1 className="recommended-page__title">Rekommenderade pass</h1>
           </header>
           <ul className="job-listings-page__list">
             {[1, 2, 3].map((i) => (
@@ -107,10 +107,10 @@ function RecommendedJobsPage() {
   }
 
   return (
-    <section>
+    <section className="recommended-page">
       <div className="section__inner">
-        <header>
-          <h1>Rekommenderade pass</h1>
+        <header className="recommended-page__header">
+          <h1 className="recommended-page__title">Rekommenderade pass</h1>
         </header>
 
         <ul className="job-list">
@@ -119,7 +119,10 @@ function RecommendedJobsPage() {
 
             return (
               <li key={job.id} className="job-list__item">
-                <Link to={`/jobb/${job.id}`}>
+                <Link
+                  to={`/jobb/${job.id}`}
+                  aria-label={`Visa pass: ${getRoleLabel(job.role)} på ${job.restaurant_name}`}
+                >
                   <article className="job-card">
                     <div className="job-card__header">
                       <div>

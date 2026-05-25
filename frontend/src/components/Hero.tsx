@@ -26,6 +26,7 @@ function Hero() {
       <div className="section__inner">
         <h1
           className={`hero__heading ${visible ? "hero__heading--visible" : "hero__heading--hidden"}`}
+          aria-live="polite"
         >
           {headlines[index]}{" "}
           <span className="hero__heading-accent">direkt.</span>

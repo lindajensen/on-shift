@@ -193,6 +193,7 @@ function EmployerApplicationsPage() {
 
                         <button
                           aria-label="Fler alternativ"
+                          aria-expanded={openMenuId === application.id}
                           className="application-card__more"
                           onClick={(e) => {
                             e.stopPropagation();

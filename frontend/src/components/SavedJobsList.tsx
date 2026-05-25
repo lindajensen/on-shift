@@ -58,7 +58,10 @@ function SavedJobsList({
       <ul className="saved-page__list">
         {savedJobs.map((job) => (
           <li key={job.job_id} className="saved-page__item">
-            <Link to={`/jobb/${job.job_id}`}>
+            <Link
+              to={`/jobb/${job.job_id}`}
+              aria-label={`Visa sparat pass: ${getRoleLabel(job.role)} på ${job.restaurant_name}`}
+            >
               <article className="saved-card">
                 <header className="saved-card__header">
                   <div className="saved-card__title-row">

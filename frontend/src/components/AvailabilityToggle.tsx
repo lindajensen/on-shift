@@ -45,6 +45,7 @@ function AvailabilityToggle() {
         <input
           type="checkbox"
           className="toggle__input"
+          aria-label="Söker jobb"
           checked={isAvailable}
           onChange={handleToggle}
           disabled={isLoading}

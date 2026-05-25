@@ -16,7 +16,7 @@ function SessionExpiredPage() {
   return (
     <section className="session-expired">
       <div className="session-expired__icon">
-        <Lock size={32} />
+        <Lock size={32} aria-label="hidden" />
       </div>
       <h1 className="session-expired__title">Din session har gått ut</h1>
       <p className="session-expired__text">

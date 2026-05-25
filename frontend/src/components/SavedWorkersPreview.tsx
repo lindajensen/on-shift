@@ -102,22 +102,30 @@ function SavedWorkersPreview() {
       <ul className="card-list__list">
         {savedWorkers.slice(0, 3).map((savedWorker) => (
           <li key={savedWorker.id} className="card-list__item">
-            <Link to={`/personal/${savedWorker.id}`}>
+            <Link
+              to={`/personal/${savedWorker.id}`}
+              aria-label={`Gå till ${savedWorker.name}s profil`}
+            >
               <article className="card-list__card">
                 <div className="card-list__card-header">
                   <h3 className="card-list__role">{savedWorker.name}</h3>
 
                   {savedWorker.rating && (
-                    <div className="card-list__meta">
-                      <Star
-                        className="rating-star"
-                        size={18}
-                        aria-hidden="true"
-                      />
-                      <p className="card-list__meta-text">
-                        {Number(savedWorker.rating).toFixed(1)}
-                      </p>
-                    </div>
+                    <>
+                      <div className="card-list__meta" aria-hidden="true">
+                        <Star
+                          className="rating-star"
+                          size={18}
+                          aria-hidden="true"
+                        />
+                        <p className="card-list__meta-text">
+                          {Number(savedWorker.rating).toFixed(1)}
+                        </p>
+                      </div>
+                      <span className="screen-reader-only">
+                        Betyg: {Number(savedWorker.rating).toFixed(1)}
+                      </span>
+                    </>
                   )}
                 </div>
 

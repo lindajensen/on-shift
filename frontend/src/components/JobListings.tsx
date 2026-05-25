@@ -85,7 +85,10 @@ function JobListings() {
           <ul className="job-list">
             {jobs.slice(0, 4).map((job) => (
               <li key={job.id} className="job-list__item">
-                <Link to={`/jobb/${job.id}`}>
+                <Link
+                  to={`/jobb/${job.id}`}
+                  aria-label={`Visa pass: ${getRoleLabel(job.role)} på ${job.restaurant_name}`}
+                >
                   <article className="job-card">
                     <div className="job-card__header">
                       <h3 className="job-card__role">

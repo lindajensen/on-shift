@@ -165,6 +165,7 @@ function EmployerJobDetailsPage() {
               </h1>
               <button
                 aria-label="Fler alternativ"
+                aria-expanded={isMenuOpen}
                 className="job-details-page__more-btn"
                 onClick={(e) => {
                   e.stopPropagation();

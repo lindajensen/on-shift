@@ -38,7 +38,7 @@ function AuthHeader() {
               <span className="auth-header__logo-accent">on</span>Shift
             </Link>
             <div className="auth-header__avatar-wrapper">
-              <div
+              <button
                 className="auth-header__avatar avatar"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -46,24 +46,34 @@ function AuthHeader() {
                 }}
                 aria-expanded={isMenuOpen}
                 aria-haspopup="true"
+                aria-label="Öppna meny"
               >
                 {initials}
-              </div>
+              </button>
 
               {isMenuOpen && (
-                <div className="auth-header__menu">
-                  <Link className="auth-header__menu-btn" to="/min-profil">
+                <div className="auth-header__menu" role="menu">
+                  <Link
+                    className="auth-header__menu-btn"
+                    to="/min-profil"
+                    role="menuitem"
+                  >
                     <User2 size={16} aria-hidden="true" />
                     Min profil
                   </Link>
 
-                  <Link className="auth-header__menu-btn" to="/favoriter">
+                  <Link
+                    className="auth-header__menu-btn"
+                    to="/favoriter"
+                    role="menuitem"
+                  >
                     <Bookmark size={16} aria-hidden="true" />
                     Favoriter
                   </Link>
 
                   <button
                     className="auth-header__menu-btn"
+                    role="menuitem"
                     onClick={handleLogout}
                   >
                     <LogOut size={16} aria-hidden="true" />

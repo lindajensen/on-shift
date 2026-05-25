@@ -99,7 +99,10 @@ function RecommendedJobs() {
       <ul className="card-list__list">
         {jobs.slice(0, 3).map((job) => (
           <li key={job.id} className="card-list__item">
-            <Link to={`/jobb/${job.id}`}>
+            <Link
+              to={`/jobb/${job.id}`}
+              aria-label={`Visa pass: ${getRoleLabel(job.role)} på ${job.restaurant_name}`}
+            >
               <article className="card-list__card">
                 <h3 className="card-list__role">{getRoleLabel(job.role)}</h3>
                 <p className="card-list__employer">{job.restaurant_name}</p>

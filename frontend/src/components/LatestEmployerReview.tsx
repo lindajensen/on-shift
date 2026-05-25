@@ -46,7 +46,7 @@ function LatestEmployerReview() {
 
   if (error) {
     return (
-      <section>
+      <section className="latest-review">
         <header className="latest-review__header">
           <h2 className="latest-review__title">Senaste betyget</h2>
         </header>

@@ -148,6 +148,9 @@ function JobsPage() {
 
         <div className="jobs__search">
           {/* <Search className="jobs__search-icon" size={16} aria-hidden="true" /> */}
+          <label htmlFor="job-search" className="screen-reader-only">
+            Sök pass
+          </label>
           <input
             className="jobs__search-input"
             type="text"
@@ -163,6 +166,7 @@ function JobsPage() {
               className={`jobs__filter-btn ${activeFilter === filter ? "jobs__filter-btn--active" : ""}`}
               key={filter}
               onClick={() => setActiveFilter(filter)}
+              aria-pressed={activeFilter === filter}
             >
               {filter}
             </button>
