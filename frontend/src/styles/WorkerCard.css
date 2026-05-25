@@ -3,7 +3,18 @@
   border-radius: var(--radius-lg);
   padding: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.worker-card--clickable {
   cursor: pointer;
+}
+
+.worker-card--clickable:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
 }
 
 .worker-card__header {

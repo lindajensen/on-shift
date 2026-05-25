@@ -37,7 +37,7 @@ function WorkerCard({
 
   return (
     <article
-      className="worker-card"
+      className={`worker-card ${!isAnonymous ? "worker-card--clickable" : ""}`}
       onClick={() => {
         if (!isAnonymous) navigate(`/personal/${worker.id}`);
       }}
