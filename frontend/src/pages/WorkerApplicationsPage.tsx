@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getAllApplications, deleteApplication } from "../api/applications";
 import { createReview } from "../api/worker";
 import { getRoleLabel, getStatusLabel } from "../utils/formatters";
@@ -127,64 +128,66 @@ function WorkerApplicationsPage() {
           <ul className="preview__list">
             {applications.map((application) => (
               <li key={application.id} className="preview__item">
-                <article className="preview__card preview__card--with-footer">
-                  <div className="preview__card-top">
-                    <div className="preview__info">
-                      <h3 className="preview__name">
-                        {application.restaurant_name}
-                      </h3>
-                      <p className="preview__meta">
-                        {getRoleLabel(application.role)} ·{" "}
-                        {formatDate(application.job_date)} kl.{" "}
-                        {formatTime(application.start_time)} -{" "}
-                        {formatTime(application.end_time)}
-                      </p>
-                    </div>
-                    <div className="preview__status">
-                      <span
-                        className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
-                      >
-                        {getStatusLabel(application.status)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {(application.status === "pending" ||
-                    (application.status === "hired" &&
-                      hasJobDatePassed(application.job_date))) && (
-                    <div className="divider"></div>
-                  )}
-
-                  <footer className="preview__card-footer">
-                    {application.status === "pending" && (
-                      <button
-                        className="preview__delete-btn"
-                        aria-label="Ta bort ansökan"
-                        onClick={() => setApplicationToDelete(application.id)}
-                      >
-                        <Trash2 size={14} aria-hidden="true" />
-                        Ta bort
-                      </button>
-                    )}
-                    {application.status === "hired" &&
-                      hasJobDatePassed(application.job_date) && (
-                        <button
-                          className="preview__review-btn"
-                          aria-label="Betygsätt pass"
-                          disabled={application.has_review}
-                          onClick={() => {
-                            setApplicationToReview(application);
-                            setIsReviewModalOpen(true);
-                          }}
+                <Link to={`/jobb/${application.job_id}`}>
+                  <article className="preview__card preview__card--with-footer">
+                    <div className="preview__card-top">
+                      <div className="preview__info">
+                        <h3 className="preview__name">
+                          {application.restaurant_name}
+                        </h3>
+                        <p className="preview__meta">
+                          {getRoleLabel(application.role)} ·{" "}
+                          {formatDate(application.job_date)} kl.{" "}
+                          {formatTime(application.start_time)} -{" "}
+                          {formatTime(application.end_time)}
+                        </p>
+                      </div>
+                      <div className="preview__status">
+                        <span
+                          className={`badge badge--${application.status === "pending" ? "pending" : application.status === "hired" ? "hired" : "rejected"}`}
                         >
-                          {!application.has_review && (
-                            <Star size={14} aria-hidden="true" />
-                          )}
-                          {application.has_review ? "Betygsatt" : "Betygsätt"}
+                          {getStatusLabel(application.status)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {(application.status === "pending" ||
+                      (application.status === "hired" &&
+                        hasJobDatePassed(application.job_date))) && (
+                      <div className="divider"></div>
+                    )}
+
+                    <footer className="preview__card-footer">
+                      {application.status === "pending" && (
+                        <button
+                          className="preview__delete-btn"
+                          aria-label="Ta bort ansökan"
+                          onClick={() => setApplicationToDelete(application.id)}
+                        >
+                          <Trash2 size={14} aria-hidden="true" />
+                          Ta bort
                         </button>
                       )}
-                  </footer>
-                </article>
+                      {application.status === "hired" &&
+                        hasJobDatePassed(application.job_date) && (
+                          <button
+                            className="preview__review-btn"
+                            aria-label="Betygsätt pass"
+                            disabled={application.has_review}
+                            onClick={() => {
+                              setApplicationToReview(application);
+                              setIsReviewModalOpen(true);
+                            }}
+                          >
+                            {!application.has_review && (
+                              <Star size={14} aria-hidden="true" />
+                            )}
+                            {application.has_review ? "Betygsatt" : "Betygsätt"}
+                          </button>
+                        )}
+                    </footer>
+                  </article>
+                </Link>
               </li>
             ))}
           </ul>
