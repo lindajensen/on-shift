@@ -162,7 +162,11 @@ function WorkerApplicationsPage() {
                         <button
                           className="preview__delete-btn"
                           aria-label="Ta bort ansökan"
-                          onClick={() => setApplicationToDelete(application.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setApplicationToDelete(application.id);
+                          }}
                         >
                           <Trash2 size={14} aria-hidden="true" />
                           Ta bort
@@ -174,7 +178,9 @@ function WorkerApplicationsPage() {
                             className="preview__review-btn"
                             aria-label="Betygsätt pass"
                             disabled={application.has_review}
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
                               setApplicationToReview(application);
                               setIsReviewModalOpen(true);
                             }}
