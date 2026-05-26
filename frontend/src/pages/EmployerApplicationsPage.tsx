@@ -226,82 +226,61 @@ function EmployerApplicationsPage() {
                   {/* Dropdown Menu */}
                   {openMenuId === application.id && (
                     <div className="application-card__menu">
-                      <ul className="application-card__menu-list">
-                        <li className="application-card__menu-item">
-                          <ExternalLink size={16} aria-hidden="true" />
-                          <Link
-                            to={`/mina-annonser/${application.job_id}`}
-                            className="application-card__menu-btn"
-                          >
-                            Gå till annons
-                          </Link>
-                        </li>
-                        <li className="application-card__menu-item">
-                          <User2 size={16} aria-hidden="true" />
-                          <Link
-                            to={`/personal/${application.worker_id}`}
-                            className="application-card__menu-btn"
-                          >
-                            Gå till profil
-                          </Link>
-                        </li>
-
-                        <li className="application-card__menu-item">
-                          <FileText size={16} aria-hidden="true" />
+                      <Link
+                        to={`/mina-annonser/${application.job_id}`}
+                        className="application-card__menu-btn"
+                      >
+                        <ExternalLink size={16} aria-hidden="true" />
+                        Gå till annons
+                      </Link>
+                      <Link
+                        to={`/personal/${application.worker_id}`}
+                        className="application-card__menu-btn"
+                      >
+                        <User2 size={16} aria-hidden="true" />
+                        Gå till profil
+                      </Link>
+                      <button
+                        className="application-card__menu-btn"
+                        onClick={() => handleViewCV(application.worker_id)}
+                      >
+                        <FileText size={16} aria-hidden="true" />
+                        Visa CV
+                      </button>
+                      <button className="application-card__menu-btn">
+                        <MessageCircle size={16} aria-hidden="true" />
+                        Skicka meddelande
+                      </button>
+                      {application.status === "hired" &&
+                        hasJobDatePassed(application.job_date) && (
                           <button
                             className="application-card__menu-btn"
-                            onClick={() => handleViewCV(application.worker_id)}
+                            disabled={application.has_review}
+                            onClick={() => {
+                              setApplicationToReview(application);
+                              setIsReviewModalOpen(true);
+                            }}
                           >
-                            Visa CV
+                            <Star size={16} aria-hidden="true" />
+                            {application.has_review ? "Betygsatt" : "Betygsätt"}
                           </button>
-                        </li>
-                        <li className="application-card__menu-item">
-                          <MessageCircle size={16} aria-hidden="true" />
-                          <button className="application-card__menu-btn">
-                            Skicka meddelande
-                          </button>
-                        </li>
-
-                        {application.status === "hired" &&
-                          hasJobDatePassed(application.job_date) && (
-                            <li className="application-card__menu-item">
-                              <Star size={16} aria-hidden="true" />
-                              <button
-                                className="application-card__menu-btn"
-                                disabled={application.has_review}
-                                onClick={() => {
-                                  setApplicationToReview(application);
-                                  setIsReviewModalOpen(true);
-                                }}
-                              >
-                                {application.has_review
-                                  ? "Betygsatt"
-                                  : "Betygsätt"}
-                              </button>
-                            </li>
-                          )}
-
-                        <li className="application-card__menu-item">
-                          <ChefHat size={16} aria-hidden="true" />
-                          <button
-                            className="application-card__menu-btn"
-                            disabled={application.status !== "pending"}
-                            onClick={() => handleHire(application.id)}
-                          >
-                            Anställ
-                          </button>
-                        </li>
-                        <li className="application-card__menu-item application-card__menu-item--danger">
-                          <Ban size={16} aria-hidden="true" />
-                          <button
-                            className="application-card__menu-btn application-card__menu-btn--danger"
-                            disabled={application.status !== "pending"}
-                            onClick={() => handleReject(application.id)}
-                          >
-                            Tacka nej
-                          </button>
-                        </li>
-                      </ul>
+                        )}
+                      <button
+                        className="application-card__menu-btn"
+                        disabled={application.status !== "pending"}
+                        onClick={() => handleHire(application.id)}
+                      >
+                        <ChefHat size={16} aria-hidden="true" />
+                        Anställ
+                      </button>
+                      <button
+                        className="application-card__menu-btn application-card__menu-btn--danger"
+                        disabled={application.status !== "pending"}
+                        onClick={() => handleReject(application.id)}
+                      >
+                        <Ban size={16} aria-hidden="true" />
+                        Tacka nej
+                      </button>
                     </div>
                   )}
                 </article>
