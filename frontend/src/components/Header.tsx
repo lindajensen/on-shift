@@ -6,7 +6,11 @@ import LoginModal from "./modals/LoginModal";
 
 import "../styles/Header.css";
 
-function Header() {
+interface HeaderProps {
+  hideLoginButton?: boolean;
+}
+
+function Header({ hideLoginButton = false }: HeaderProps) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const { user } = useAuth();
@@ -22,14 +26,14 @@ function Header() {
             <Link to="/hem" className="header__login-btn btn btn--primary">
               Mina sidor
             </Link>
-          ) : (
+          ) : !hideLoginButton ? (
             <button
               className="header__login-btn btn btn--primary"
               onClick={() => setIsLoginModalOpen(true)}
             >
               Logga in
             </button>
-          )}
+          ) : null}
         </nav>
       </header>
 

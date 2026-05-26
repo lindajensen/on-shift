@@ -12,10 +12,15 @@ function MainLayout() {
   const { user } = useAuth();
   const location = useLocation();
   const isLandingPage = location.pathname === "/";
+  const isJobDetailsPage = location.pathname.startsWith("/jobb/");
 
   return (
     <div className={`layout ${user && !isLandingPage ? "auth-layout" : ""}`}>
-      {isLandingPage || !user ? <Header /> : <AuthHeader />}
+      {isLandingPage || !user ? (
+        <Header hideLoginButton={isJobDetailsPage} />
+      ) : (
+        <AuthHeader />
+      )}
       <main className="layout__content">
         <Outlet />
       </main>
