@@ -542,3 +542,26 @@ export async function deleteCV(): Promise<void> {
     throw new Error("Kunde inte ta bort CV. Försök igen senare.");
   }
 }
+
+/**
+ * Submits a job application for the currently logged in worker.
+ * @param jobId - The ID of the job to apply for.
+ * @returns A promise that resolves when the application is successfully submitted.
+ * @throws An error if the request fails or the worker has already applied.
+ */
+export async function applyForJob(jobId: number): Promise<void> {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`${API_BASE_URL}/api/workers/applications`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ jobId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte skicka in ansökan. Försök igen senare.");
+  }
+}
