@@ -49,7 +49,7 @@ dialog[open]::-webkit-scrollbar {
 
 .modal__close-btn {
   position: absolute;
-  top: 2rem;
+  top: 2.1rem;
   right: 1.5rem;
   background-color: var(--color-bg-hover);
   border: none;
