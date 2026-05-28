@@ -99,3 +99,9 @@
 .job-card__actions .btn--primary {
   flex: 2;
 }
+
+.job-listings__unavailable {
+  color: var(--color-text-muted);
+  font-style: italic;
+  padding: 1rem 0;
+}
