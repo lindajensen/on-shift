@@ -143,8 +143,6 @@ function JobDetailsPage() {
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
-  //TODO: Where put published date
-
   return (
     <>
       <section className="job-details">
