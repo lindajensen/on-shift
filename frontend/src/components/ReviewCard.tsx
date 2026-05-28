@@ -14,15 +14,16 @@ function ReviewCard({ review }: ReviewCardProps) {
     <article className="latest-review__card">
       <div className="latest-review__card-meta">
         <h3 className="latest-review__card-employer">{review.reviewer_name}</h3>
-      </div>
-
-      <div className="latest-review__card-rating" aria-hidden="true">
-        <Star className="rating-star" size={18} />
-        <span className="latest-review__card-rating-score">
-          {review.rating.toFixed(1)}
+        <div className="latest-review__card-rating" aria-hidden="true">
+          <Star className="rating-star" size={18} />
+          <span className="latest-review__card-rating-score">
+            {review.rating.toFixed(1)}
+          </span>
+        </div>
+        <span className="screen-reader-only">
+          Betyg: {review.rating.toFixed(1)}
         </span>
       </div>
-      <span className="screen-reader-only">Betyg: {review.rating.toFixed(1)}</span>
 
       <p className="latest-review__card-comment">{review.comment}</p>
 

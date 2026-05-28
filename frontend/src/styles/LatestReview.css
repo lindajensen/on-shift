@@ -32,28 +32,26 @@
 
 .latest-review__card-meta {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 .latest-review__card-employer {
-  font-size: 1.2rem;
-}
-
-.latest-review__card-date {
-  color: var(--color-text-muted);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .latest-review__card-rating {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  margin-bottom: 0.8rem;
 }
 
 .latest-review__card-comment {
   font-style: italic;
   color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
 }
 
 .latest-review__skeleton {
