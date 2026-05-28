@@ -14,9 +14,6 @@ function RecommendedJobs() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //TODO: Apply button not yet implemented
-  //? Remove apply button
-
   useEffect(() => {
     async function fetchRecommendedJobs() {
       try {
@@ -126,7 +123,6 @@ function RecommendedJobs() {
                   <p className="card-list__rate">
                     {formatCompensation(job.compensation)}
                   </p>
-                  <button className="card-list__apply-btn">Ansök</button>
                 </footer>
               </article>
             </Link>
