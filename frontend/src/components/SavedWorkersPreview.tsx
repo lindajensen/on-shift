@@ -14,8 +14,6 @@ function SavedWorkersPreview() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  //TODO: Contact button not yet implemented
-
   useEffect(() => {
     async function fetchSavedWorkers() {
       try {

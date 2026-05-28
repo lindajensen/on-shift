@@ -129,8 +129,6 @@ function EmployerApplicationsPage() {
     }
   }
 
-  //TODO: Message button
-
   if (isLoading) {
     return (
       <section className="applications-page">
@@ -233,6 +231,7 @@ function EmployerApplicationsPage() {
                         <ExternalLink size={16} aria-hidden="true" />
                         Gå till annons
                       </Link>
+
                       <Link
                         to={`/personal/${application.worker_id}`}
                         className="application-card__menu-btn"
@@ -240,6 +239,7 @@ function EmployerApplicationsPage() {
                         <User2 size={16} aria-hidden="true" />
                         Gå till profil
                       </Link>
+
                       <button
                         className="application-card__menu-btn"
                         onClick={() => handleViewCV(application.worker_id)}
@@ -247,10 +247,13 @@ function EmployerApplicationsPage() {
                         <FileText size={16} aria-hidden="true" />
                         Visa CV
                       </button>
+
+                      {/* Contact functionality is not yet implemented. Requires a messaging system with backend support. */}
                       <button className="application-card__menu-btn">
                         <MessageCircle size={16} aria-hidden="true" />
                         Skicka meddelande
                       </button>
+
                       {application.status === "hired" &&
                         hasJobDatePassed(application.job_date) && (
                           <button
@@ -265,6 +268,7 @@ function EmployerApplicationsPage() {
                             {application.has_review ? "Betygsatt" : "Betygsätt"}
                           </button>
                         )}
+
                       <button
                         className="application-card__menu-btn"
                         disabled={application.status !== "pending"}
@@ -273,6 +277,7 @@ function EmployerApplicationsPage() {
                         <ChefHat size={16} aria-hidden="true" />
                         Anställ
                       </button>
+
                       <button
                         className="application-card__menu-btn application-card__menu-btn--danger"
                         disabled={application.status !== "pending"}

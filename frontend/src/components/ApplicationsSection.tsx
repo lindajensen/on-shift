@@ -45,8 +45,6 @@ function ApplicationsSection({
     return () => document.removeEventListener("click", handleClickOutside);
   }, [setOpenMenuId]);
 
-  //TODO: Message button
-
   const applicationList = applications ?? [];
 
   return (
@@ -120,6 +118,7 @@ function ApplicationsSection({
                       <User2 size={16} aria-hidden="true" />
                       Gå till profil
                     </Link>
+
                     <button
                       className="application-card__menu-btn"
                       onClick={() => onViewCV(application.worker_id)}
@@ -127,10 +126,13 @@ function ApplicationsSection({
                       <FileText size={16} aria-hidden="true" />
                       Visa CV
                     </button>
+
+                    {/* Message functionality is not yet implemented. Requires a messaging system with backend support. */}
                     <button className="application-card__menu-btn">
                       <MessageCircle size={16} aria-hidden="true" />
                       Skicka meddelande
                     </button>
+
                     <button
                       className="application-card__menu-btn"
                       disabled={application.status !== "pending"}
@@ -139,6 +141,7 @@ function ApplicationsSection({
                       <ChefHat size={16} aria-hidden="true" />
                       Anställ
                     </button>
+
                     <button
                       className="application-card__menu-btn application-card__menu-btn--danger"
                       disabled={application.status !== "pending"}
