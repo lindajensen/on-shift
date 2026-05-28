@@ -188,6 +188,12 @@ button {
   background: var(--color-primary-active);
 }
 
+.btn--primary:disabled {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
 .btn--outline {
   background: transparent;
   color: var(--color-primary);
@@ -196,6 +202,24 @@ button {
 
 .btn--outline:hover {
   background: var(--color-primary-light);
+}
+
+.btn--pending {
+  background-color: #fff4ed;
+  color: #c45c00;
+  border: none;
+}
+
+.btn--hired {
+  background-color: #e8f0ee;
+  color: #1a3d34;
+  border: none;
+}
+
+.btn--rejected {
+  background-color: #fce8e8;
+  color: #c62828;
+  border: none;
 }
 
 /* Form */

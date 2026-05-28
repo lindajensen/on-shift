@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getJobById } from "../api/jobs";
-import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
+import { getSavedJobs, saveJob, unsaveJob, applyForJob } from "../api/worker";
+import { getAllApplications } from "../api/applications";
+
 import { useAuth } from "../context/useAuth";
 import { getRoleLabel } from "../utils/formatters";
 
@@ -22,6 +24,9 @@ import "../styles/JobDetailsPage.css";
 function JobDetailsPage() {
   const [job, setJob] = useState<PublicJobListing | null>(null);
   const [isSaved, setIsSaved] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(
+    null,
+  );
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +47,12 @@ function JobDetailsPage() {
         if (user?.role === "worker") {
           const savedJobs = await getSavedJobs();
           setIsSaved(savedJobs.some((saved) => saved.job_id === jobId));
+
+          const applications = await getAllApplications();
+          const application = applications.find(
+            (application) => application.job_id === jobId,
+          );
+          setApplicationStatus(application?.status ?? null);
         }
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
@@ -72,11 +83,66 @@ function JobDetailsPage() {
     }
   }
 
+  async function handleApply() {
+    if (!job) return;
+
+    try {
+      await applyForJob(job.id);
+      setApplicationStatus("pending");
+    } catch (error) {
+      console.error("Kunde inte skicka in ansökan", error);
+    }
+  }
+
+  function renderApplyButton() {
+    if (!user) {
+      return (
+        <button
+          className="btn btn--primary"
+          onClick={() => setIsLoginModalOpen(true)}
+        >
+          Logga in för att ansöka
+        </button>
+      );
+    }
+
+    if (user.role !== "worker") return null;
+
+    if (applicationStatus === "pending") {
+      return (
+        <button className="btn btn--pending" disabled>
+          Väntar på svar
+        </button>
+      );
+    }
+
+    if (applicationStatus === "hired") {
+      return (
+        <button className="btn btn--hired" disabled>
+          Anställd
+        </button>
+      );
+    }
+
+    if (applicationStatus === "rejected") {
+      return (
+        <button className="btn btn--rejected" disabled>
+          Nekad
+        </button>
+      );
+    }
+
+    return (
+      <button className="btn btn--primary" onClick={handleApply}>
+        Ansök
+      </button>
+    );
+  }
+
   if (isLoading) return <LoadingSpinner subtitle="Hämtar pass" />;
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
-  //TODO: Implement Apply functionality
   //TODO: Where put published date
 
   return (
@@ -113,16 +179,7 @@ function JobDetailsPage() {
             </div>
 
             <div className="job-details__header-actions">
-              {user ? (
-                <button className="btn btn--primary">Ansök</button>
-              ) : (
-                <button
-                  className="btn btn--primary"
-                  onClick={() => setIsLoginModalOpen(true)}
-                >
-                  Logga in för att ansöka
-                </button>
-              )}
+              {renderApplyButton()}
             </div>
           </header>
 
@@ -153,16 +210,7 @@ function JobDetailsPage() {
           </div>
 
           <footer className="job-details__actions">
-            {user ? (
-              <button className="btn btn--primary">Ansök</button>
-            ) : (
-              <button
-                className="btn btn--primary"
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                Logga in för att ansöka
-              </button>
-            )}
+            {renderApplyButton()}
           </footer>
         </div>
       </section>
