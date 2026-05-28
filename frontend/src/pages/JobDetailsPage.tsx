@@ -24,7 +24,9 @@ import "../styles/JobDetailsPage.css";
 function JobDetailsPage() {
   const [job, setJob] = useState<PublicJobListing | null>(null);
   const [isSaved, setIsSaved] = useState(false);
-  const [hasApplied, setHasApplied] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState<string | null>(
+    null,
+  );
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -47,9 +49,10 @@ function JobDetailsPage() {
           setIsSaved(savedJobs.some((saved) => saved.job_id === jobId));
 
           const applications = await getAllApplications();
-          setHasApplied(
-            applications.some((application) => application.job_id === jobId),
+          const application = applications.find(
+            (application) => application.job_id === jobId,
           );
+          setApplicationStatus(application?.status ?? null);
         }
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
@@ -85,10 +88,55 @@ function JobDetailsPage() {
 
     try {
       await applyForJob(job.id);
-      setHasApplied(true);
+      setApplicationStatus("pending");
     } catch (error) {
       console.error("Kunde inte skicka in ansökan", error);
     }
+  }
+
+  function renderApplyButton() {
+    if (!user) {
+      return (
+        <button
+          className="btn btn--primary"
+          onClick={() => setIsLoginModalOpen(true)}
+        >
+          Logga in för att ansöka
+        </button>
+      );
+    }
+
+    if (user.role !== "worker") return null;
+
+    if (applicationStatus === "pending") {
+      return (
+        <button className="btn btn--pending" disabled>
+          Väntar på svar
+        </button>
+      );
+    }
+
+    if (applicationStatus === "hired") {
+      return (
+        <button className="btn btn--hired" disabled>
+          Anställd
+        </button>
+      );
+    }
+
+    if (applicationStatus === "rejected") {
+      return (
+        <button className="btn btn--rejected" disabled>
+          Nekad
+        </button>
+      );
+    }
+
+    return (
+      <button className="btn btn--primary" onClick={handleApply}>
+        Ansök
+      </button>
+    );
   }
 
   if (isLoading) return <LoadingSpinner subtitle="Hämtar pass" />;
@@ -131,22 +179,7 @@ function JobDetailsPage() {
             </div>
 
             <div className="job-details__header-actions">
-              {!user ? (
-                <button
-                  className="btn btn--primary"
-                  onClick={() => setIsLoginModalOpen(true)}
-                >
-                  Logga in för att ansöka
-                </button>
-              ) : user.role === "worker" ? (
-                <button
-                  className="btn btn--primary"
-                  disabled={hasApplied}
-                  onClick={handleApply}
-                >
-                  {hasApplied ? "Ansökt" : "Ansök"}
-                </button>
-              ) : null}
+              {renderApplyButton()}
             </div>
           </header>
 
@@ -177,22 +210,7 @@ function JobDetailsPage() {
           </div>
 
           <footer className="job-details__actions">
-            {!user ? (
-              <button
-                className="btn btn--primary"
-                onClick={() => setIsLoginModalOpen(true)}
-              >
-                Logga in för att ansöka
-              </button>
-            ) : user.role === "worker" ? (
-              <button
-                className="btn btn--primary"
-                disabled={hasApplied}
-                onClick={handleApply}
-              >
-                {hasApplied ? "Ansökt" : "Ansök"}
-              </button>
-            ) : null}
+            {renderApplyButton()}
           </footer>
         </div>
       </section>
