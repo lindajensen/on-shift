@@ -1,0 +1,16 @@
+.protected-route {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  text-align: center;
+}
+
+.protected-route h1 {
+  margin-bottom: 0.5rem;
+}
+
+.protected-route p {
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}

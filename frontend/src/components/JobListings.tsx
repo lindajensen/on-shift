@@ -54,7 +54,25 @@ function JobListings() {
     );
   }
 
-  if (error) return null;
+  if (error) {
+    return (
+      <section className="job-listings">
+        <div className="section__inner">
+          <header className="job-listings__header">
+            <div className="job-listings__header-right">
+              <h2 className="job-listings__title">Lediga pass just nu</h2>
+              <p className="job-listings__subtitle">
+                Säkra ett pass innan det försvinner
+              </p>
+            </div>
+          </header>
+          <p className="job-listings__unavailable">
+            Inga pass tillgängliga just nu. Kom tillbaka senare.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="job-listings">

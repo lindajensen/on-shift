@@ -9,6 +9,9 @@ import "../styles/WorkerListings.css";
 function WorkerListings() {
   const [workers, setWorkers] = useState<Worker[]>([]);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -18,11 +21,58 @@ function WorkerListings() {
         setWorkers(data);
       } catch (error) {
         console.error("Kunde inte hämta personal", error);
+        setError(true);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchRandomWorkers();
   }, []);
+
+  if (isLoading) {
+    return (
+      <section className="worker-listings">
+        <div className="section__inner">
+          <header className="worker-listings__header">
+            <h2 className="worker-listings__title">
+              Tillgänglig personal just nu
+            </h2>
+            <p className="worker-listings__subtitle">
+              Logga in för att se vem som är redo att ta ett pass
+            </p>
+          </header>
+          <ul className="worker-list">
+            {[1, 2].map((i) => (
+              <li key={i} className="find-workers__item">
+                <div className="find-workers__skeleton skeleton" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="worker-listings">
+        <div className="section__inner">
+          <header className="worker-listings__header">
+            <h2 className="worker-listings__title">
+              Tillgänglig personal just nu
+            </h2>
+            <p className="worker-listings__subtitle">
+              Logga in för att se vem som är redo att ta ett pass
+            </p>
+          </header>
+          <p className="job-listings__unavailable">
+            Ingen personal tillgänglig just nu. Kom tillbaka senare.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="worker-listings">

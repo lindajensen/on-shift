@@ -1,5 +1,7 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, Link } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+
+import "../styles/ProtectedRoute.css";
 
 interface ProtectedRouteProps {
   role?: "worker" | "employer";
@@ -19,7 +21,17 @@ function ProtectedRoute({ role }: ProtectedRouteProps) {
   const token = localStorage.getItem("token");
 
   if (!user) {
-    return null;
+    return (
+      <section className="protected-route">
+        <div className="section__inner">
+          <h1>Logga in för att fortsätta</h1>
+          <p>Du behöver ett konto för att se den här sidan.</p>
+          <Link to="/logga-in" className="btn btn--primary">
+            Logga in
+          </Link>
+        </div>
+      </section>
+    );
   }
 
   if (!token || isTokenExpired(token)) {
