@@ -70,8 +70,6 @@ function LoginForm({ onClose }: LoginFormProps) {
     }
   }
 
-  //TODO: Move serverError to above buttons?
-
   return (
     <div className="auth-form">
       <div className="auth-form__container">
@@ -114,6 +112,9 @@ function LoginForm({ onClose }: LoginFormProps) {
           {errors.password && (
             <span className="form-error">{errors.password}</span>
           )}
+          {!errors.password && serverError && (
+            <span className="form-error">{serverError}</span>
+          )}
         </div>
 
         <div className="auth-form__field">
@@ -139,7 +140,6 @@ function LoginForm({ onClose }: LoginFormProps) {
             "Logga in"
           )}
         </button>
-        {serverError && <span className="server-error">{serverError}</span>}
       </form>
 
       <div className="auth-form__footer">
