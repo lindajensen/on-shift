@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { getJobById } from "../api/jobs";
-import { getSavedJobs, saveJob, unsaveJob } from "../api/worker";
+import { getSavedJobs, saveJob, unsaveJob, applyForJob } from "../api/worker";
+import { getAllApplications } from "../api/applications";
+
 import { useAuth } from "../context/useAuth";
 import { getRoleLabel } from "../utils/formatters";
 
@@ -22,6 +24,7 @@ import "../styles/JobDetailsPage.css";
 function JobDetailsPage() {
   const [job, setJob] = useState<PublicJobListing | null>(null);
   const [isSaved, setIsSaved] = useState(false);
+  const [hasApplied, setHasApplied] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +45,11 @@ function JobDetailsPage() {
         if (user?.role === "worker") {
           const savedJobs = await getSavedJobs();
           setIsSaved(savedJobs.some((saved) => saved.job_id === jobId));
+
+          const applications = await getAllApplications();
+          setHasApplied(
+            applications.some((application) => application.job_id === jobId),
+          );
         }
       } catch (error) {
         console.error("Kunde inte hämta jobbinformation", error);
@@ -72,11 +80,21 @@ function JobDetailsPage() {
     }
   }
 
+  async function handleApply() {
+    if (!job) return;
+
+    try {
+      await applyForJob(job.id);
+      setHasApplied(true);
+    } catch (error) {
+      console.error("Kunde inte skicka in ansökan", error);
+    }
+  }
+
   if (isLoading) return <LoadingSpinner subtitle="Hämtar pass" />;
   if (error) return <ErrorMessage message={error} />;
   if (!job) return <ErrorMessage message="Inget jobb hittades" />;
 
-  //TODO: Implement Apply functionality
   //TODO: Where put published date
 
   return (
@@ -113,16 +131,22 @@ function JobDetailsPage() {
             </div>
 
             <div className="job-details__header-actions">
-              {user ? (
-                <button className="btn btn--primary">Ansök</button>
-              ) : (
+              {!user ? (
                 <button
                   className="btn btn--primary"
                   onClick={() => setIsLoginModalOpen(true)}
                 >
                   Logga in för att ansöka
                 </button>
-              )}
+              ) : user.role === "worker" ? (
+                <button
+                  className="btn btn--primary"
+                  disabled={hasApplied}
+                  onClick={handleApply}
+                >
+                  {hasApplied ? "Ansökt" : "Ansök"}
+                </button>
+              ) : null}
             </div>
           </header>
 
@@ -153,16 +177,22 @@ function JobDetailsPage() {
           </div>
 
           <footer className="job-details__actions">
-            {user ? (
-              <button className="btn btn--primary">Ansök</button>
-            ) : (
+            {!user ? (
               <button
                 className="btn btn--primary"
                 onClick={() => setIsLoginModalOpen(true)}
               >
                 Logga in för att ansöka
               </button>
-            )}
+            ) : user.role === "worker" ? (
+              <button
+                className="btn btn--primary"
+                disabled={hasApplied}
+                onClick={handleApply}
+              >
+                {hasApplied ? "Ansökt" : "Ansök"}
+              </button>
+            ) : null}
           </footer>
         </div>
       </section>
