@@ -20,10 +20,10 @@ function Footer() {
             <h3 className="footer__nav-title">För personal</h3>
             <ul className="footer__nav-list">
               <li>
-                <Link to="/jobs">Hitta jobb</Link>
+                <Link to="/jobb">Hitta jobb</Link>
               </li>
               <li>
-                <Link to="/register/worker">Skapa profil</Link>
+                <Link to="/registrera?roll=arbetstagare">Skapa profil</Link>
               </li>
             </ul>
           </div>
@@ -32,10 +32,10 @@ function Footer() {
             <h3 className="footer__nav-title">För restauranger</h3>
             <ul className="footer__nav-list">
               <li>
-                <Link to="/employer/workers">Hitta personal</Link>
+                <Link to="/personal">Hitta personal</Link>
               </li>
               <li>
-                <Link to="/register/employer">Skapa profil</Link>
+                <Link to="/registrera?roll=arbetsgivare">Skapa profil</Link>
               </li>
             </ul>
           </div>
