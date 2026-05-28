@@ -26,6 +26,7 @@ import {
   uploadCV,
   generateSignedCVUrl,
   deleteCV,
+  applyForJob,
 } from "../controllers/workersController";
 import { authenticateToken } from "../middleware/auth";
 
@@ -68,5 +69,7 @@ router.patch("/availability", authenticateToken, toggleAvailability);
 router.post("/cv", authenticateToken, upload.single("cv"), uploadCV);
 router.get("/cv/url", authenticateToken, generateSignedCVUrl);
 router.delete("/cv", authenticateToken, deleteCV);
+
+router.post("/applications", authenticateToken, applyForJob);
 
 export default router;

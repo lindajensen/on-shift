@@ -1209,3 +1209,59 @@ export async function deleteCV(
     response.status(500).json({ message: "Något gick fel" });
   }
 }
+
+/**
+ * Creates a new job application for the currently logged in worker.
+ * @param request - The request object.
+ * @param response - The response object.
+ * @returns A JSON response with a message indicating the result.
+ */
+export async function applyForJob(
+  request: Request,
+  response: Response,
+): Promise<void> {
+  const user = request.user;
+  const { jobId } = request.body;
+
+  if (!user) {
+    response.status(401).json({ message: "Åtkomst nekad" });
+    return;
+  }
+
+  const userId = user.id;
+
+  try {
+    const existinApplication = await pool.query(
+      `
+      SELECT id FROM application
+      WHERE job_id = $1
+      AND worker_id = (SELECT id FROM worker_profile WHERE user_id = $2)
+      `,
+      [jobId, userId],
+    );
+
+    if (existinApplication.rows.length > 0) {
+      response
+        .status(409)
+        .json({ message: "Du har redan ansökt om detta jobb" });
+      return;
+    }
+
+    await pool.query(
+      `
+      INSERT INTO application (job_id, worker_id, status)
+      VALUES (
+        $1,
+        (SELECT id FROM worker_profile WHERE user_id = $2),
+        'pending'
+      )
+      `,
+      [jobId, userId],
+    );
+
+    response.status(201).json({ message: "Ansökan skickad" });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: "Något gick fel" });
+  }
+}
