@@ -126,8 +126,6 @@ function JobsPage() {
     }
   }
 
-  //TODO: If logged in, POST to /api/jobs/:id/applications inst
-
   if (isLoading) return <LoadingSpinner subtitle="Hämtar lediga pass" />;
   if (error) return <ErrorMessage message={error} />;
 
@@ -147,7 +145,6 @@ function JobsPage() {
         </header>
 
         <div className="jobs__search">
-          {/* <Search className="jobs__search-icon" size={16} aria-hidden="true" /> */}
           <label htmlFor="job-search" className="screen-reader-only">
             Sök pass
           </label>

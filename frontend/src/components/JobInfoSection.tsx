@@ -27,8 +27,6 @@ function JobInfoSection({
   demands,
   location,
 }: JobInfoProps) {
-  //TODO: Redesign empty state
-
   return (
     <>
       <ul className="job-info__list">

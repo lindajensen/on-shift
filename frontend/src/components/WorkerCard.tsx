@@ -33,8 +33,6 @@ function WorkerCard({
 
   const initials = worker.name ? getInitials(worker.name) : "";
 
-  //TODO: Implement worker tags
-
   return (
     <article
       className={`worker-card ${!isAnonymous ? "worker-card--clickable" : ""}`}
