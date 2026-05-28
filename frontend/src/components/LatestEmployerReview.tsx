@@ -94,15 +94,14 @@ function LatestEmployerReview() {
                 <h3 className="latest-review__card-employer">
                   {review.reviewer_name}
                 </h3>
-                <p className="latest-review__card-date">
-                  {formatDateWithYear(review.created_at)}
-                </p>
-              </div>
-
-              <div className="latest-review__card-rating">
-                <Star className="rating-star" size={18} aria-hidden="true" />
-                <span className="latest-review__card-rating-score">
-                  {review.rating.toFixed(1)}
+                <div className="latest-review__card-rating" aria-hidden="true">
+                  <Star className="rating-star" size={18} aria-hidden="true" />
+                  <span className="latest-review__card-rating-score">
+                    {review.rating.toFixed(1)}
+                  </span>
+                </div>
+                <span className="screen-reader-only">
+                  Betyg: {review.rating.toFixed(1)}
                 </span>
               </div>
 
