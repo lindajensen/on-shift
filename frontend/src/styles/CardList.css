@@ -37,7 +37,7 @@
   padding: 1rem;
   border-radius: var(--radius-lg);
   min-width: 16.25rem;
-  min-height: 11.25rem;
+  min-height: 10rem;
   flex-shrink: 0;
 }
 
@@ -48,6 +48,10 @@
     background-color 0.15s,
     border-color 0.15s;
   cursor: pointer;
+}
+
+.card-list__card-header {
+  margin-bottom: 0.5rem;
 }
 
 .card-list__role {
