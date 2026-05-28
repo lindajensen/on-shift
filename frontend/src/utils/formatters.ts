@@ -68,6 +68,13 @@ export function formatCompensation(amount: number): string {
     : `${Number(amount).toFixed(2)} kr/h`;
 }
 
+/**
+ * Determines the shift type based on start time and job date.
+ * @param startTime - The start time.
+ * @param jobDate - The job date string.
+ * @returns "helg" for weekends, "kväll" for evenings (17:00+), "dag" for daytime.
+ */
+
 export function getShiftType(startTime: string, jobDate: string): string {
   const hour = parseInt(startTime.split(":")[0]);
   const day = new Date(jobDate).getDay();
@@ -77,6 +84,11 @@ export function getShiftType(startTime: string, jobDate: string): string {
   return "dag";
 }
 
+/**
+ * Formats a worker's availability into a readable string.
+ * @param availability - Array of availability entries with day and time.
+ * @returns A string like "Vardagar och helger · Dag och kväll".
+ */
 export function formatAvailability(availability: Availability[]): string {
   const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
   const weekends = ["saturday", "sunday"];
