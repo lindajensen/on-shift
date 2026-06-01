@@ -77,10 +77,10 @@ export async function loginUser(data: {
   });
 
   if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error("Felaktigt användarnamn eller lösenord");
-    }
-    throw new Error("Kunde inte logga in");
+    const errorData = await response.json();
+    throw new Error(
+      errorData.message || "Kunde inte logga in. Försök igen senare.",
+    );
   }
 
   const loginData = await response.json();
