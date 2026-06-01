@@ -78,6 +78,10 @@
   min-height: 1.5rem;
 }
 
+.job-card__tags:empty {
+  margin-top: 0.7rem;
+}
+
 .job-card__published {
   margin-top: 0.5rem;
   color: var(--color-text-muted);
