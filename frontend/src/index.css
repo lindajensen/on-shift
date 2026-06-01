@@ -222,6 +222,12 @@ button {
   border: none;
 }
 
+.btn--pending:disabled,
+.btn--hired:disabled,
+.btn--rejected:disabled {
+  cursor: not-allowed;
+}
+
 /* Form */
 label {
   font-size: 0.875rem;

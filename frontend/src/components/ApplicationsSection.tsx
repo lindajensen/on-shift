@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   getRoleLabel,
@@ -37,6 +37,13 @@ function ApplicationsSection({
   onReject,
   onViewCV,
 }: ApplicationsSectionProps) {
+  const [applicationToHire, setApplicationToHire] = useState<number | null>(
+    null,
+  );
+  const [applicationToReject, setApplicationToReject] = useState<number | null>(
+    null,
+  );
+
   useEffect(() => {
     function handleClickOutside() {
       setOpenMenuId(null);
@@ -136,7 +143,7 @@ function ApplicationsSection({
                     <button
                       className="application-card__menu-btn"
                       disabled={application.status !== "pending"}
-                      onClick={() => onHire(application.id)}
+                      onClick={() => setApplicationToHire(application.id)}
                     >
                       <ChefHat size={16} aria-hidden="true" />
                       Anställ
@@ -145,7 +152,7 @@ function ApplicationsSection({
                     <button
                       className="application-card__menu-btn application-card__menu-btn--danger"
                       disabled={application.status !== "pending"}
-                      onClick={() => onReject(application.id)}
+                      onClick={() => setApplicationToReject(application.id)}
                     >
                       <Ban size={16} aria-hidden="true" />
                       Tacka nej
@@ -156,6 +163,68 @@ function ApplicationsSection({
             </li>
           ))}
         </ul>
+      )}
+
+      {applicationToHire && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setApplicationToHire(null)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Anställ?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill anställa denna person?
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setApplicationToHire(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  onHire(applicationToHire);
+                  setApplicationToHire(null);
+                }}
+              >
+                Anställ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {applicationToReject && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setApplicationToReject(null)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Tacka nej?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill tacka nej? Detta kan inte ångras.
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setApplicationToReject(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  onReject(applicationToReject);
+                  setApplicationToReject(null);
+                }}
+              >
+                Tacka nej
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

@@ -75,7 +75,6 @@ function EditWorkerExperienceModal({
   // Adds a new experience entry to the list with default empty values.
   function handleAdd() {
     setExperiences((prev) => [
-      ...prev,
       {
         id: Date.now(),
         job_title: "",
@@ -83,6 +82,7 @@ function EditWorkerExperienceModal({
         start_date: "",
         end_date: null,
       },
+      ...prev,
     ]);
   }
 

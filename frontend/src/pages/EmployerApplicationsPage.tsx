@@ -37,6 +37,13 @@ function EmployerApplicationsPage() {
 
   const [openMenuId, setOpenMenuId] = useState<number | null>(null);
 
+  const [applicationToHire, setApplicationToHire] = useState<number | null>(
+    null,
+  );
+  const [applicationToReject, setApplicationToReject] = useState<number | null>(
+    null,
+  );
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -219,6 +226,13 @@ function EmployerApplicationsPage() {
                     <span className={`badge badge--${application.status}`}>
                       {getStatusLabel(application.status)}
                     </span>
+                    {application.status === "hired" &&
+                      hasJobDatePassed(application.job_date) &&
+                      !application.has_review && (
+                        <span className="badge badge--neutral">
+                          Kan betygsättas
+                        </span>
+                      )}
                   </div>
 
                   {/* Dropdown Menu */}
@@ -272,7 +286,7 @@ function EmployerApplicationsPage() {
                       <button
                         className="application-card__menu-btn"
                         disabled={application.status !== "pending"}
-                        onClick={() => handleHire(application.id)}
+                        onClick={() => setApplicationToHire(application.id)}
                       >
                         <ChefHat size={16} aria-hidden="true" />
                         Anställ
@@ -281,7 +295,7 @@ function EmployerApplicationsPage() {
                       <button
                         className="application-card__menu-btn application-card__menu-btn--danger"
                         disabled={application.status !== "pending"}
-                        onClick={() => handleReject(application.id)}
+                        onClick={() => setApplicationToReject(application.id)}
                       >
                         <Ban size={16} aria-hidden="true" />
                         Tacka nej
@@ -308,6 +322,68 @@ function EmployerApplicationsPage() {
             application={applicationToReview}
           />
         </Modal>
+      )}
+
+      {applicationToHire && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setApplicationToHire(null)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Anställ?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill anställa denna person?
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setApplicationToHire(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  handleHire(applicationToHire);
+                  setApplicationToHire(null);
+                }}
+              >
+                Anställ
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {applicationToReject && (
+        <div
+          className="confirm-overlay"
+          onClick={() => setApplicationToReject(null)}
+        >
+          <div className="confirm-dialog" onClick={(e) => e.stopPropagation()}>
+            <h3 className="confirm-dialog__heading">Tacka nej?</h3>
+            <p className="confirm-dialog__subheading">
+              Är du säker på att du vill tacka nej? Detta kan inte ångras.
+            </p>
+            <div className="confirm-buttons">
+              <button
+                className="btn confirm-button confirm-button--cancel"
+                onClick={() => setApplicationToReject(null)}
+              >
+                Avbryt
+              </button>
+              <button
+                className="btn confirm-button confirm-button--delete"
+                onClick={() => {
+                  handleReject(applicationToReject);
+                  setApplicationToReject(null);
+                }}
+              >
+                Tacka nej
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
