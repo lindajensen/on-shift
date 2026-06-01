@@ -80,7 +80,7 @@ function EditWorkerEducationModal({
   // Removes an education entry from the list based on its index.
   function handleRemove(index: number) {
     setEducations((prev) =>
-      prev.filter((education, currentIndex) => currentIndex !== index),
+      prev.filter((_education, currentIndex) => currentIndex !== index),
     );
   }
 

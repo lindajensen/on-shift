@@ -44,7 +44,7 @@ function EditWorkerRolesModal({
 
   function handleRemove(index: number) {
     setRoles((prev) =>
-      prev.filter((role, currentIndex) => currentIndex !== index),
+      prev.filter((_role, currentIndex) => currentIndex !== index),
     );
   }
 

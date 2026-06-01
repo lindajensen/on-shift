@@ -89,7 +89,7 @@ function EditWorkerExperienceModal({
   // Removes an experience entry from the list based on its index.
   function handleRemove(index: number) {
     setExperiences((prev) =>
-      prev.filter((experience, currentIndex) => currentIndex !== index),
+      prev.filter((_experience, currentIndex) => currentIndex !== index),
     );
   }
 
