@@ -45,12 +45,8 @@ const router = createBrowserRouter(
         <Route path="/logga-in" element={<LoginPage />} />
         <Route path="/jobb" element={<JobsPage />} />
         <Route path="/jobb/:id" element={<JobDetailsPage />} />
-        <Route path="/restaurang/:id" element={<EmployerProfilePage />} />
-        <Route path="/personal/:id" element={<WorkerProfilePage />} />
-        <Route path="/restaurang/:id/pass" element={<EmployerJobsPage />} />
       </Route>
 
-      {/* WorkerLayout and EmployerLayout */}
       <Route element={<AuthLayout />}>
         <Route element={<ProtectedRoute />}>
           <Route path="/hem" element={<Dashboard />} />
@@ -58,6 +54,9 @@ const router = createBrowserRouter(
           <Route path="/favoriter" element={<FavouritesPage />} />
           <Route path="/betyg" element={<ReviewsPage />} />
           <Route path="/ansokningar" element={<ApplicationsPage />} />
+          <Route path="/restaurang/:id" element={<EmployerProfilePage />} />
+          <Route path="/restaurang/:id/pass" element={<EmployerJobsPage />} />
+          <Route path="/personal/:id" element={<WorkerProfilePage />} />
         </Route>
 
         {/* Employer Routes  */}
