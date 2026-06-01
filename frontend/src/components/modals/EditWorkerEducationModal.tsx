@@ -67,13 +67,13 @@ function EditWorkerEducationModal({
   // Adds a new education entry to the list with default empty values.
   function handleAdd() {
     setEducations((prev) => [
-      ...prev,
       {
         id: Date.now(),
         program: "",
         school: "",
         graduation_year: null,
       },
+      ...prev,
     ]);
   }
 
