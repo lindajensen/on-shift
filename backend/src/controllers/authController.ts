@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 /**
- * Reegisters a new user. Validates the input, checks for existing users, hashes the password and saves the user in the database. Also creates a profile based on the user's role.
+ * Registers a new user. Validates the input, checks for existing users, hashes the password and saves the user in the database. Also creates a profile based on the user's role.
  * @param request
  * @param response
  * @returns A JSON response with a message indicating the result of the registration process.
@@ -36,6 +36,7 @@ export async function registerUser(
 
       return;
     }
+
     if (!/[A-Z]/.test(password)) {
       response
         .status(400)
@@ -118,6 +119,7 @@ export async function loginUser(
   const { email, password, rememberMe } = request.body;
 
   try {
+    // Fetch user from database
     const result = await pool.query(
       `
       SELECT u.*,
