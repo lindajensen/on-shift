@@ -57,6 +57,7 @@
 .application-card__footer {
   display: flex;
   justify-content: flex-end;
+  gap: 0.2rem;
   margin-top: 0.5rem;
 }
 
