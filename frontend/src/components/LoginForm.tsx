@@ -63,8 +63,13 @@ function LoginForm({ onClose }: LoginFormProps) {
 
       navigate("/hem");
     } catch (error) {
-      console.error("Registration error:", error);
-      setServerError("Något gick fel. Försök igen senare.");
+      console.error("Login error:", error);
+
+      if (error instanceof Error) {
+        setServerError(error.message);
+      } else {
+        setServerError("Något gick fel. Försök igen senare.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -91,6 +96,7 @@ function LoginForm({ onClose }: LoginFormProps) {
             onChange={(e) => {
               setEmail(e.target.value);
               setErrors((prev) => ({ ...prev, email: "" }));
+              setServerError("");
             }}
           />
           {errors.email && <span className="form-error">{errors.email}</span>}
@@ -107,6 +113,7 @@ function LoginForm({ onClose }: LoginFormProps) {
             onChange={(e) => {
               setPassword(e.target.value);
               setErrors((prev) => ({ ...prev, password: "" }));
+              setServerError("");
             }}
           />
           {errors.password && (
