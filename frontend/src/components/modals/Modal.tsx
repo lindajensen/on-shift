@@ -23,6 +23,7 @@ function Modal({ isOpen, onClose, children, showCloseButton }: ModalProps) {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
+
   if (!isOpen) return;
 
   return (

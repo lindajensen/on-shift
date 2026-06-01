@@ -1,6 +1,4 @@
 .job-modal {
-  max-height: 90vh;
-  overflow-y: auto;
   scrollbar-width: none;
 }
 
@@ -47,7 +45,6 @@
 .job-modal__toggle-row {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
 }
 
 .job-modal__toggle-title {
