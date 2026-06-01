@@ -1,4 +1,4 @@
-import pool from "../src/db";
+import pool from "./db";
 
 export async function closeExpiredJobs(): Promise<void> {
   try {
