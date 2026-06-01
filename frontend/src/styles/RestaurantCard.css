@@ -8,6 +8,15 @@
   margin-bottom: 0.8rem;
 }
 
+.restaurant-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
+  cursor: pointer;
+}
+
 .restaurant-card__avatar {
   width: 2.5rem;
   height: 2.5rem;
