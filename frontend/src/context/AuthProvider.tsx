@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "./AuthContext";
 import { AuthUser } from "../types";
@@ -19,10 +19,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(user);
   }
 
-  function logout() {
+  const logout = useCallback(() => {
     localStorage.removeItem("token");
     setUser(null);
-  }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, isLoading, login, logout }}>

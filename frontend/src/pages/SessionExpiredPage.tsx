@@ -9,7 +9,6 @@ function SessionExpiredPage() {
   const { logout } = useAuth();
 
   useEffect(() => {
-    localStorage.removeItem("token");
     logout();
   }, [logout]);
 
