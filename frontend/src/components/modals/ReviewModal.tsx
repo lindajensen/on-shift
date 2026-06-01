@@ -98,6 +98,7 @@ function ReviewModal({
           rows={6}
           placeholder="Berätta om din upplevelse"
           value={comment}
+          maxLength={350}
           onChange={(e) => setComment(e.target.value)}
         ></textarea>
 
