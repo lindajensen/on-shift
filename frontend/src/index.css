@@ -222,6 +222,12 @@ button {
   border: none;
 }
 
+.btn--pending,
+.btn--hired,
+.btn--rejected {
+  width: 100%;
+}
+
 .btn--pending:disabled,
 .btn--hired:disabled,
 .btn--rejected:disabled {
