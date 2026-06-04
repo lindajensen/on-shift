@@ -1092,6 +1092,7 @@ export async function uploadCV(
   const filePath = `${userId}/cv.pdf`;
 
   try {
+    // Upload file to storage
     const { error: uploadError } = await supabase.storage
       .from("cvs")
       .upload(filePath, file.buffer, {
@@ -1105,6 +1106,7 @@ export async function uploadCV(
       return;
     }
 
+    // Create signed URL
     const { data: urlData, error: signedUrlError } = await supabase.storage
       .from("cvs")
       .createSignedUrl(filePath, 3600);
