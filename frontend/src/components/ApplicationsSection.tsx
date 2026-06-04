@@ -183,7 +183,7 @@ function ApplicationsSection({
                 Avbryt
               </button>
               <button
-                className="btn confirm-button confirm-button--delete"
+                className="btn confirm-button confirm-button--confirm"
                 onClick={() => {
                   onHire(applicationToHire);
                   setApplicationToHire(null);

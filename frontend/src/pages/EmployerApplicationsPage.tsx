@@ -342,7 +342,7 @@ function EmployerApplicationsPage() {
                 Avbryt
               </button>
               <button
-                className="btn confirm-button confirm-button--delete"
+                className="btn confirm-button confirm-button--confirm"
                 onClick={() => {
                   handleHire(applicationToHire);
                   setApplicationToHire(null);

@@ -394,6 +394,21 @@ textarea {
   background-color: #e53935;
 }
 
+.confirm-button--confirm {
+  flex: 7;
+  background-color: var(--color-success);
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.confirm-button--confirm:hover {
+  background-color: #15803d;
+}
+
 /* Misc */
 .avatar {
   border-radius: 50%;
