@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
+import Tooltip from "../components/Tooltip";
 
 import {
   getWorkerProfileById,
@@ -616,26 +617,35 @@ function WorkerProfilePage() {
                           className="cv__file-input"
                           onChange={handleUploadCV}
                         />
-                        <label htmlFor="cv-replace" className="cv__replace-btn">
-                          <Upload size={16} aria-hidden="true" />
-                        </label>
+                        <Tooltip text="Ersätt CV">
+                          <label
+                            htmlFor="cv-replace"
+                            className="cv__replace-btn"
+                          >
+                            <Upload size={16} aria-hidden="true" />
+                          </label>
+                        </Tooltip>
                       </>
                     )}
-                    <button
-                      aria-label="Visa CV"
-                      className="cv__view-btn"
-                      onClick={handleViewCV}
-                    >
-                      <ExternalLink size={16} aria-hidden="true" />
-                    </button>
-                    {isOwner && (
+                    <Tooltip text="Visa CV">
                       <button
-                        aria-label="Ta bort CV"
-                        className="cv__delete-btn"
-                        onClick={() => setShowDeleteCVConfirm(true)}
+                        aria-label="Visa CV"
+                        className="cv__view-btn"
+                        onClick={handleViewCV}
                       >
-                        <Trash2 size={16} aria-hidden="true" />
+                        <ExternalLink size={16} aria-hidden="true" />
                       </button>
+                    </Tooltip>
+                    {isOwner && (
+                      <Tooltip text="Ta bort CV">
+                        <button
+                          aria-label="Ta bort CV"
+                          className="cv__delete-btn"
+                          onClick={() => setShowDeleteCVConfirm(true)}
+                        >
+                          <Trash2 size={16} aria-hidden="true" />
+                        </button>
+                      </Tooltip>
                     )}
                   </div>
                 </div>
@@ -658,12 +668,6 @@ function WorkerProfilePage() {
               )}
             </div>
           </section>
-
-          {/* {isOwner && (
-            <button className="btn btn--primary" onClick={handleLogout}>
-              Logga ut
-            </button>
-          )} */}
 
           {user?.role === "employer" && (
             <>
